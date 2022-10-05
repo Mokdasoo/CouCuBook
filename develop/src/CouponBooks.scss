@@ -1,0 +1,20 @@
+$paper : rgb(201, 255, 199);
+
+.bookList-wrap{
+    background-color: $paper;
+    height: 100vh;
+}
+.bookcover{
+    background-color: red;
+    display: flex;
+    align-items: center;
+    p{
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+    }
+}
+
+.bookinner{
+    background-color: aliceblue;
+}
