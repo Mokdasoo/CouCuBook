@@ -1,5 +1,5 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import CouponBooks from './CouponBooks';
+import CouponBooksList from './CouponBooksList';
 import Header from './Header';
 import DemoBook from './Pageflip';
 
@@ -10,7 +10,7 @@ const CCBRouter = () => {
             <BrowserRouter>
                 <Header/>
                 <Routes>
-                    <Route path='/' element={ <CouponBooks/> }></Route>
+                    <Route path='/' element={ <CouponBooksList/> }></Route>
                 </Routes>
             
             </BrowserRouter>
