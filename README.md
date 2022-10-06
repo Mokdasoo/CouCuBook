@@ -14,9 +14,12 @@
 - Figma link : https://www.figma.com/file/8mc0ruPKhBFfTNP7AZsO00/%EC%BB%A4%EC%BF%A0%EB%B6%81?node-id=0%3A1
 
 <hr/>
+
 ### 2022-10-05
 1. CREATE react프로젝트 
 1. CREATE 페이지 로고 
+
+
 ### 2022-10-06
 1. CREATE 쿠폰북 리스트 컴포넌트
 1. CREATE 쿠폰북 컴포넌트 ->  npm react-pageflip 을 활용한 책 펼쳐지는 이펙트 적용 (추후 화면 전환에 적용될 예정)
