@@ -1,20 +1,29 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {Routes, Route, useLocation} from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import './Transition.scss';
 import CouponBooksList from './CouponBooksList';
-import Header from './Header';
-import DemoBook from './Pageflip';
+import CouponList from './CouponList';
 
 const CCBRouter = () => {
-
+    const location = useLocation();
+    
     return (
-        <div>
-            <BrowserRouter>
-                <Header/>
-                <Routes>
-                    <Route path='/' element={ <CouponBooksList/> }></Route>
+        <TransitionGroup className="transitions-wrapper" >
+            <CSSTransition
+                key={location.pathname}
+                classNames={"closeup"}
+                timeout={2000}
+            >
+                <Routes location={location}>
+                    <Route path='/' element={ <CouponBooksList/> }/>
+                    <Route path='/book' element={ <CouponList/> }/>
                 </Routes>
+            </CSSTransition>
+        </TransitionGroup>
             
-            </BrowserRouter>
-        </div>
+            
+            
+            
     );
 }
 

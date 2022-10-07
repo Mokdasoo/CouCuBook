@@ -1,9 +1,15 @@
 import HTMLFlipBook from "react-pageflip";
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { Link } from "react-router-dom";
 
 const CouponBookComponent = (props) => {
+    const book = useRef(null);
+    const clickBook = (e) => {
+      console.log(book);
+    }
     return (
         <div className='couponBook-wrap'>
+
             <div className='bookInfo'>
               <div className="bookInfo_to">
                 <span>{props.writer}님이 보낸</span>
@@ -28,8 +34,9 @@ const CouponBookComponent = (props) => {
             mobileScrollSupport={true}
             className="demo-book"
             flippingTime={2000}
+            
             >
-              <div className="bookcover"><img src='/images/bookCover.png' alt='CouponBook'/></div>
+              <div className="bookcover" ref={book} onClick={clickBook}><img src='/images/bookCover.png' alt='CouponBook'/><p>{props.img}</p></div>
               <div className="bookinner"><img src='/images/paperTexture.png' alt='CouponBook'/></div>
               <div className="bookinner"><img src='/images/paperTexture.png' alt='CouponBook'/></div>
               <div className="bookinner"><img src='/images/paperTexture.png' alt='CouponBook'/></div>
