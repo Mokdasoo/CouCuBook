@@ -2,7 +2,6 @@ import CouponComponent from "./CouponComponent";
 import './Coupon.scss';
 import HTMLFlipBook from "react-pageflip";
 import { useRef } from "react";
-import listModal from 'react-modal';
 
 const CouponList = (props) => {
 
@@ -12,7 +11,6 @@ const CouponList = (props) => {
     }
     
     return(
-        <listModal isOpen={props.isOpen}>
         <div className="couponList-wrap" ref={list}>
             <button type="button" onClick={closeList}>X</button>
             <HTMLFlipBook
@@ -35,7 +33,6 @@ const CouponList = (props) => {
             </HTMLFlipBook>
         </div>
 
-        </listModal>
     );
 }
 
