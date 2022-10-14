@@ -7,6 +7,7 @@ const CouponBookComponent = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const selectBook = useRef();
     const openBook = useRef();
+    const page = useRef();
     
     const clickBook = () => {
       if(isOpen === false) setIsOpen(true);
@@ -21,10 +22,15 @@ const CouponBookComponent = (props) => {
         window.removeEventListener("click", handleClickOutside);
       };
     }, []);
+    const closeList = () => {
+      setIsOpen(false);
+      console.log(page.current);
+      this.pageFlip.getPageFlip().flip(0);
+  }
 
     return (
       <div>
-        {isOpen && <CouponList ref={openBook} propsRef={openBook}/>}
+        {isOpen && <CouponList ref={openBook} closeList={closeList}/>}
         <div className='couponBook-wrap' ref={selectBook}>
             
             <div className='bookInfo'>
@@ -51,7 +57,7 @@ const CouponBookComponent = (props) => {
             mobileScrollSupport={true}
             className="demo-book"
             flippingTime={2000}
-            
+            ref={(component) => (this.pageFlip = component)}
             >
               <div className="bookcover" onClick={clickBook}><img src='/images/bookCover.png' alt='CouponBook'/><p>{props.img}</p></div>
               <div className="bookinner"><img src='/images/paperTexture.png' alt='CouponBook'/></div>

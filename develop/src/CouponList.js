@@ -6,13 +6,11 @@ import { useRef } from "react";
 const CouponList = (props) => {
 
     const list = useRef();
-    const closeList = () => {
-        list.current.remove();
-    }
+    
     
     return(
         <div className="couponList-wrap" ref={list}>
-            <button type="button" onClick={closeList}>X</button>
+            <button type="button" onClick={props.closeList}>X</button>
             <HTMLFlipBook
             //100:140 rate
                 width={500}
