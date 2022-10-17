@@ -1,7 +1,15 @@
+import './Coupon.scss';
+
+
 const CouponComponent = (props) => {
     return(
-        <div style={{width: '100px', height:'100px', backgroundColor:'red', margin:'10px', display:'flex'}}>
-
+        <div className='coupon-wrap'>
+            <div className='coupon-flex'>
+                <div className='title'><span>{props.title}</span></div>
+                <div className='image'><img src={'/images/'+ props.img}></img></div>
+                <div className='content'>{props.content}</div>
+            </div>
+            
         </div>
     );
 }

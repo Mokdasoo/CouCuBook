@@ -9,7 +9,6 @@ const CCBRouter = () => {
         
                 <Routes location={location}>
                     <Route path='/' element={ <CouponBooksList/> }/>
-                    <Route path='/book' element={ <CouponList/> }/>
                 </Routes>
             
             

@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Dongle&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Single+Day&family=Song+Myung&display=swap');
 $paper : rgb(234, 255, 233);
 
 .bookList-wrap{
@@ -64,8 +63,58 @@ $paper : rgb(234, 255, 233);
     }
 }
 .bookinner{
-    img{
+    width: 100%;
+    height: 100%;
+    .texture{
         width: 100%;
         height: 100%;
+        position: absolute;
+        z-index: 1;
+    }
+    div{
+        width: 100%;
+        height: 100%;
+        position: relative;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        
+        
+    }
+    .coupon-wrap{
+        display: inline-block;
+        width: 220px;
+        height: 290px;
+        background-color: white;
+        border: 3px solid rgba(250, 168, 225, 0.582);
+        margin: 2px;
+        text-align: center;
+        font-family: 'Song Myung', serif;
+        .coupon-flex{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            
+        }
+        .title{
+            display: flex;
+            width: 100%;
+            height: 20%;
+            font-size: 20px;
+            font-weight: bold;
+            justify-content: center;
+            align-items: center;
+        }
+        .image{
+            width: 100%;
+            height: 45%;
+            img{
+                height: 100%;
+            }
+        }
+        .content{
+            width: 100%;
+            height: 30%;
+        }
     }
 }
