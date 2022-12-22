@@ -22,7 +22,7 @@ const requestToken = async (request_code: string,) => {
     try {
         const tokenResponse = await axios({
             method: "POST",
-            url: 'https://kauth.kakao.com/oauth/token',
+            url: requestTokenUrl,
             headers: {
               "content-type": "application/x-www-form-urlencoded"
             },
@@ -30,12 +30,16 @@ const requestToken = async (request_code: string,) => {
         });
         const ACCESS_TOKEN = tokenResponse.data.access_token;
         console.log(ACCESS_TOKEN);
-      const body = {
-        ACCESS_TOKEN,
-      };
-      const response = await axios.post(REDIRECT_URI, body); // 우리 백 서버에 요청
-      const value = response.data;
-      console.log(value);
+    //   const body = {
+    //     ACCESS_TOKEN,
+    //   };
+    //   const response = await axios.post(REDIRECT_URI, body); // 우리 백 서버에 요청
+    //   const value = response.data;
+    //   console.log(value);
+
+ 
+
+
     //   const result = await storeUser(value);
     //   if (result === 'stored') {
     //     const user = await getData('user');
@@ -45,6 +49,10 @@ const requestToken = async (request_code: string,) => {
     } catch (e) {
       console.log(e);
     }
+
+    
+
+
   };
 
 /**카카오쪽에서 준 url에서 인가코드만 가져와 다시 토큰요청하는 함수 */
@@ -58,10 +66,13 @@ const getCode = (target: string) => {
 };
 
 const KakaoLoginScreen:React.FC = () => {
+    
+    
+
     return (
         <View style={styles.screen}>
             <WebView 
-                style={{ marginTop: 30 }}
+                style={styles.screen}
                 source={{
                     uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`
                 }}
@@ -70,11 +81,8 @@ const KakaoLoginScreen:React.FC = () => {
                 onMessage={event => {
                     const data = event.nativeEvent['url'];
                     console.log(data);
-                    getCode(data);
+                    // getCode(data);
                 }}
-                allowFileAccess={true}
-                scalesPageToFit={true}
-                originWhitelist={['*']}
             />
         </View>
     );
@@ -83,7 +91,8 @@ export default KakaoLoginScreen;
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1
+        flex: 1,
+        marginTop: 20
     },
 
 });
