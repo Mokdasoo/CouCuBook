@@ -8,9 +8,9 @@ app.use(cors());
 app.use(express.urlencoded({extended: true}));
 
 const router = require("./routes");
-const kakao = require("./routes/kakao");
+const kakaoRouter = require("./routes/kakaoRouter");
 app.use('/', router);
-app.use('/kakao', kakao);
+app.use('/kakao', kakaoRouter);
 
 
 
