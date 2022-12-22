@@ -17,13 +17,13 @@ export default ImageButton;
 
 const styles = StyleSheet.create({
     container: {
-        width: 183,
-        height: 40,
-        borderRadius: 6,
+        width: 300,
+        height: 50,
+        borderRadius: 4,
         overflow: 'hidden',
-        elevation:3,
+        elevation:2,
         shadowColor: 'black',
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.15,
         shadowRadius: 2,
         shadowOffset: {width: 1, height: 1},
         marginVertical: 8
