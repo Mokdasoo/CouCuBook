@@ -1,8 +1,7 @@
 const express = require("express");
 const kakao = express.Router();
+const controller = require('../controller/kakaoController');
 
-kakao.post('/login', function (req, res) {
-    res.json({ 'aa' : 'bb'});
-})
+kakao.post('/login', controller.getToken);
 
 module.exports = kakao;

@@ -3,14 +3,14 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="1d280e4e-46ed-46ef-b914-bc32a1b44381" name="mokdasoo" url="http://118.67.130.115">
-        <fileTransfer rootFolder="/var/www/html" accessType="SFTP" host="118.67.130.115" port="22" sshConfigId="17925d58-954d-47d5-a84a-a11ddb38fec5" sshConfig="root@118.67.130.115:22 password">
+        <fileTransfer accessType="SFTP" host="118.67.130.115" port="22" sshConfigId="17925d58-954d-47d5-a84a-a11ddb38fec5" sshConfig="root@118.67.130.115:22 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>
       <webServer id="92e21fd9-5228-4172-b876-8c8f08db329d" name="sesac4" url="http://3.36.113.33">
-        <fileTransfer rootFolder="/var/www/html" accessType="SFTP" host="3.36.113.33" port="22" sshConfigId="ce3b39c3-afe3-4f34-a631-64beae380227" sshConfig="ubuntu@3.36.113.33:22 key" keyPair="true">
+        <fileTransfer accessType="SFTP" host="3.36.113.33" port="22" sshConfigId="ce3b39c3-afe3-4f34-a631-64beae380227" sshConfig="ubuntu@3.36.113.33:22 key" keyPair="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

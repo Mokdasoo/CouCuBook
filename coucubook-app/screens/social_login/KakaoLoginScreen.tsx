@@ -5,7 +5,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 const REST_API_KEY = '02fc9aea28fb9a2f91b334dc97701c46';
-const REDIRECT_URI = 'http://localhost:8000/kakao/login';
+const REDIRECT_URI = 'http://3.36.113.33:8000/kakao/login';
 
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
@@ -30,11 +30,12 @@ const requestToken = async (request_code: string,) => {
         });
         const ACCESS_TOKEN = tokenResponse.data.access_token;
         console.log(ACCESS_TOKEN);
-    //   const body = {
-    //     ACCESS_TOKEN,
-    //   };
-    //   const response = await axios.post(REDIRECT_URI, body); // 우리 백 서버에 요청
-    //   const value = response.data;
+      const body = {
+        ACCESS_TOKEN,
+      };
+      const response = await axios.post(REDIRECT_URI, body); // 우리 백 서버에 요청
+      const value = response.data;
+      console.log(value);
     //   const result = await storeUser(value);
     //   if (result === 'stored') {
     //     const user = await getData('user');
@@ -46,15 +47,16 @@ const requestToken = async (request_code: string,) => {
     }
   };
 
-const getCode = (target: string) => {
+/**카카오쪽에서 준 url에서 인가코드만 가져와 다시 토큰요청하는 함수 */
+const getCode = (target: string) => { 
     const exp = 'code=';
     const condition = target.indexOf(exp);
     if (condition !== -1) {
       const requestCode = target.substring(condition + exp.length);
-      console.log("access code :: ",requestCode);
       requestToken(requestCode);
     }
 };
+
 const KakaoLoginScreen:React.FC = () => {
     return (
         <View style={styles.screen}>
