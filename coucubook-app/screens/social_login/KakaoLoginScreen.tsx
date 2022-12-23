@@ -1,15 +1,26 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
 import axios from "axios";
 import qs from "qs";
+import { authState, authenticate, modalControl } from '../../store/redux/authReducer';
+import { RootState } from '../../store/redux/rootReducer';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from "@react-navigation/native";
+import { LoginScreenProps } from "../GreetingLoginScreen";
+
+
 
 const REST_API_KEY = "02fc9aea28fb9a2f91b334dc97701c46";
-const REDIRECT_URI = "http://3.36.113.33:8000/kakao/login";
+const REDIRECT_URI = "http://118.67.130.115:9000/kakao/login";
 
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
 const KakaoLoginScreen: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation<LoginScreenProps["navigation"]>();
+  const auth:authState = useSelector((state: RootState) => state.auth);
+
   const requestToken = async (request_code: string) => {
     const requestTokenUrl = "https://kauth.kakao.com/oauth/token";
 
@@ -29,9 +40,9 @@ const KakaoLoginScreen: React.FC = () => {
         },
         data: options,
       });
-      console.log(tokenResponse.data);
-      // access_token, expires_in, refresh_token, refresh_token_expires_in 있음 추후 처리
+      // tokenResponse.data => access_token, expires_in, refresh_token, refresh_token_expires_in 있음 추후 처리
       const ACCESS_TOKEN = tokenResponse.data.access_token;
+      const REFRESH_TOKEN = tokenResponse.data.refresh_token;
       console.log(ACCESS_TOKEN);
         
       /** 우리 BE 서버에 요청 */ 
@@ -42,8 +53,25 @@ const KakaoLoginScreen: React.FC = () => {
             token: ACCESS_TOKEN
         }
       }); 
-        // const value = response.data;
-        console.log(response.data);
+      
+        const value = response.data;
+        console.log(value);
+        switch (value.result) {
+          case "success":
+            dispatch(authenticate(ACCESS_TOKEN, REFRESH_TOKEN));
+            break;
+          case "needInfo":
+            dispatch(modalControl());
+            await navigation.navigate('Register', value);
+            break;
+        
+          default:
+            dispatch(modalControl());
+            Alert.alert('login error', '로그인에 실패하셨습니다. 잠시 뒤에 다시 시도해 주세요')
+            break;
+        }
+        
+        
 
         // const result = await storeUser(value);
         // if (result === 'stored') {
@@ -62,7 +90,7 @@ const KakaoLoginScreen: React.FC = () => {
     const condition = target.indexOf(exp);
     if (condition !== -1) {
       const requestCode = target.substring(condition + exp.length);
-      console.log("requestCode ::::::   ", requestCode);
+      console.log("requestCode :   ", requestCode);
       requestToken(requestCode);
     }
   };
@@ -78,7 +106,6 @@ const KakaoLoginScreen: React.FC = () => {
         javaScriptEnabled={true}
         onMessage={(event) => {
           const data = event.nativeEvent.url;
-          console.log("data : ", data);
           getCode(data);
         }}
       />

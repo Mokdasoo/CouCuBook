@@ -1,6 +1,9 @@
 import { Text, View, Image, StyleSheet, ImageSourcePropType } from "react-native";
 import React from "react";
 import ImageButton from "../components/UI/ImageButton";
+import { authState, modalControl} from '../store/redux/authReducer';
+import { RootState } from '../store/redux/rootReducer';
+import { useSelector, useDispatch } from 'react-redux';
 
 const IntroContent: React.FC<{ text: string, src:ImageSourcePropType }> = ({ text, src }) => {
   return (
@@ -15,8 +18,11 @@ const IntroContent: React.FC<{ text: string, src:ImageSourcePropType }> = ({ tex
 };
 
 const LoginContent: React.FC = () => {
+  const auth:authState = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+
   const loginHandler = () => {
-    
+    dispatch(modalControl());
   };
 
   return (

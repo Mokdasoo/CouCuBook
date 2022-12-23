@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get('/', function (req, res) {
-    res.json({ 'aa' : 'bb'});
+    res.send('서버 열림');
 })
 
 router.get('/:id', function (req, res) {
