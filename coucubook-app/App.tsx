@@ -32,7 +32,7 @@ const Tab = createBottomTabNavigator();
 
 
 //로그인안한상태 AuthStack 간편로그인+ if 회원가입
-const AuthStack = () => {
+function AuthStack():JSX.Element {
   return (
     <Stack.Navigator>
       <Stack.Screen name='Login' component={GreetingLoginScreen} />
@@ -42,7 +42,7 @@ const AuthStack = () => {
 };
 
 //로그인상태 AuthenticatedTab 메인스크린
-const AuthenticatedTab = () => {
+function AuthenticatedTab():JSX.Element {
   return (
     <Tab.Navigator>
       <Tab.Screen name='Main' component={MainCoupleScreen} />
@@ -54,7 +54,7 @@ const AuthenticatedTab = () => {
 };
 
 // 로그인(토큰인증)상태에 따라 보여주는 Navigation
-const Navigation = () => {
+function Navigation():JSX.Element {
   const auth:authState = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
@@ -83,15 +83,14 @@ const Navigation = () => {
 
 
 //로딩중인지 아닌지  따라 보여주는 Root
-const Root = () => {
-  const auth:authState = useSelector((state: RootState) => state.auth);
+function Root():JSX.Element {
   
   return <Navigation />
 };
 
 
 
-export default function App() {
+export default function App():JSX.Element {
   const store = createStore(rootReducer);
   return (
     <>

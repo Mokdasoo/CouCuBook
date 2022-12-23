@@ -9,7 +9,11 @@ export type authState = {
     isAuthenticated: boolean;
     modalIsOpen: boolean;
 };
-const initState:authState = {token: '', isAuthenticated: false, modalIsOpen: false};
+const initState:authState = {
+    token: '', 
+    isAuthenticated: false, 
+    modalIsOpen: false
+};
 
 export const authenticate = (token:string, refreshToken: string) => ({
     type: AUTHENTICATE,
@@ -46,6 +50,7 @@ const authReducer = (state:authState = initState, action: authAction) => {
             AsyncStorage.removeItem('refreshToken');
             console.log('로그아웃');
             return {
+                ...state,
                 token: '',
                 isAuthenticated: false
             };

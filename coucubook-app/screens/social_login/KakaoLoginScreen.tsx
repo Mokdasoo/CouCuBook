@@ -12,7 +12,7 @@ import { LoginScreenProps } from "../GreetingLoginScreen";
 
 
 const REST_API_KEY = "02fc9aea28fb9a2f91b334dc97701c46";
-const REDIRECT_URI = "http://118.67.130.115:9000/kakao/login";
+const REDIRECT_URI = "http://3.36.113.33:8000/kakao/login";
 
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 

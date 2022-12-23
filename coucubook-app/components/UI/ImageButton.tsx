@@ -17,14 +17,14 @@ export default ImageButton;
 
 const styles = StyleSheet.create({
     container: {
-        width: 300,
+        width: 230,
         height: 50,
-        borderRadius: 4,
+        borderRadius: 8,
         overflow: 'hidden',
-        elevation:2,
+        elevation:4,
         shadowColor: 'black',
         shadowOpacity: 0.15,
-        shadowRadius: 2,
+        shadowRadius: 4,
         shadowOffset: {width: 1, height: 1},
         marginVertical: 8
     },

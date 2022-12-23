@@ -17,7 +17,7 @@ const IntroContent: React.FC<{ text: string, src:ImageSourcePropType }> = ({ tex
   );
 };
 
-const LoginContent: React.FC = () => {
+const LoginContent = (): JSX.Element => {
   const auth:authState = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
@@ -32,7 +32,7 @@ const LoginContent: React.FC = () => {
         onPress={loginHandler}
       />
       <ImageButton
-        imageSrc={require("../assets/Images/btn_google_signin_light_normal_web.png")}
+        imageSrc={require("../assets/Images/google_loginButton.png")}
         onPress={loginHandler}
       />
       <ImageButton

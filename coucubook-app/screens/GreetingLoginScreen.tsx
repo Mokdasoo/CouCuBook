@@ -11,7 +11,7 @@ import { useSelector} from 'react-redux';
 
 export type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
-const GreetingLoginScreen = () => {
+function GreetingLoginScreen():JSX.Element {
     const screenWidth = Math.round(Dimensions.get('window').width);
     const PAGES = Introduction_pages;
     const auth:authState = useSelector((state: RootState) => state.auth);
@@ -28,7 +28,6 @@ const GreetingLoginScreen = () => {
                 presentationStyle="formSheet"
                 animationType="slide"
                 visible={auth.modalIsOpen}
-
             >
                 <KakaoLoginScreen />
             </Modal>

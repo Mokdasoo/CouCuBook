@@ -22,7 +22,7 @@ type InputObj = {
     }
 }
 
-const InputInfoScreen = () => {
+const InputInfoScreen = ():JSX.Element => {
     const [inputs, setInputs] = useState<InputObj>({
         nickname: {
             value: '',
@@ -42,12 +42,12 @@ const InputInfoScreen = () => {
         setInputs((curInputs) => {
             return {
                 ...curInputs,
-                [inputIdentifier]: { value: enteredValue, isValid: false }
+                [inputIdentifier]: { value: enteredValue, isValid: enteredValue ? curInputs[inputIdentifier].isValid : false }
             };
         });
     }
     const inputCheckValid = (inputIdentifier :string) => {
-        if(+inputs[inputIdentifier].value.trim() !== 0){
+        if(inputs[inputIdentifier].value.trim().length !== 0){
             setInputs((curInputs) => {
                 return {
                     ...curInputs,
@@ -64,19 +64,21 @@ const InputInfoScreen = () => {
                 <View style={styles.inputContainer}>
                     <Input 
                         style={styles.rowInput}
-                        label='닉네임을 입력해주세요'
+                        label='닉네임'
                         textInputConfig={{
-                            placeholder: '닉네임입력',
+                            placeholder: '애칭을 입력해주세요',
                             maxLength: 10,
                             onChangeText: inputChangeHandler.bind(this, 'nickname'),
-                            value: inputs.nickname.value
+                            value: inputs.nickname.value,
+                            textAlign: 'center',
+                            editable: inputs.nickname.isValid ? false : true,
                         }}
                         invalid={true}
                     />
                     <IconButton 
-                        icon='checkmark-circle-outline' 
+                        icon={inputs.nickname.isValid ? 'checkmark-circle' : 'chevron-forward-circle-outline'} 
                         color={inputs.nickname.isValid ? 'green' : 'black'}
-                        size={30} 
+                        size={40} 
                         onPress={inputCheckValid.bind(this, 'nickname')} 
                     />
                 </View>
@@ -98,12 +100,10 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         flex: 1,
-        flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
     rowInput: {
         alignItems: 'center',
-        marginRight: 30
-    }
+    },
 });

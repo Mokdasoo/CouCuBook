@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         padding: 6,
         borderRadius: 6,
         fontSize: 24,
+        
         // color: GlobalStyles.colors.primary700
     },
     inputMultiline: {
