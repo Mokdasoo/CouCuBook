@@ -1,7 +1,8 @@
 import { ImageBackground, StyleSheet, Dimensions, Modal} from "react-native";
 import Carousel from '../components/UI/Carousal';
+import LoginContent from "../components/IntroAndLogin/LoginContext";
+import IntroContent from "../components/IntroAndLogin/IntroContent";
 
-import { Introduction_pages } from '../data/Introduction';
 import KakaoLoginScreen from "./social_login/KakaoLoginScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParamList } from "../App";
@@ -13,7 +14,24 @@ export type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login
 
 function GreetingLoginScreen():JSX.Element {
     const screenWidth = Math.round(Dimensions.get('window').width);
-    const PAGES = Introduction_pages;
+    const PAGES = [
+        {
+            order: 1,
+            content: <IntroContent text={"첫번째 페이지"} src={require("../assets/Images/introexample.jpeg")}/>,
+          },
+          {
+            order: 2,
+            content: <IntroContent text={"두번째 페이지"} src={require("../assets/Images/introexample.jpeg")} />,
+          },
+          {
+            order: 3,
+            content: <IntroContent text={"세번째 페이지"} src={require("../assets/Images/introexample.jpeg")} />,
+          },
+          {
+            order: 4,
+            content: <LoginContent />,
+          },
+    ];
     const auth:authState = useSelector((state: RootState) => state.auth);
     
     return(

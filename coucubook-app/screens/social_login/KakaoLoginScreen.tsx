@@ -54,22 +54,22 @@ const KakaoLoginScreen: React.FC = () => {
         }
       }); 
       
-        const value = response.data;
-        console.log(value);
-        switch (value.result) {
-          case "success":
-            dispatch(authenticate(ACCESS_TOKEN, REFRESH_TOKEN));
-            break;
-          case "needInfo":
-            dispatch(modalControl());
-            await navigation.navigate('Register', value);
-            break;
-        
-          default:
-            dispatch(modalControl());
-            Alert.alert('login error', '로그인에 실패하셨습니다. 잠시 뒤에 다시 시도해 주세요')
-            break;
-        }
+      const value = response.data;
+      console.log(value);
+      switch (value.result) {
+        case "success":
+          dispatch(authenticate(ACCESS_TOKEN, REFRESH_TOKEN));
+          break;
+        case "needInfo":
+          dispatch(modalControl());
+          await navigation.replace('Register', value);
+          break;
+      
+        default:
+          dispatch(modalControl());
+          Alert.alert('login error', '로그인에 실패하셨습니다. 잠시 뒤에 다시 시도해 주세요')
+          break;
+      }
         
         
 
