@@ -1,5 +1,7 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
+
+export default router;
 
 router.get('/', function (req, res) {
     res.send('서버 열림');
@@ -13,4 +15,3 @@ router.get('/:id', function (req, res) {
     res.json({userId: id});
 })
 
-module.exports = router;

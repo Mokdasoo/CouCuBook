@@ -2,7 +2,7 @@
 <project version="4">
   <component name="SshConfigs">
     <configs>
-      <sshConfig connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="3.36.113.33" id="ce3b39c3-afe3-4f34-a631-64beae380227" keyPath="$USER_HOME$/Downloads/SeSAC4_web_keyAIR2.ppk" port="22" nameFormat="DESCRIPTIVE" username="ubuntu" useOpenSSHConfig="true" />
+      <sshConfig connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="3.36.113.33" id="ce3b39c3-afe3-4f34-a631-64beae380227" keyPath="C:\Users\DG\github\SeSAC4_web_keyAIR2.ppk" port="22" nameFormat="DESCRIPTIVE" username="ubuntu" useOpenSSHConfig="true" />
       <sshConfig authType="PASSWORD" host="118.67.130.115" id="17925d58-954d-47d5-a84a-a11ddb38fec5" port="22" nameFormat="DESCRIPTIVE" username="root" useOpenSSHConfig="true" />
     </configs>
   </component>

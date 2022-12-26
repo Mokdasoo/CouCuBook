@@ -25,8 +25,8 @@ export default Button;
 const styles = StyleSheet.create({
     button: {
         width: 200,
-        paddingHorizontal: 12,
-        paddingVertical: 8,
+        paddingHorizontal: 24,
+        paddingVertical: 16,
         margin: 4,
         elevation: 2,
         shadowColor: 'black',
@@ -40,6 +40,6 @@ const styles = StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-        fontSize: 16
+        fontSize: 24
     }
 });

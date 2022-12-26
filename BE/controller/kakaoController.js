@@ -1,6 +1,8 @@
-const axios = require("axios");
+import axios from "axios";
 
-exports.getLogin = async (req, res) => {
+
+
+const getLogin = async (req, res) => {
     console.log(req.body.token);
     const ACCESS_TOKEN = req.body.token;
     let tmp;
@@ -62,3 +64,10 @@ exports.getLogin = async (req, res) => {
         res.send(response);
     }
 }
+
+
+const kakaoController = {
+    getLogin: getLogin,
+}
+
+export default kakaoController;

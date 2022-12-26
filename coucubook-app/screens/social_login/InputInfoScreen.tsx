@@ -178,7 +178,7 @@ const InputInfoScreen = ({navigation, route}: RegisterScreenProps):JSX.Element =
                     }
                     {
                         inputs.anniversary.isValid &&
-                            <Button bgcolor="#77bfa3" fontcolor="#323232" onPress={submitHandler} >확인</Button>
+                            <Button bgcolor="#77bfa3" fontcolor="white" onPress={submitHandler} >확인</Button>
                     }
                     <Button bgcolor="#e63946" fontcolor="white" onPress={returnHandler} >재입력</Button>
                 </View>
@@ -207,7 +207,8 @@ const styles = StyleSheet.create({
         flex: 1,
         width: 350,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingBottom: 24
     },
     inputContainer: {
         flex: 1,

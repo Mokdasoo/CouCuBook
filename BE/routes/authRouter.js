@@ -1,7 +1,11 @@
-const express = require("express");
-const authRouter = express.Router();
-const authController = require('../controller/authController');
+import express from "express";
+import authController from '../controller/authController.js';
+import kakaoController from '../controller/kakaoController.js';
 
-authRouter.post('/register', authController.postRegister);
+const authRouter = express.Router(); //  HOST_URL/auth 
 
-module.exports = authRouter;
+authRouter.get('/register', authController.postRegister);
+
+authRouter.post('/kakao/login', kakaoController.getLogin);
+
+export default authRouter;
