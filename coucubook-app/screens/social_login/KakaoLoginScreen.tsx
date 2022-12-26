@@ -16,7 +16,7 @@ const REDIRECT_URI = "http://3.36.113.33:8000/kakao/login";
 
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
-const KakaoLoginScreen: React.FC = () => {
+const KakaoLoginScreen = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigation = useNavigation<LoginScreenProps["navigation"]>();
   const auth:authState = useSelector((state: RootState) => state.auth);

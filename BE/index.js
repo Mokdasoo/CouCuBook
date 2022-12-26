@@ -9,8 +9,10 @@ app.use(express.urlencoded({extended: true}));
 
 const router = require("./routes");
 const kakaoRouter = require("./routes/kakaoRouter");
+const authRouter = require('./routes/authRouter');
 app.use('/', router);
 app.use('/kakao', kakaoRouter);
+app.use('/auth', authRouter);
 
 
 app.listen(port, () => {

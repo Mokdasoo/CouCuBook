@@ -29,19 +29,24 @@ export default Input;
 const styles = StyleSheet.create({
     inputContainer: {
         marginHorizontal: 4,
-        marginVertical: 8,
+        marginTop: 30 
     },
     label: {
         fontSize: 18,
-        color: '#484848',
+        color: '#8b8b8b',
         fontWeight: 'bold',
-        marginVertical: 16
+        marginVertical: 4,
+        borderColor: '#cacaca',
+        borderWidth: 1,
+        borderRadius: 4,
+        paddingHorizontal: 8,
+        paddingVertical: 4
     },
     input: {
         // backgroundColor: GlobalStyles.colors.primary100,
         padding: 6,
         borderRadius: 6,
-        fontSize: 24,
+        fontSize: 22,
         
         // color: GlobalStyles.colors.primary700
     },

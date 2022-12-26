@@ -12,7 +12,7 @@
       <webServer id="92e21fd9-5228-4172-b876-8c8f08db329d" name="sesac4" url="http://3.36.113.33">
         <fileTransfer accessType="SFTP" host="3.36.113.33" port="22" sshConfigId="ce3b39c3-afe3-4f34-a631-64beae380227" sshConfig="ubuntu@3.36.113.33:22 key" keyPair="true">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>
