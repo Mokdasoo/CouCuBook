@@ -4,7 +4,7 @@ import kakaoController from '../controller/kakaoController.js';
 
 const authRouter = express.Router(); //  HOST_URL/auth 
 
-authRouter.get('/register', authController.postRegister);
+authRouter.post('/register', authController.postRegister);
 
 authRouter.post('/kakao/login', kakaoController.getLogin);
 

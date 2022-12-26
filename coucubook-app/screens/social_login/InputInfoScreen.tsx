@@ -89,11 +89,16 @@ const InputInfoScreen = ({navigation, route}: RegisterScreenProps):JSX.Element =
     }
 
     const submitHandler = async () => {
+        const loginData = route.params.data;
         const response = await axios({
             method: 'POST',
-            url: BACKEND_ADDRESS,
+            url: BACKEND_ADDRESS + '/auth/register',
             data: {
-
+                social_platform: loginData.name,
+                id: loginData.id,
+                nickname: inputs.nickname.value,
+                birth: inputs.birth.value,
+                anniversary: inputs.anniversary.value
             }
         })
     }

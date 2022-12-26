@@ -1,9 +1,12 @@
 
-
-
 const postRegister = async(req,res) => {
-    res.send('hello auth register');
+    const {social_platform, id, nickname, birth, anniversary} = req.body;
+    
+    res.send('register success!!!');
 }
+
+
+
 
 const authController = {
     postRegister: postRegister,

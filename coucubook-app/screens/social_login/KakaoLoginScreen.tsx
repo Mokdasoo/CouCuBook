@@ -11,9 +11,6 @@ import { LoginScreenProps } from "../GreetingLoginScreen";
 import { KAKAO_REDIRECT_URI, KAKAO_REST_API_KEY } from "@env";
 
 
-
-
-
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
 const KakaoLoginScreen = (): JSX.Element => {
