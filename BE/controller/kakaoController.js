@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import models from '../model/index.js';
 
 
 const getLogin = async (req, res) => {
@@ -14,7 +14,8 @@ const getLogin = async (req, res) => {
                 "Authorization": `Bearer ${ACCESS_TOKEN}`
             },
         };
-        tmp = await axios.get(url, Header);
+        tmp = await axios.get(url, Header); //tmp = {id:kakao id , connected_at: date}
+        
     }catch (e) {
         console.log("Axios Error: 사용자 정보 가져오기");
         console.log(e);
@@ -30,12 +31,16 @@ const getLogin = async (req, res) => {
         const {id} = data;
 
         //데이터베이스에서 id와 맞는 유저 정보 불러와서 result에 저장하기
-        const result = null;
+        const result = await models.User.findOne({
+            where: {
+                social_id: id
+            }
+        });
 
         if(result){
             const response = {
                 result:'success',
-                data: result
+                data: result.dataValues
             };
             res.send(response);
         }else{

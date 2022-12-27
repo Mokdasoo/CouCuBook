@@ -1,3 +1,11 @@
+
+use mysql;
+select user, host, plugin from user;
+create user 'user'@'%' identified by '1234';
+grant all privileges on coucubook.* to 'user'@'%';
+FLUSH PRIVILEGES;
+show grants for 'user'@'%';
+
 create database coucubook;
 use coucubook;
 

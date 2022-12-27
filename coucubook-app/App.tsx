@@ -16,13 +16,18 @@ import MyAppSettingScreen from './screens/main/MyAppSettingScreen';
 import MyCouponBooksScreen from './screens/main/MyCouponBooksScreen';
 import InputInfoScreen from './screens/social_login/InputInfoScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Button } from 'react-native';
+
+console.log(process.env.NODE_ENV);
 
 export type AuthStackParamList = {
   Login: undefined;
   Register: {
     data: {
       id: number,
-      name: string
+      name: string,
+      token: string,
+      refreshToken: string
     },
     result: string
   };
@@ -43,8 +48,16 @@ function AuthStack():JSX.Element {
 
 //로그인상태 AuthenticatedTab 메인스크린
 function AuthenticatedTab():JSX.Element {
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(logout());
+  }
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{
+      headerRight: () => (
+        <Button title='로그아웃' onPress={logoutHandler} />
+      )
+    }}>
       <Tab.Screen name='Main' component={MainCoupleScreen} />
       <Tab.Screen name='Mybook' component={MyCouponBooksScreen} />
       <Tab.Screen name='Create' component={CreateCouponBookScreen} />
@@ -64,10 +77,9 @@ function Navigation():JSX.Element {
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       console.log(storedToken, refreshToken);
       //토큰 정보 가져와서 만료시간체크하고 만료됐으면 리프레시토큰으로 재발급 리프레시토큰도 만료됐으면 토큰없음
-      // console.log(storedToken);
-      // if(storedToken){
-      //   dispatch(authenticate(storedToken, refreshToken));
-      // }
+      if(storedToken && refreshToken){
+        dispatch(authenticate(storedToken, refreshToken));
+      }
     }
     fetchToken();
   }, []);

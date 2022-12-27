@@ -6,10 +6,11 @@ import Input from "../../components/UI/Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Button from "../../components/UI/Button";
 import axios from "axios";
-import { BACKEND_ADDRESS } from "@env";
+import { BACKEND_ADDRESS, BACKEND_LOCALHOST } from "@env";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParamList } from "../../App";
-
+import { useDispatch } from "react-redux";
+import { authenticate } from "../../store/redux/authReducer";
 type InputObj = {
     [anyKeyword: string]: {
         value:string;
@@ -45,6 +46,7 @@ const initialInputState = {
 export type RegisterScreenProps = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 
 const InputInfoScreen = ({navigation, route}: RegisterScreenProps):JSX.Element => {
+    const dispatch = useDispatch();
     const [inputs, setInputs] = useState<InputObj>(initialInputState);
 
     const inputChangeHandler = (inputIdentifier :string, enteredValue: string) => {
@@ -92,7 +94,7 @@ const InputInfoScreen = ({navigation, route}: RegisterScreenProps):JSX.Element =
         const loginData = route.params.data;
         const response = await axios({
             method: 'POST',
-            url: BACKEND_ADDRESS + '/auth/register',
+            url: BACKEND_LOCALHOST + '/auth/register',
             data: {
                 social_platform: loginData.name,
                 id: loginData.id,
@@ -100,7 +102,10 @@ const InputInfoScreen = ({navigation, route}: RegisterScreenProps):JSX.Element =
                 birth: inputs.birth.value,
                 anniversary: inputs.anniversary.value
             }
-        })
+        });
+        if(response.status === 200){
+            dispatch(authenticate(loginData.token, loginData.refreshToken));
+        }
     }
 
     const returnHandler = () => {

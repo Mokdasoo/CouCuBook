@@ -37,8 +37,12 @@ type authAction = ReturnType<typeof authenticate> | ReturnType<typeof logout> | 
 const authReducer = (state:authState = initState, action: authAction) => {
     switch (action.type) {
         case AUTHENTICATE:
-            AsyncStorage.setItem('token', action.payload.token);
-            AsyncStorage.setItem('refreshToken', action.payload.refreshToken);
+            const authenticateHandler = async () => {
+                await AsyncStorage.setItem('token', action.payload.token);
+                await AsyncStorage.setItem('refreshToken', action.payload.refreshToken);
+            }
+            authenticateHandler();
+            
             return {
                 ...state,
                 token: action.payload,
@@ -46,8 +50,11 @@ const authReducer = (state:authState = initState, action: authAction) => {
             };
     
         case LOGOUT:
-            AsyncStorage.removeItem('token');
-            AsyncStorage.removeItem('refreshToken');
+            const logoutHandler = async () => {
+                await AsyncStorage.removeItem('token');
+                await AsyncStorage.removeItem('refreshToken');
+            }
+            logoutHandler();
             console.log('로그아웃');
             return {
                 ...state,
