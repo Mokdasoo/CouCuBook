@@ -1,6 +1,6 @@
 import { ImageBackground, StyleSheet, Dimensions, Modal} from "react-native";
 import Carousel from '../components/UI/Carousal';
-import LoginContent from "../components/IntroAndLogin/LoginContext";
+import LoginContent from "../components/IntroAndLogin/LoginContent";
 import IntroContent from "../components/IntroAndLogin/IntroContent";
 
 import KakaoLoginScreen from "./social_login/KakaoLoginScreen";

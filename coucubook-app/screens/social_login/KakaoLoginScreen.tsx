@@ -13,7 +13,7 @@ import { KAKAO_REDIRECT_URI, KAKAO_REST_API_KEY } from "@env";
 
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
-const KakaoLoginScreen = (): JSX.Element => {
+const KakaoLoginScreen = (): JSX.Element => {``
   const dispatch = useDispatch();
   const navigation = useNavigation<LoginScreenProps["navigation"]>();
   const auth:authState = useSelector((state: RootState) => state.auth);
