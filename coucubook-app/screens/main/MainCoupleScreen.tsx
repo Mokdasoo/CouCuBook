@@ -9,9 +9,25 @@ const MainCoupleScreen = () => {
     useEffect(()=>{
         const getUserInfo = async () => {
             const token = await AsyncStorage.getItem('token');
-            const response = await axios(`${BACKEND_ADDRESS}/auth`)
+            let tokenInfo;
+            try {
+                const response = await axios.get(
+                    `${BACKEND_ADDRESS}/auth/user`, 
+                    {
+                        params: {token: token}
+                    },
+                );
+                tokenInfo = response.data; //{ id, connected_at}
+            } catch (error) {
+                console.log(error);
+            }
+
+            
+
+            
 
         }
+        getUserInfo();
     }, []);
 
     return(
