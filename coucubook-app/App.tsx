@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import GreetingLoginScreen from './screens/GreetingLoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -17,8 +17,12 @@ import MyCouponBooksScreen from './screens/main/MyCouponBooksScreen';
 import InputInfoScreen from './screens/social_login/InputInfoScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
-console.log(process.env.NODE_ENV);
+console.log("helllllllo", process.env.NODE_ENV);
+
 
 export type AuthStackParamList = {
   Login: undefined;
@@ -39,7 +43,9 @@ const Tab = createBottomTabNavigator();
 //로그인안한상태 AuthStack 간편로그인+ if 회원가입
 function AuthStack():JSX.Element {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{
+      headerShown: false
+    }}>
       <Stack.Screen name='Login' component={GreetingLoginScreen} />
       <Stack.Screen name='Register' component={InputInfoScreen} />
     </Stack.Navigator>
@@ -56,12 +62,49 @@ function AuthenticatedTab():JSX.Element {
     <Tab.Navigator screenOptions={{
       headerRight: () => (
         <Button title='로그아웃' onPress={logoutHandler} />
-      )
+      ),
+      headerStyle: {backgroundColor: 'transparent'},
+      headerTitleStyle: {fontFamily: 'godoMaum', fontSize: 25},
+      headerTitleAlign: 'center',
+      title: 'CouCuBook'
+
     }}>
-      <Tab.Screen name='Main' component={MainCoupleScreen} />
-      <Tab.Screen name='Mybook' component={MyCouponBooksScreen} />
-      <Tab.Screen name='Create' component={CreateCouponBookScreen} />
-      <Tab.Screen name='Setting' component={MyAppSettingScreen} />
+      <Tab.Screen name='Main' component={MainCoupleScreen} options={{
+          tabBarIcon: ({color, size}) => (
+            <Ionicons name='easel-outline' color={color} size={size} />
+          ),
+          tabBarLabel:'메인',
+          tabBarLabelStyle: {fontFamily: 'godoMaum'},
+          tabBarActiveTintColor: '#718355',
+        }}
+      />
+      <Tab.Screen name='Mybook' component={MyCouponBooksScreen} options={{
+          tabBarIcon: ({color, size}) => (
+            <Ionicons name='gift-outline' color={color} size={size} />
+          ),
+          tabBarLabel:'선물받은 쿠폰북함',
+          tabBarLabelStyle: {fontFamily: 'godoMaum'},
+          tabBarActiveTintColor: '#718355',
+        }}
+      />
+      <Tab.Screen name='Create' component={CreateCouponBookScreen} options={{
+          tabBarIcon: ({color, size}) => (
+            <Ionicons name='duplicate-outline' color={color} size={size} />
+          ),
+          tabBarLabel:'쿠폰북 만들기/선물하기',
+          tabBarLabelStyle: {fontFamily: 'godoMaum'},
+          tabBarActiveTintColor: '#718355',
+        }}
+      />
+      <Tab.Screen name='Setting' component={MyAppSettingScreen} options={{
+          tabBarIcon: ({color, size}) => (
+            <Ionicons name='flower-outline' color={color} size={size} />
+          ),
+          tabBarLabel:'옵션들',
+          tabBarLabelStyle: {fontFamily: 'godoMaum'},
+          tabBarActiveTintColor: '#718355',
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -100,10 +143,28 @@ function Root():JSX.Element {
   return <Navigation />
 };
 
+SplashScreen.preventAutoHideAsync();
 
+export default function App():JSX.Element | null{
+  const [fontsLoaded] = useFonts({
+    'godoMaum': require('./assets/fonts/godoMaum.ttf'),
+  });
 
-export default function App():JSX.Element {
+  useEffect(() => {
+    if(fontsLoaded){
+      const appIsReady = async () => {
+        await SplashScreen.hideAsync();
+      }
+      appIsReady();
+    }
+  }, [fontsLoaded]);
+
+  if(!fontsLoaded){
+    return null;
+  }
+
   const store = createStore(rootReducer);
+
   return (
     <>
       <StatusBar style="auto" />

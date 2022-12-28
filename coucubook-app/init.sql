@@ -20,3 +20,6 @@ CREATE TABLE user (
   lover_code CHAR(10) NULL
 );
 
+
+SELECT * FROM coucubook.user;
+TRUNCATE coucubook.user;

@@ -28,7 +28,9 @@
     "react-native-webview": "11.23.1",
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "expo-font": "~11.0.1",
+    "expo-splash-screen": "~0.17.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

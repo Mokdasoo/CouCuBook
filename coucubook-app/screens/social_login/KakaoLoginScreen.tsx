@@ -8,7 +8,7 @@ import { RootState } from '../../store/redux/rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from "@react-navigation/native";
 import { LoginScreenProps } from "../GreetingLoginScreen";
-import { KAKAO_REDIRECT_URI, KAKAO_REST_API_KEY, BACKEND_LOCALHOST, KAKAO_REDIRECT_URI_LOCAL } from "@env";
+import { KAKAO_REDIRECT_URI, KAKAO_REST_API_KEY,KAKAO_REDIRECT_URI_LOCAL } from "@env";
 
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
@@ -23,7 +23,7 @@ const KakaoLoginScreen = (): JSX.Element => {``
     const options = qs.stringify({
       grant_type: "authorization_code",
       client_id: KAKAO_REST_API_KEY,
-      redirect_uri: KAKAO_REDIRECT_URI_LOCAL,
+      redirect_uri: KAKAO_REDIRECT_URI,
       code: request_code,
     });
 
@@ -44,7 +44,7 @@ const KakaoLoginScreen = (): JSX.Element => {``
       /** 우리 BE 서버에 요청 */ 
       const response = await axios({
         method: 'POST',
-        url: KAKAO_REDIRECT_URI_LOCAL,
+        url: KAKAO_REDIRECT_URI,
         data: {
             token: ACCESS_TOKEN
         }
@@ -99,7 +99,7 @@ const KakaoLoginScreen = (): JSX.Element => {``
       <WebView
         style={styles.screen}
         source={{
-          uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI_LOCAL}`,
+          uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}`,
         }}
         injectedJavaScript={INJECTED_JAVASCRIPT}
         javaScriptEnabled={true}

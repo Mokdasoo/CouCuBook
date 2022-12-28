@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Dimensions, Modal} from "react-native";
+import { ImageBackground, StyleSheet, Dimensions, Modal, View, Text} from "react-native";
 import Carousel from '../components/UI/Carousal';
 import LoginContent from "../components/IntroAndLogin/LoginContent";
 import IntroContent from "../components/IntroAndLogin/IntroContent";
@@ -17,15 +17,15 @@ function GreetingLoginScreen():JSX.Element {
     const PAGES = [
         {
             order: 1,
-            content: <IntroContent text={"첫번째 페이지"} src={require("../assets/Images/introexample.jpeg")}/>,
+            content: <IntroContent text={"특별한 기념일...\n연인들을 위한 쿠폰북 만들기/선물하기"} src={require("../assets/Images/greetingImg1.png")}/>,
           },
           {
             order: 2,
-            content: <IntroContent text={"두번째 페이지"} src={require("../assets/Images/introexample.jpeg")} />,
+            content: <IntroContent text={"어떠한 내용이든 좋아요\n연인을 위해 해주고 싶은 모든 쿠폰을 만들어 보세요"} src={require("../assets/Images/introexample.jpeg")} />,
           },
           {
             order: 3,
-            content: <IntroContent text={"세번째 페이지"} src={require("../assets/Images/introexample.jpeg")} />,
+            content: <IntroContent text={"먼저 회원가입과 커플등록을 해주세요"} src={require("../assets/Images/greetingImg3.png")} />,
           },
           {
             order: 4,
@@ -35,7 +35,10 @@ function GreetingLoginScreen():JSX.Element {
     const auth:authState = useSelector((state: RootState) => state.auth);
     
     return(
-        <ImageBackground style={styles.backgroundImage} source={require('../assets/Images/sketch.png')}>
+        <View style={styles.background}>
+            <View>
+                <Text style={styles.title}>CouCuBook</Text>
+            </View>
             <Carousel
                 gap={16}
                 offset={0}
@@ -49,7 +52,7 @@ function GreetingLoginScreen():JSX.Element {
             >
                 <KakaoLoginScreen />
             </Modal>
-        </ImageBackground>
+        </View>
     )
 }
 
@@ -57,11 +60,13 @@ export default GreetingLoginScreen;
 
 const styles = StyleSheet.create({
     
-    backgroundImage: {
+    background: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
-        height: '100%'
     },
+    title: {
+        fontSize: 50,
+        fontFamily: 'godoMaum'
+    }
 });

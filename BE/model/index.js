@@ -2,7 +2,9 @@ import { Sequelize } from "sequelize";
 import dbInfo from "../config/config.js";
 import User from "./User.js";
 
-const config = dbInfo.development
+// const config = dbInfo.development;
+const config = dbInfo.production;
+
 const db = {};
 
 const sequelize = new Sequelize(

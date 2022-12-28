@@ -94,7 +94,7 @@ const InputInfoScreen = ({navigation, route}: RegisterScreenProps):JSX.Element =
         const loginData = route.params.data;
         const response = await axios({
             method: 'POST',
-            url: BACKEND_LOCALHOST + '/auth/register',
+            url: BACKEND_ADDRESS + '/auth/register',
             data: {
                 social_platform: loginData.name,
                 id: loginData.id,

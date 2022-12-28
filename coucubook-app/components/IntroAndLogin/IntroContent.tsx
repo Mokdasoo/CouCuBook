@@ -13,7 +13,7 @@ import { StyleSheet, Image, Text, ImageSourcePropType } from "react-native";
           style={styles.image}
           source={src}
         />
-        <Text>{text}</Text>
+        <Text style={styles.text}>{text}</Text>
       </>
     );
   };
@@ -26,4 +26,9 @@ import { StyleSheet, Image, Text, ImageSourcePropType } from "react-native";
       height: 200,
       marginBottom: 30,
     },
+    text: {
+      fontSize: 20,
+      textAlign: 'center',
+      fontFamily: 'godoMaum'
+    }
   });
