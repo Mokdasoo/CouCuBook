@@ -20,8 +20,9 @@ import { Button } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { tokenRenewal, viewTokenInfo } from './util/kakaoRESTAPI';
 
-console.log("helllllllo", process.env.NODE_ENV);
+// console.log("helllllllo", process.env.NODE_ENV);
 
 
 export type AuthStackParamList = {
@@ -111,17 +112,48 @@ function AuthenticatedTab():JSX.Element {
 
 // 로그인(토큰인증)상태에 따라 보여주는 Navigation
 function Navigation():JSX.Element {
+
   const auth:authState = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+
+  /**토큰 만료 다가오거나 만료 됐을 때 리프레시토큰으로 토큰 재발급 후 저장 */
+  const getAccessTokenWithRefreshToken = useCallback( async (refreshToken:string, social_id: number) => {
+
+    const newToken = await tokenRenewal(refreshToken);
+    dispatch(authenticate(newToken, refreshToken, social_id));
+    
+  },[]);
+
+
+  /** 토큰 만료 판단후 이상없으면 저장 */
+  type tokenInfo = {
+    id: number;
+    expires_in: number;
+  }
+  const getTokenInfo = useCallback(async(token: string, refreshToken: string) => {
+    //refreshToken 만료전
+    let tokenInfo : tokenInfo = await viewTokenInfo(token);
+    
+    if(tokenInfo.expires_in > 3600){ // 엑세스 토큰 정상
+        dispatch(authenticate(token, refreshToken, tokenInfo.id));
+        
+    }else {// 엑세스 토큰 만료
+        await getAccessTokenWithRefreshToken(refreshToken, tokenInfo.id);
+    }
+    //refreshToken 만료후
+  }, []);
 
   useEffect(() => {
     const fetchToken = async () => {
       const storedToken = await AsyncStorage.getItem('token');
       const refreshToken = await AsyncStorage.getItem('refreshToken');
-      console.log(storedToken, refreshToken);
+      console.log("token: ",storedToken, "refresh: ", refreshToken);
+
+
       //토큰 정보 가져와서 만료시간체크하고 만료됐으면 리프레시토큰으로 재발급 리프레시토큰도 만료됐으면 토큰없음
       if(storedToken && refreshToken){
-        dispatch(authenticate(storedToken, refreshToken));
+        await getTokenInfo(storedToken, refreshToken);
+        
       }
     }
     fetchToken();

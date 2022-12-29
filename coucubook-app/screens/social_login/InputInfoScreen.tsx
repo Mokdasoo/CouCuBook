@@ -10,7 +10,7 @@ import { BACKEND_ADDRESS, BACKEND_LOCALHOST } from "@env";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParamList } from "../../App";
 import { useDispatch } from "react-redux";
-import { authenticate } from "../../store/redux/authReducer";
+import { authenticate} from "../../store/redux/authReducer";
 type InputObj = {
     [anyKeyword: string]: {
         value:string;
@@ -104,7 +104,7 @@ const InputInfoScreen = ({navigation, route}: RegisterScreenProps):JSX.Element =
             }
         });
         if(response.status === 200){
-            dispatch(authenticate(loginData.token, loginData.refreshToken));
+            dispatch(authenticate(loginData.token, loginData.refreshToken,loginData.id));
         }
     }
 

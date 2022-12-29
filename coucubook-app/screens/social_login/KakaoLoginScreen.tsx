@@ -3,7 +3,7 @@ import { Alert, StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
 import axios from "axios";
 import qs from "qs";
-import { authState, authenticate, modalControl } from '../../store/redux/authReducer';
+import { authState, authenticate, modalControl} from '../../store/redux/authReducer';
 import { RootState } from '../../store/redux/rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from "@react-navigation/native";
@@ -54,7 +54,7 @@ const KakaoLoginScreen = (): JSX.Element => {``
       switch (value.result) {
         case "success":
           dispatch(modalControl());
-          dispatch(authenticate(ACCESS_TOKEN, REFRESH_TOKEN));
+          dispatch(authenticate(ACCESS_TOKEN, REFRESH_TOKEN, value.data.social_id));
           break;
         case "needInfo":
           dispatch(modalControl());

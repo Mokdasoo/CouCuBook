@@ -21,7 +21,7 @@ function GreetingLoginScreen():JSX.Element {
           },
           {
             order: 2,
-            content: <IntroContent text={"어떠한 내용이든 좋아요\n연인을 위해 해주고 싶은 모든 쿠폰을 만들어 보세요"} src={require("../assets/Images/introexample.jpeg")} />,
+            content: <IntroContent text={"어떠한 내용이든 좋아요\n연인을 위해 해주고 싶은 모든 쿠폰을 만들어 보세요"} src={require("../assets/Images/greetingImg2.png")} />,
           },
           {
             order: 3,

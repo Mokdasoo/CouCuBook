@@ -4,24 +4,34 @@ const AUTHENTICATE = 'AUTH/AUTHENTICATE' as const;
 const LOGOUT = 'AUTH/LOGOUT' as const;
 const MODAL = 'AUTH/MODAL' as const;
 
-export type authState = {
-    token: string;
+export interface authState  {
+    token: {
+        token: string;
+        refreshToken: string;
+        social_id: number;
+    };
     isAuthenticated: boolean;
     modalIsOpen: boolean;
 };
 const initState:authState = {
-    token: '', 
+    token: {
+        token: '',
+        refreshToken: '',
+        social_id: 0
+    }, 
     isAuthenticated: false, 
-    modalIsOpen: false
+    modalIsOpen: false,
 };
 
-export const authenticate = (token:string, refreshToken: string) => ({
+export const authenticate = (token:string, refreshToken: string, social_id: number) => ({
     type: AUTHENTICATE,
     payload: {
         token: token,
-        refreshToken: refreshToken
+        refreshToken: refreshToken,
+        social_id: social_id,
     }
 });
+
 export const logout = () => ({
     type: LOGOUT,
     payload: null
@@ -32,7 +42,10 @@ export const modalControl = () => ({
     payload: null
 });
 
-type authAction = ReturnType<typeof authenticate> | ReturnType<typeof logout> | ReturnType<typeof modalControl> ;
+type authAction = 
+    ReturnType<typeof authenticate> | 
+    ReturnType<typeof logout> | 
+    ReturnType<typeof modalControl> ;
 
 const authReducer = (state:authState = initState, action: authAction) => {
     switch (action.type) {
@@ -48,7 +61,6 @@ const authReducer = (state:authState = initState, action: authAction) => {
                 token: action.payload,
                 isAuthenticated: !!action.payload
             };
-    
         case LOGOUT:
             const logoutHandler = async () => {
                 await AsyncStorage.removeItem('token');
@@ -59,7 +71,7 @@ const authReducer = (state:authState = initState, action: authAction) => {
             return {
                 ...state,
                 token: '',
-                isAuthenticated: false
+                isAuthenticated: false,
             };
         case MODAL:
             return  {

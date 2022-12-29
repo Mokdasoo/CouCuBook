@@ -1,6 +1,17 @@
 import models from '../model/index.js';
 import axios from 'axios';
 
+const getUserInfo = async (req, res) => {
+    const social_id = req.query.social_id;
+    const result = await models.User.findOne({
+        where: {
+            social_id: social_id
+        }
+    });
+    console.log(result.dataValues);
+    res.json(result.dataValues);
+}
+
 const generateRandomString = (num) => {
     const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
@@ -11,9 +22,9 @@ const generateRandomString = (num) => {
     return result;
 }
 
-const getUserInfo = async (req, res) => {
+const getUserTokenInfo = async (req, res) => {
     const token = req.query.token;
-    const url = 'https://kapi.kakao.com/v2/user/me';
+    const url = 'https://kapi.kakao.com/v1/user/access_token_info';
         const Header = {
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -22,11 +33,10 @@ const getUserInfo = async (req, res) => {
         let tmp;
         try {
             tmp = await axios.get(url, Header); //tmp.data = {id:kakao id , connected_at: date}
-            console.log(tmp);
-            
+            res.json(tmp.data);
         } catch (error) {
             console.log(error);
-            
+            res.json(error);
         }
 }
 
@@ -60,7 +70,8 @@ const postRegister = (req,res) => {
 
 
 const authController = {
-    postRegister: postRegister,
     getUserInfo: getUserInfo,
+    postRegister: postRegister,
+    getUserTokenInfo: getUserTokenInfo,
 }
 export default authController;

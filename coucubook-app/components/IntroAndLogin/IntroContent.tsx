@@ -27,7 +27,7 @@ import { StyleSheet, Image, Text, ImageSourcePropType } from "react-native";
       marginBottom: 30,
     },
     text: {
-      fontSize: 20,
+      fontSize: 25,
       textAlign: 'center',
       fontFamily: 'godoMaum'
     }
