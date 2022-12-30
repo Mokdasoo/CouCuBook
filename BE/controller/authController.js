@@ -2,10 +2,12 @@ import models from '../model/index.js';
 import axios from 'axios';
 
 const getUserInfo = async (req, res) => {
-    const social_id = req.query.social_id;
+
+    const valueType = req.query.valueType;
+    const value = req.query.value;
     const result = await models.User.findOne({
         where: {
-            social_id: social_id
+            [valueType]: value
         }
     });
     console.log(result.dataValues);
@@ -66,6 +68,27 @@ const postRegister = (req,res) => {
     
 }
 
+const updateLoverCode = (req, res) => {
+    const { user_code, lover_code } = req.body;
+
+    const updateLoverCodeHandler = async () => {
+        const response1 = await models.User.update({ lover_code: lover_code }, //본인  러버코드 업데이트  response1에는 성공하면 1 들어감
+            { where: {user_code: user_code} }
+        );
+        const response2 = await models.User.update({ lover_code: user_code }, // 상대방 러버코드 본인로 업데이트
+            { where: {user_code: lover_code} }
+        );
+    }
+    try {
+        updateLoverCodeHandler();
+        res.send('lover code updated!');
+    } catch (error) {
+        console.log(error);
+        res.send('lover code update failed!')
+    }
+    
+}
+
 
 
 
@@ -73,5 +96,6 @@ const authController = {
     getUserInfo: getUserInfo,
     postRegister: postRegister,
     getUserTokenInfo: getUserTokenInfo,
+    updateLoverCode: updateLoverCode,
 }
 export default authController;

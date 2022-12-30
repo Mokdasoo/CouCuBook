@@ -16,7 +16,7 @@ import MyAppSettingScreen from './screens/main/MyAppSettingScreen';
 import MyCouponBooksScreen from './screens/main/MyCouponBooksScreen';
 import InputInfoScreen from './screens/social_login/InputInfoScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Button } from 'react-native';
+import { Button, SafeAreaView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -153,7 +153,6 @@ function Navigation():JSX.Element {
       //토큰 정보 가져와서 만료시간체크하고 만료됐으면 리프레시토큰으로 재발급 리프레시토큰도 만료됐으면 토큰없음
       if(storedToken && refreshToken){
         await getTokenInfo(storedToken, refreshToken);
-        
       }
     }
     fetchToken();
@@ -201,8 +200,16 @@ export default function App():JSX.Element | null{
     <>
       <StatusBar style="auto" />
       <Provider store={store}>
-        <Root />
+        <SafeAreaView style={styles.rootScreen}>
+          <Root />
+        </SafeAreaView>
       </Provider>
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  rootScreen: {
+    flex: 1,
+  }
+})

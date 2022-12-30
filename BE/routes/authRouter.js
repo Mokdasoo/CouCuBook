@@ -9,6 +9,8 @@ authRouter.get('/user', authController.getUserInfo);
 
 authRouter.get('/user/token', authController.getUserTokenInfo);
 
+authRouter.put('/user/lover', authController.updateLoverCode);
+
 authRouter.post('/register', authController.postRegister);
 
 authRouter.post('/kakao/login', kakaoController.getLogin);
