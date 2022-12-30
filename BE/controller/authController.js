@@ -27,19 +27,19 @@ const generateRandomString = (num) => {
 const getUserTokenInfo = async (req, res) => {
     const token = req.query.token;
     const url = 'https://kapi.kakao.com/v1/user/access_token_info';
-        const Header = {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            },
-        };
-        let tmp;
-        try {
-            tmp = await axios.get(url, Header); //tmp.data = {id:kakao id , connected_at: date}
-            res.json(tmp.data);
-        } catch (error) {
-            console.log(error);
-            res.json(error);
-        }
+    const Header = {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+    };
+    let tmp;
+    try {
+        tmp = await axios.get(url, Header); //tmp.data = {id:kakao id , connected_at: date}
+    } catch (error) {
+        console.log('error Hi', error.response.data); //{ msg: 'this access token does not exist', code: -401 }
+        tmp = error.response;
+    }
+    res.json(tmp.data);
 }
 
 

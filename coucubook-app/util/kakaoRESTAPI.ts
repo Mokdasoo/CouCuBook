@@ -14,6 +14,7 @@ export const tokenRenewal = async (refreshToken: string) => {
             refresh_token: refreshToken
         }
     });
+    console.log(response.data);
     const newToken = response.data.access_token;
     return newToken;
 }
@@ -26,9 +27,12 @@ export const viewTokenInfo = async (token: string) => {
             {
                 params: {token: token}
             },
-        );//{ id, expires_in}  but token expired -> {error code}
-        tokenInfo.id = response.data.id;
-        tokenInfo.expires_in = response.data.expires_in;
+        );//{ id, expires_in}  but token expired -> {msg, code}
+        console.log("response is ",response.data);
+        if(response.data.id){
+            tokenInfo.id = response.data.id;
+            tokenInfo.expires_in = response.data.expires_in;
+        }
     } catch (error) {
         console.log(error);
     }

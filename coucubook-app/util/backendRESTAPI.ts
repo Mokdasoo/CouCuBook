@@ -34,10 +34,10 @@ export const saveLoverCode = async (userCode: string, loverCode: string) => {
             }
         });
         console.log(response);
-        message = 'success';
+        message = '커플 등록 완료!';
     } catch (error) {
         console.log(error);
-        message = 'fail'
+        message = '커플 등록 실패!'
     }
     return message;
 }

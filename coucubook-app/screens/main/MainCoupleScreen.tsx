@@ -39,7 +39,8 @@ const LoverCodeScreen = ({nickname, userCode, onChangeLoverCode} : LoverCodeScre
         //코드 주인의 lover code가 비어있을경우
         if(!loverInfo.lover_code){
             const msg = await saveLoverCode(userCode!, inputCode);
-            console.log(msg);
+            Alert.alert(msg, `${loverInfo.nickname}님과 커플 등록 완료!`);
+            return;
             //백서버에 요청, 본인 아이디 + lovercode  보내서 저장하기
             //상대방 계정도 lovercode에 작성자코드 저장하기
         }else{

@@ -117,10 +117,11 @@ function Navigation():JSX.Element {
   const dispatch = useDispatch();
 
   /**토큰 만료 다가오거나 만료 됐을 때 리프레시토큰으로 토큰 재발급 후 저장 */
-  const getAccessTokenWithRefreshToken = useCallback( async (refreshToken:string, social_id: number) => {
+  const getAccessTokenWithRefreshToken = useCallback( async (refreshToken:string) => {
 
     const newToken = await tokenRenewal(refreshToken);
-    dispatch(authenticate(newToken, refreshToken, social_id));
+    let tokenInfo : tokenInfo = await viewTokenInfo(newToken);
+    dispatch(authenticate(newToken, refreshToken, tokenInfo.id));
     
   },[]);
 
@@ -132,13 +133,14 @@ function Navigation():JSX.Element {
   }
   const getTokenInfo = useCallback(async(token: string, refreshToken: string) => {
     //refreshToken 만료전
+    // let tokenInfo : tokenInfo = await viewTokenInfo(token);
     let tokenInfo : tokenInfo = await viewTokenInfo(token);
     
-    if(tokenInfo.expires_in > 3600){ // 엑세스 토큰 정상
+    if(tokenInfo.expires_in > 3600 && tokenInfo.id !== 0){ // 엑세스 토큰 정상
         dispatch(authenticate(token, refreshToken, tokenInfo.id));
         
     }else {// 엑세스 토큰 만료
-        await getAccessTokenWithRefreshToken(refreshToken, tokenInfo.id);
+        await getAccessTokenWithRefreshToken(refreshToken);
     }
     //refreshToken 만료후
   }, []);
