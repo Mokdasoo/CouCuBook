@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import dbInfo from "../config/config.js";
 import User from "./User.js";
+import Couple from "./Couple.js";
 
 // const config = dbInfo.development;
 const config = dbInfo.production;
@@ -18,6 +19,9 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.User = User(sequelize, Sequelize);
+db.Couple = Couple(sequelize, Sequelize);
 
+db.User.hasOne(db.Couple, {foreignKey: 'user_code', sourceKey: 'user_code'});
+db.Couple.belongsTo(db.User, {foreignKey: 'user_code', sourceKey: 'user_code'});
 
 export default db;

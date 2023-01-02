@@ -1,11 +1,11 @@
 import axios from "axios";
 import { BACKEND_ADDRESS } from "@env";
 
-export const getUserInfo = async (valueType:string, value: string | number) => {
-    let userInfo;
+export const getOneInfo = async (valueType:string, value: string | number| null) => {
+    let Info;
     try {
         const response = await axios.get(
-            `${BACKEND_ADDRESS}/auth/user/`, 
+            `${BACKEND_ADDRESS}/auth/user`, 
             {
                 params: {
                     valueType: valueType,
@@ -13,14 +13,14 @@ export const getUserInfo = async (valueType:string, value: string | number) => {
                 }
             },
         );
-        userInfo = response.data;
-        console.log("get user info ::: ",response.data);
+        Info = response.data;
     } catch (error) {
         console.log(error);
     }
-    return userInfo;
+    return Info;
 }
 
+//커플 테이블 lover_code 업데이트 위해 백엔드에 요청
 export const saveLoverCode = async (userCode: string, loverCode: string) => {
     console.log("usercode lovercode :::::",userCode, loverCode)
     let message;

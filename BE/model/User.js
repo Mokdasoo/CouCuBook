@@ -2,7 +2,7 @@
 
 const User = (Sequelize, DataTypes) => {
     const model = Sequelize.define(
-        'user',
+        'users',
         {
             social_id:{
                 type: DataTypes.STRING(45),
@@ -13,14 +13,10 @@ const User = (Sequelize, DataTypes) => {
                 allowNull: false,
             },
             nickname:{
-                type: DataTypes.STRING(10),
+                type: DataTypes.STRING(20),
                 allowNull: false
             },
             birth:{
-                type: DataTypes.DATEONLY,
-                allowNull: false,
-            },
-            anniversary:{
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
@@ -29,15 +25,14 @@ const User = (Sequelize, DataTypes) => {
                 allowNull: false,
                 unique: true
             },
-            lover_code:{
-                type: DataTypes.STRING(10),
-                allowNull: true,
-            }
         },
         {
-            timestamps: false,
-            tableName: 'user',
+            timestamps: true,
+            tableName: 'users',
             freezeTableName: true,
+            paranoid: false, //soft delete false
+            charset: 'utf8mb4',
+            collate: 'utf8mb4_general_ci'
         }
     );
     return model;  

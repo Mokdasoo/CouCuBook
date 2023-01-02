@@ -5,7 +5,7 @@ import kakaoController from '../controller/kakaoController.js';
 const authRouter = express.Router(); //  HOST_URL/auth 
 
 
-authRouter.get('/user', authController.getUserInfo);
+authRouter.get('/user', authController.getOneInfo);
 
 authRouter.get('/user/token', authController.getUserTokenInfo);
 

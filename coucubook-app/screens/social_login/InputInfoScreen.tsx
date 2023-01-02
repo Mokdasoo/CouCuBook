@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import { Alert, ImageBackground, StyleSheet, View } from "react-native";
 import DatePickInput from "../../components/IntroAndLogin/DatePickInput";
 import IconButton from "../../components/UI/IconButton";
 import Input from "../../components/UI/Input";
@@ -104,6 +104,7 @@ const InputInfoScreen = ({navigation, route}: RegisterScreenProps):JSX.Element =
             }
         });
         if(response.status === 200){
+            Alert.alert('회원가입 완료!', '이제 커플 등록을 해주세요!');
             dispatch(authenticate(loginData.token, loginData.refreshToken,loginData.id));
         }
     }
