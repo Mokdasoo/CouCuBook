@@ -8,7 +8,7 @@ export interface userInfo {
     "user_code": string;
     "lover_code": string | null; 
     "anniversary": string;
-    "couple_image": string;
+    "couple_image": string | null;
     "msg": string;
 }
 

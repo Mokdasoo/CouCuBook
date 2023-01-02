@@ -20,8 +20,7 @@ const Couple = (Sequelize, DataTypes) => {
             },
             couple_image:{
                 type: DataTypes.STRING(256),
-                defaultValue: `${HOST_ADDRESS}/images/default/couple_default_img.jpg`,
-                allowNull: false
+                allowNull: true
             },
         },
         {
