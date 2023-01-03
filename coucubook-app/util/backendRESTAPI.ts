@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BACKEND_ADDRESS } from "@env";
+import FormData from "form-data";
 
 export const getOneInfo = async (valueType:string, value: string | number| null) => {
     let Info;
@@ -40,4 +41,32 @@ export const saveLoverCode = async (userCode: string, loverCode: string) => {
         message = '커플 등록 실패!'
     }
     return message;
+}
+
+export const imageUpload = async (imgUri: string, user_code: string, lover_code: string) => {
+    const localUri = imgUri;
+    const filename = localUri.split('/').pop();
+    const match = /\.(\w+)$/.exec(filename ?? '');
+    const type = match ? `image/${match[1]}` : 'image';
+    const formData = new FormData();
+    formData.append('user_code', user_code);
+    formData.append('lover_code', lover_code);
+    formData.append('image', {
+        uri: localUri,
+        name: filename,
+        type,
+    });
+    
+    try {
+        await axios({
+            method: 'post',
+            url: `${BACKEND_ADDRESS}/couple/img`,
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+            data: formData
+        });
+    } catch (error) {
+        console.log(error);
+    }
 }

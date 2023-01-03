@@ -6,6 +6,7 @@ import cors from 'cors';
 import router  from "./routes/index.js";
 import authRouter  from './routes/authRouter.js';
 import db from './model/index.js';
+import coupleRouter from './routes/coupleRouter.js';
 
 const sequelize = db.sequelize;
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.static('public'));
 
 app.use('/', router);
 app.use('/auth', authRouter);
+app.use('/couple', coupleRouter);
 
 
 app.listen(port, () => {
