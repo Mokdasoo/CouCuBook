@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
 import rootReducer from './store/redux/rootReducer';
 import {createStore} from 'redux';
-import { authState, authenticate, logout } from './store/redux/authReducer';
+import { authState, authenticate } from './store/redux/authReducer';
 import { RootState } from './store/redux/rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import MainCoupleScreen from './screens/main/MainCoupleScreen';
@@ -16,7 +16,7 @@ import MyAppSettingScreen from './screens/main/MyAppSettingScreen';
 import MyCouponBooksScreen from './screens/main/MyCouponBooksScreen';
 import InputInfoScreen from './screens/social_login/InputInfoScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Button, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -55,15 +55,9 @@ function AuthStack():JSX.Element {
 
 //로그인상태 AuthenticatedTab 메인스크린
 function AuthenticatedTab():JSX.Element {
-  const dispatch = useDispatch();
-  const logoutHandler = () => {
-    dispatch(logout());
-  }
+  
   return (
     <Tab.Navigator screenOptions={{
-      headerRight: () => (
-        <Button title='로그아웃' onPress={logoutHandler} />
-      ),
       headerStyle: {backgroundColor: 'transparent'},
       headerTitleStyle: {fontFamily: 'godoMaum', fontSize: 25},
       headerTitleAlign: 'center',
@@ -120,6 +114,9 @@ function Navigation():JSX.Element {
   const getAccessTokenWithRefreshToken = useCallback( async (refreshToken:string) => {
 
     const newToken = await tokenRenewal(refreshToken);
+    if(newToken === 'refresh token expired'){
+      return;
+    }
     let tokenInfo : tokenInfo = await viewTokenInfo(newToken);
     dispatch(authenticate(newToken, refreshToken, tokenInfo.id));
     
@@ -142,7 +139,6 @@ function Navigation():JSX.Element {
     }else {// 엑세스 토큰 만료
         await getAccessTokenWithRefreshToken(refreshToken);
     }
-    //refreshToken 만료후
   }, []);
 
   useEffect(() => {

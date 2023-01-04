@@ -72,6 +72,7 @@ const authReducer = (state:authState = initState, action: authAction) => {
                 ...state,
                 token: '',
                 isAuthenticated: false,
+                modalIsOpen: false
             };
         case MODAL:
             return  {

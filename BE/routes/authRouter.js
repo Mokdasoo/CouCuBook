@@ -13,6 +13,10 @@ authRouter.put('/user/lover', authController.updateLoverCode);
 
 authRouter.post('/register', authController.postRegister);
 
+
+authRouter.get('/kakao/login', kakaoController.getLoginView);
 authRouter.post('/kakao/login', kakaoController.getLogin);
+
+authRouter.get('/kakao/logout', kakaoController.logout);
 
 export default authRouter;

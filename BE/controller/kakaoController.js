@@ -1,7 +1,9 @@
 import axios from "axios";
 import models from '../model/index.js';
 
-
+const getLoginView = (req, res) => {
+    res.send('로그인 성공!');
+}
 const getLogin = async (req, res) => {
     console.log(req.body.token);
     const ACCESS_TOKEN = req.body.token;
@@ -70,9 +72,15 @@ const getLogin = async (req, res) => {
     }
 }
 
+const logout = (req, res) => {
+    res.send('로그아웃 완료!');
+}
+
 
 const kakaoController = {
+    getLoginView: getLoginView,
     getLogin: getLogin,
+    logout: logout,
 }
 
 export default kakaoController;

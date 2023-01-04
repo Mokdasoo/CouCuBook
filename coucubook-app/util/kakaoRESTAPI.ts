@@ -2,21 +2,26 @@ import axios from "axios";
 import { BACKEND_ADDRESS, KAKAO_REST_API_KEY } from "@env";
 
 export const tokenRenewal = async (refreshToken: string) => {
-    const response = await axios({
-        method: 'POST',
-        url: 'https://kauth.kakao.com/oauth/token',
-        headers: {
-            "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
-        },
-        data: {
-            grant_type: 'refresh_token',
-            client_id: KAKAO_REST_API_KEY,
-            refresh_token: refreshToken
-        }
-    });
-    console.log(response.data);
-    const newToken = response.data.access_token;
-    return newToken;
+    try {
+        const response = await axios({
+            method: 'POST',
+            url: 'https://kauth.kakao.com/oauth/token',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
+            },
+            data: {
+                grant_type: 'refresh_token',
+                client_id: KAKAO_REST_API_KEY,
+                refresh_token: refreshToken
+            }
+        });
+        console.log(response.data);
+        const newToken = response.data.access_token;
+        return newToken;
+    }catch (error) {
+        console.log(error);
+        return 'refresh token expired';
+    }
 }
 
 export const viewTokenInfo = async (token: string) => {
