@@ -11,16 +11,17 @@ import { authState, authenticate } from './store/redux/authReducer';
 import { RootState } from './store/redux/rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import MainCoupleScreen from './screens/main/MainCoupleScreen';
-import CreateCouponBookScreen from './screens/main/CreateCouponBookScreen';
+import CreateCouponBookScreen,{CreateCouponBookButton} from './screens/create_couponbook/CreateCouponBookScreen';
 import MyAppSettingScreen from './screens/main/MyAppSettingScreen';
 import MyCouponBooksScreen from './screens/main/MyCouponBooksScreen';
 import InputInfoScreen from './screens/social_login/InputInfoScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { Button, SafeAreaView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { tokenRenewal, viewTokenInfo } from './util/kakaoRESTAPI';
+import CreateBook from './screens/create_couponbook/CreateBook';
 
 // console.log("helllllllo", process.env.NODE_ENV);
 
@@ -53,6 +54,42 @@ function AuthStack():JSX.Element {
   );
 };
 
+export type CreateCouponBookStackParamList = {
+  BooksList: undefined;
+  CreateBook: undefined;
+};
+const CreateCouponBookStack = createNativeStackNavigator<CreateCouponBookStackParamList>();
+const CouponBookStack = (): JSX.Element => {
+  return (
+    <CreateCouponBookStack.Navigator screenOptions={{
+      headerStyle: {backgroundColor: 'transparent'},
+      headerTitleStyle: {fontFamily: 'godoMaum', fontSize: 25},
+      headerTitleAlign: 'center',
+      headerTitle: 'CouCuBook',
+    }}>
+      <CreateCouponBookStack.Screen 
+        name='BooksList'
+        component={CreateCouponBookScreen}
+        options={{
+          headerRight: () => (
+            <CreateCouponBookButton />
+          ),
+        }}
+      />
+      <CreateCouponBookStack.Screen 
+        name='CreateBook'
+        component={CreateBook}
+        options={{
+          headerRight: () => (
+            <Button title='저장' />
+          )
+        }}
+      />
+    </CreateCouponBookStack.Navigator>
+  );
+};
+
+
 //로그인상태 AuthenticatedTab 메인스크린
 function AuthenticatedTab():JSX.Element {
   
@@ -82,10 +119,11 @@ function AuthenticatedTab():JSX.Element {
           tabBarActiveTintColor: '#718355',
         }}
       />
-      <Tab.Screen name='Create' component={CreateCouponBookScreen} options={{
+      <Tab.Screen name='Create' component={CouponBookStack} options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name='duplicate-outline' color={color} size={size} />
           ),
+          headerShown: false,
           tabBarLabel:'쿠폰북 만들기/선물하기',
           tabBarLabelStyle: {fontFamily: 'godoMaum'},
           tabBarActiveTintColor: '#718355',
