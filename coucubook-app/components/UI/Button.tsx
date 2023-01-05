@@ -24,10 +24,9 @@ export default Button;
 
 const styles = StyleSheet.create({
     button: {
-        width: 200,
-        paddingHorizontal: 24,
-        paddingVertical: 16,
-        margin: 4,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        margin: 16,
         elevation: 2,
         shadowColor: 'black',
         shadowOpacity: 0.15,
@@ -40,6 +39,7 @@ const styles = StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-        fontSize: 24
+        fontSize: 30,
+        fontFamily: 'godoMaum'
     }
 });

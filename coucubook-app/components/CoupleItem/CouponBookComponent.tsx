@@ -1,5 +1,8 @@
 import { View, StyleSheet, Image, Text, Button, Pressable } from "react-native";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
+import { CouponBook } from "../../src/types/coupon";
+import { useNavigation } from "@react-navigation/native";
+import { CreateBookListScreenProps } from "../../screens/create_couponbook/CreateCouponBookScreen";
 
 interface CouponBookButtonProps {
     icon: any;
@@ -19,23 +22,29 @@ const CouponBookButton = ({icon, size, color, text,backColor, onPress}: CouponBo
     )
 }
 
-const CouponBook = () : JSX.Element => {
-    const onGiftHandler = () => {
+interface CouponBookProps {
+    couponBook: CouponBook;
+}
 
+const CouponBookComponent = ({couponBook}:CouponBookProps) : JSX.Element => {
+    const navigation = useNavigation<CreateBookListScreenProps["navigation"]>();
+    const onGiftHandler = () => {
+        //서버 DB에 쿠폰북 정보, 쿠폰정보 받는사람 보낸사람 저장하기
     }
     const onModifyHandler = () => {
-
+        navigation.navigate('CreateBook', {
+           couponBook: couponBook
+        });
     }
 
     return (
-        <>
         <View style={styles.container}>
-            <MaterialCommunityIcons name='book' color='#d17f7f' size={80} />
+            <MaterialCommunityIcons name='book' color={couponBook.cover_color} size={80} />
             <View style={styles.bookInfoContainer}>
                 <View>
-                    <Text style={styles.bookInfo}>쿠폰북 제목</Text>
-                    <Text style={styles.bookInfo}>쿠폰 갯수</Text>
-                    <Text style={styles.bookInfo}>발행일/만료 기간</Text>
+                    <Text style={styles.bookInfo}>{couponBook.title}</Text>
+                    <Text style={styles.bookInfo}>쿠폰 {couponBook.coupons.length}개</Text>
+                    <Text style={styles.bookInfo}>{couponBook.publicationDate}~{couponBook.expiredDate}</Text>
                 </View>
                 <View style={styles.buttons}>
                     <CouponBookButton icon='gift' size={15} color='gold' text='선물하기' backColor='#ff000078' onPress={onGiftHandler} />
@@ -43,12 +52,10 @@ const CouponBook = () : JSX.Element => {
                 </View>
             </View>
         </View>
-        
-        </>
     );
 };
 
-export default CouponBook;
+export default CouponBookComponent;
 
 const styles = StyleSheet.create({
     container: {

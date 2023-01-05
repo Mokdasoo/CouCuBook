@@ -11,17 +11,20 @@ import { authState, authenticate } from './store/redux/authReducer';
 import { RootState } from './store/redux/rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import MainCoupleScreen from './screens/main/MainCoupleScreen';
-import CreateCouponBookScreen,{CreateCouponBookButton} from './screens/create_couponbook/CreateCouponBookScreen';
+import CreateCouponBookScreen,{CreateBookListScreenProps, CreateCouponBookButton} from './screens/create_couponbook/CreateCouponBookScreen';
 import MyAppSettingScreen from './screens/main/MyAppSettingScreen';
 import MyCouponBooksScreen from './screens/main/MyCouponBooksScreen';
 import InputInfoScreen from './screens/social_login/InputInfoScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Button, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { tokenRenewal, viewTokenInfo } from './util/kakaoRESTAPI';
 import CreateBook from './screens/create_couponbook/CreateBook';
+
+import { useNavigation } from '@react-navigation/native';
+import { CouponBook } from './src/types/coupon';
 
 // console.log("helllllllo", process.env.NODE_ENV);
 
@@ -56,10 +59,14 @@ function AuthStack():JSX.Element {
 
 export type CreateCouponBookStackParamList = {
   BooksList: undefined;
-  CreateBook: undefined;
+  CreateBook: {
+    couponBook: CouponBook;
+  } | undefined;
 };
 const CreateCouponBookStack = createNativeStackNavigator<CreateCouponBookStackParamList>();
+
 const CouponBookStack = (): JSX.Element => {
+  
   return (
     <CreateCouponBookStack.Navigator screenOptions={{
       headerStyle: {backgroundColor: 'transparent'},
@@ -79,11 +86,7 @@ const CouponBookStack = (): JSX.Element => {
       <CreateCouponBookStack.Screen 
         name='CreateBook'
         component={CreateBook}
-        options={{
-          headerRight: () => (
-            <Button title='저장' />
-          )
-        }}
+        
       />
     </CreateCouponBookStack.Navigator>
   );

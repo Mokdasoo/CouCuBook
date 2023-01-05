@@ -3,6 +3,16 @@ import {useState} from 'react';
 import CreateCoupon from "./CreateCoupon";
 import { Ionicons } from '@expo/vector-icons'; 
 import BookCoverRadioButton from "../../components/UI/BookCoverRadioButton";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Button from '../../components/UI/Button';
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { CreateCouponBookStackParamList } from "../../App";
+import { couponState, saveCouponBook } from "../../store/redux/couponReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/redux/rootReducer";
+import { CouponBook } from "../../src/types/coupon";
+import { generateRandomString } from "../../util/usefulFunc";
 
 interface inputProps {
     [anyKeyword: string]: string;
@@ -15,8 +25,11 @@ const initialData : inputProps = {
     publicationDate: '',
     expiredDate: ''
 } 
-
-const CreateBook = () : JSX.Element => {
+export type CreateBookScreenProps = NativeStackScreenProps<CreateCouponBookStackParamList, 'CreateBook'>;
+const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
+    const coupon:couponState = useSelector((state: RootState) => state.coupon);
+    const dispatch = useDispatch();
+    const navigation = useNavigation<CreateBookScreenProps["navigation"]>();
     const [checked, setChecked] = useState('red');
     const [modalOpen, SetModalOpen] = useState(false);
     const [titleFocus, setTitleFocus] = useState(false);
@@ -64,68 +77,92 @@ const CreateBook = () : JSX.Element => {
     const customTitleInputStyle = [styles.input, titleFocus && styles.focusInput]
     const customPublicationDateInputStyle = [styles.input, publicationDateFocus && styles.focusInput]
     const customExpiredDateInputStyle = [styles.input, expiredDateFocus && styles.focusInput]
-
+    
+    const goBackHandler = () => {
+        navigation.replace('BooksList');
+    }
+    const saveCouponBookHandler = () => {
+        const newBook:CouponBook = {
+            id: generateRandomString(5),
+            title: inputs.title,
+            publicationDate: inputs.publicationDate,
+            expiredDate: inputs.expiredDate,
+            cover_color: checked,
+            coupons: coupon.createdCoupons
+        }
+        dispatch(saveCouponBook(newBook));
+        navigation.replace('BooksList');
+    }
     return (
-        <ScrollView contentContainerStyle={styles.screen}>
-            <View style={styles.coverSelect}>
-                <Text style={styles.inputText}>쿠폰북 표지 색상 선택</Text>
-                <View style={styles.radioButtonContainer}>
-                    <BookCoverRadioButton color="red" checked={checked} setChecked={setChecked} />
-                    <BookCoverRadioButton color="blue" checked={checked} setChecked={setChecked} />
-                    <BookCoverRadioButton color="green" checked={checked} setChecked={setChecked} />
-                    <BookCoverRadioButton color="pink" checked={checked} setChecked={setChecked} />
-                    <BookCoverRadioButton color="purple" checked={checked} setChecked={setChecked} />
-                    <BookCoverRadioButton color="gold" checked={checked} setChecked={setChecked} />
+        <KeyboardAwareScrollView
+                keyboardShouldPersistTaps='always'
+                showsHorizontalScrollIndicator={false}
+        >
+            <ScrollView contentContainerStyle={styles.screen}>
+                <View style={styles.coverSelect}>
+                    <Text style={styles.inputText}>쿠폰북 표지 색상 선택</Text>
+                    <View style={styles.radioButtonContainer}>
+                        <BookCoverRadioButton color="red" checked={checked} setChecked={setChecked} />
+                        <BookCoverRadioButton color="blue" checked={checked} setChecked={setChecked} />
+                        <BookCoverRadioButton color="green" checked={checked} setChecked={setChecked} />
+                        <BookCoverRadioButton color="pink" checked={checked} setChecked={setChecked} />
+                        <BookCoverRadioButton color="purple" checked={checked} setChecked={setChecked} />
+                        <BookCoverRadioButton color="gold" checked={checked} setChecked={setChecked} />
+                    </View>
                 </View>
-            </View>
 
-            <Text style={styles.inputText}>쿠폰북 이름</Text>
-            <TextInput  
-                style={customTitleInputStyle} 
-                onFocus={()=>{setTitleFocus(true);}} 
-                onBlur={()=>{setTitleFocus(false);}}
-                placeholder= '(ex. 무슨무슨기념일 기념 쿠폰북)'
-                onChangeText= {inputChangeHandler.bind(this, 'title')}
-                value= {inputs.title}
-            />
+                <Text style={styles.inputText}>쿠폰북 이름</Text>
+                <TextInput  
+                    style={customTitleInputStyle} 
+                    onFocus={()=>{setTitleFocus(true);}} 
+                    onBlur={()=>{setTitleFocus(false);}}
+                    placeholder= '(ex. 무슨무슨기념일 기념 쿠폰북)'
+                    onChangeText= {inputChangeHandler.bind(this, 'title')}
+                    value= {inputs.title}
+                />
 
 
-            <Text style={styles.inputText}>발행일자</Text>
-            <TextInput  
-                style={customPublicationDateInputStyle} 
-                onFocus={()=>{setPublicationDateFocus(true);}} 
-                onBlur={()=>{setPublicationDateFocus(false);}}
-                placeholder= 'YYYY-MM-DD형식'
-                maxLength= {10}
-                onChangeText= {inputChangeHandler.bind(this, 'publicationDate')}
-                value= {inputs.publicationDate}
-                keyboardType= 'numeric'
-            />
-            <Text style={styles.inputText}>만료일자</Text>
-            <TextInput  
-                style={customExpiredDateInputStyle} 
-                onFocus={()=>{setExpiredDateFocus(true);}} 
-                onBlur={()=>{setExpiredDateFocus(false);}}
-                placeholder= 'YYYY-MM-DD형식'
-                maxLength= {10}
-                onChangeText= {inputChangeHandler.bind(this, 'expiredDate')}
-                value= {inputs.expiredDate}
-                keyboardType= 'numeric'
-            />
-            <Pressable onPress={openCouponScreenHandler} style={({pressed}) => [styles.addCouponButtonContainer, pressed && styles.pressed]} >
-                <Text style={styles.addCouponText}>쿠폰 추가</Text>
-                <Ionicons name="add-circle" size={80} color="#00000055" />
-            </Pressable>
-            <Modal
-                presentationStyle="formSheet"
-                animationType="slide"
-                visible={modalOpen}
-                >
-                <CreateCoupon onSave={saveCouponHandler}/>
-            </Modal>
-            
-            <Text>쿠폰목록</Text>
-        </ScrollView>
+                <Text style={styles.inputText}>발행일자</Text>
+                <TextInput  
+                    style={customPublicationDateInputStyle} 
+                    onFocus={()=>{setPublicationDateFocus(true);}} 
+                    onBlur={()=>{setPublicationDateFocus(false);}}
+                    placeholder= 'YYYY-MM-DD형식'
+                    maxLength= {10}
+                    onChangeText= {inputChangeHandler.bind(this, 'publicationDate')}
+                    value= {inputs.publicationDate}
+                    keyboardType= 'numeric'
+                />
+                <Text style={styles.inputText}>만료일자</Text>
+                <TextInput  
+                    style={customExpiredDateInputStyle} 
+                    onFocus={()=>{setExpiredDateFocus(true);}} 
+                    onBlur={()=>{setExpiredDateFocus(false);}}
+                    placeholder= 'YYYY-MM-DD형식'
+                    maxLength= {10}
+                    onChangeText= {inputChangeHandler.bind(this, 'expiredDate')}
+                    value= {inputs.expiredDate}
+                    keyboardType= 'numeric'
+                />
+                <Pressable onPress={openCouponScreenHandler} style={({pressed}) => [styles.addCouponButtonContainer, pressed && styles.pressed]} >
+                    <Text style={styles.addCouponText}>쿠폰 추가</Text>
+                    <Ionicons name="add-circle" size={80} color="#00000055" />
+                </Pressable>
+                <Modal
+                    presentationStyle="formSheet"
+                    animationType="slide"
+                    visible={modalOpen}
+                    >
+                    <CreateCoupon onSave={saveCouponHandler}/>
+                </Modal>
+                
+                <Text>쿠폰목록</Text>
+                <View style={styles.buttonContainer}>
+                    <Button bgcolor='#ff5b5b' fontcolor='white' onPress={goBackHandler}>취소</Button>
+                    <Button bgcolor='#60c960' fontcolor='white' onPress={saveCouponBookHandler}>저장</Button>
+                </View>
+            </ScrollView>
+        </KeyboardAwareScrollView>
     )
 }
 
@@ -176,5 +213,9 @@ const styles = StyleSheet.create({
     },
     focusInput: {
         backgroundColor: '#ffffeb'
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
     }
 })
