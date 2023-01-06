@@ -71,6 +71,9 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
     const openCouponScreenHandler = () => {
         SetModalOpen(!modalOpen);
     }
+    const cancelCouponScreenHandler= () => {
+        SetModalOpen(!modalOpen);
+    }
     const saveCouponHandler = () => {
         SetModalOpen(!modalOpen);
     }
@@ -153,7 +156,7 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
                     animationType="slide"
                     visible={modalOpen}
                     >
-                    <CreateCoupon onSave={saveCouponHandler}/>
+                    <CreateCoupon onSave={saveCouponHandler} onCancel={cancelCouponScreenHandler}/>
                 </Modal>
                 
                 <Text>쿠폰목록</Text>
