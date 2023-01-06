@@ -9,10 +9,11 @@ interface ICarousel {
   offset: number;
   pages: any[];
   pageWidth: number;
+  setSelectedImage: any;
 }
 
 const Container = styled.View`
-  height: 60%;
+  height: 100%;
   justify-content: center;
   align-items: center;
 `;
@@ -31,7 +32,7 @@ const IndicatorWrapper = styled.View`
   margin-top: 16px;
 `;
 
-export default function Carousel({pages, pageWidth, gap, offset}: ICarousel) {
+export default function Carousel({pages, pageWidth, gap, offset,setSelectedImage}: ICarousel) {
   const [page, setPage] = useState(0);
 
   function renderItem({item}: any) {
@@ -45,6 +46,7 @@ export default function Carousel({pages, pageWidth, gap, offset}: ICarousel) {
       e.nativeEvent.contentOffset.x / (pageWidth + gap),
     );
     setPage(newPage);
+    setSelectedImage(newPage);
   };
 
   return (

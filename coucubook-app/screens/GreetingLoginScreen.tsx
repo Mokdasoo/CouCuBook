@@ -39,12 +39,14 @@ function GreetingLoginScreen():JSX.Element {
             <View>
                 <Text style={styles.title}>CouCuBook</Text>
             </View>
-            <Carousel
-                gap={16}
-                offset={0}
-                pages={PAGES}
-                pageWidth={screenWidth - (16 + 0) * 2}
-            />
+            <View style={styles.carouselContainer}>
+                <Carousel
+                    gap={16}
+                    offset={0}
+                    pages={PAGES}
+                    pageWidth={screenWidth - (16 + 0) * 2}
+                />
+            </View>
             <Modal 
                 presentationStyle="formSheet"
                 animationType="slide"
@@ -64,6 +66,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    carouselContainer:{
+        height: '60%'
     },
     title: {
         fontSize: 50,

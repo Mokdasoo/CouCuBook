@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/redux/rootReducer";
 import { CouponBook } from "../../src/types/coupon";
 import { generateRandomString } from "../../util/usefulFunc";
+import CouponComponent from "../../components/CoupleItem/CouponComponent";
 
 interface inputProps {
     [anyKeyword: string]: string;
@@ -160,6 +161,15 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
                 </Modal>
                 
                 <Text>쿠폰목록</Text>
+                {coupon.createdCoupons.map((coupon) => (
+                    <CouponComponent 
+                        key={coupon.id} 
+                        bgcolor={coupon.paper_color} 
+                        title={coupon.title} 
+                        content={coupon.content} 
+                        selectedImage={coupon.image}
+                    />
+                ))}
                 <View style={styles.buttonContainer}>
                     <Button bgcolor='#ff5b5b' fontcolor='white' onPress={goBackHandler}>취소</Button>
                     <Button bgcolor='#60c960' fontcolor='white' onPress={saveCouponBookHandler}>저장</Button>
