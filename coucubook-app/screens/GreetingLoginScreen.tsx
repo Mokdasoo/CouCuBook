@@ -45,6 +45,7 @@ function GreetingLoginScreen():JSX.Element {
                     offset={0}
                     pages={PAGES}
                     pageWidth={screenWidth - (16 + 0) * 2}
+                    setSelectedImage={null}
                 />
             </View>
             <Modal 

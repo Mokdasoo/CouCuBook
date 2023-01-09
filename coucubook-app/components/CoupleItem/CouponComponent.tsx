@@ -58,6 +58,7 @@ export default CouponComponent;
 const styles = StyleSheet.create({
     couponContainer:{
         marginTop: 16,
+        marginHorizontal: 16,
         width: 250,
         height: 400,
         borderRadius: 8,

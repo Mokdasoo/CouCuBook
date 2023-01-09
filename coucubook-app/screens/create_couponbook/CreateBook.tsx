@@ -1,5 +1,5 @@
-import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
-import {useState} from 'react';
+import { Alert, FlatList, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
+import {useEffect, useState} from 'react';
 import CreateCoupon from "./CreateCoupon";
 import { Ionicons } from '@expo/vector-icons'; 
 import BookCoverRadioButton from "../../components/UI/BookCoverRadioButton";
@@ -8,12 +8,14 @@ import Button from '../../components/UI/Button';
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CreateCouponBookStackParamList } from "../../App";
-import { couponState, saveCouponBook } from "../../store/redux/couponReducer";
+import { couponState, deleteCoupon, resetCoupon, saveCoupon, saveCouponBook } from "../../store/redux/couponReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/redux/rootReducer";
 import { CouponBook } from "../../src/types/coupon";
 import { generateRandomString } from "../../util/usefulFunc";
 import CouponComponent from "../../components/CoupleItem/CouponComponent";
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { deleteCouponDB, insertCouponBooks, insertCoupons } from "../../util/database";
 
 interface inputProps {
     [anyKeyword: string]: string;
@@ -28,6 +30,7 @@ const initialData : inputProps = {
 } 
 export type CreateBookScreenProps = NativeStackScreenProps<CreateCouponBookStackParamList, 'CreateBook'>;
 const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
+    const couponbook = route.params?.couponBook;
     const coupon:couponState = useSelector((state: RootState) => state.coupon);
     const dispatch = useDispatch();
     const navigation = useNavigation<CreateBookScreenProps["navigation"]>();
@@ -43,14 +46,14 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
                 case 'publicationDate':
                     if(enteredValue.length === 4 || enteredValue.length === 7) enteredValue = enteredValue + '-';
                     break;
-                case 'expiredDate':
+                    case 'expiredDate':
                     if(enteredValue.length === 4 || enteredValue.length === 7) enteredValue = enteredValue + '-';
                     break;
-                default:
-                    break;
-            }
-        }
-        if(enteredValue.slice(-2) === '--') { // "-" 중복입력 제어
+                    default:
+                        break;
+                    }
+                }
+                if(enteredValue.slice(-2) === '--') { // "-" 중복입력 제어
             setInputs((curInputs) => {
                 return {
                     ...curInputs,
@@ -66,8 +69,19 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
             };
         });
     }
-    const inputsCheckValidHandler = () => {
-        
+    const dateCheckValid = (publicDate: string, expiredDate: string) => {
+        const regexp = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+        if(!regexp.test(publicDate) || !regexp.test(expiredDate)){
+            Alert.alert('날짜 오류!', '날짜 형식 or 실제 날짜에 맞게 다시 입력해주세요');
+            return false;
+        }
+        const publicNewDate = new Date(publicDate);
+        const expiredNewDate = new Date(expiredDate);
+        if(publicNewDate > expiredNewDate){
+            Alert.alert('날짜 오류!', '만료일자를 발행일자보다 크게 설정해 주세요');
+            return false;
+        }
+        return true;
     }
     const openCouponScreenHandler = () => {
         SetModalOpen(!modalOpen);
@@ -83,19 +97,73 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
     const customExpiredDateInputStyle = [styles.input, expiredDateFocus && styles.focusInput]
     
     const goBackHandler = () => {
+        dispatch(resetCoupon());
         navigation.replace('BooksList');
     }
-    const saveCouponBookHandler = () => {
+    const saveCouponBookHandler = async () => {
+
+        //입력값 체크
+        if(inputs.title.trim().length === 0 || inputs.publicationDate.trim().length === 0 || inputs.expiredDate.trim().length === 0) {
+            Alert.alert('입력값 오류', '입력값을 확인해주세요');
+            return;
+        }
+        if(!dateCheckValid(inputs.publicationDate, inputs.expiredDate)){
+            return;
+        }
+        
+       
+        //sql 쿠폰북 업데이트
         const newBook:CouponBook = {
-            id: generateRandomString(5),
+            id: couponbook ? couponbook.id : undefined,
             title: inputs.title,
             publicationDate: inputs.publicationDate,
             expiredDate: inputs.expiredDate,
             cover_color: checked,
             coupons: coupon.createdCoupons
-        }
-        dispatch(saveCouponBook(newBook));
+        };
+        
+        const response = await insertCouponBooks(newBook);
+        console.log(response);
+        
+        const couponsArray = [...coupon.createdCoupons];
+        dispatch(resetCoupon());
+        const bookId = response.insertId; //bookId 있으면 쿠폰북새로저장, 없으면 업데이트
+        couponsArray.map(async (coupon) => {
+            if(bookId){
+                const res = await insertCoupons({...coupon, book_id: bookId});
+                console.log(res);
+            }else{
+                if(typeof coupon.id === 'string'){//수정으로 새로만든 쿠폰
+                    const res = await insertCoupons({...coupon, book_id: couponbook!.id})
+                    console.log(res);
+                }
+            }
+            
+        });
+        
         navigation.replace('BooksList');
+    }
+    useEffect(() => {
+        dispatch(resetCoupon());
+        if(couponbook){
+            setInputs({
+                title: couponbook.title,
+                publicationDate: couponbook.publicationDate,
+                expiredDate: couponbook.expiredDate,
+            });
+            setChecked(couponbook.cover_color);
+            couponbook.coupons.forEach(coupon => {
+                dispatch(saveCoupon(coupon));
+            });
+        }
+    }, [couponbook]);
+    const deleteCouponHandler = async (id:number | string) => {
+        if(typeof id === 'number'){
+            //sql 삭제 
+            await deleteCouponDB(id);
+        }
+        dispatch(deleteCoupon(id));
+        
     }
     return (
         <KeyboardAwareScrollView
@@ -161,15 +229,31 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
                 </Modal>
                 
                 <Text>쿠폰목록</Text>
-                {coupon.createdCoupons.map((coupon) => (
-                    <CouponComponent 
-                        key={coupon.id} 
-                        bgcolor={coupon.paper_color} 
-                        title={coupon.title} 
-                        content={coupon.content} 
-                        selectedImage={coupon.image}
-                    />
-                ))}
+                <FlatList 
+                    data={coupon.createdCoupons}
+                    keyExtractor={(item) => String(item.id)}
+                    renderItem={({item}) => (
+                        <View style={{alignItems: 'center'}}>
+                            <Pressable 
+                                onPress={deleteCouponHandler.bind(this,item.id)} 
+                                style={({pressed}) => [{position: 'absolute', top: 10, right: 10, zIndex: 2}, pressed && styles.pressed]}
+                            >
+                                <MaterialCommunityIcons name="close-circle" size={30} color="#000000" />
+                            </Pressable>
+                            <CouponComponent
+                                bgcolor={item.paper_color} 
+                                title={item.title} 
+                                content={item.content} 
+                                selectedImage={item.image}
+                            />
+                        </View>
+                    )}
+                    horizontal={true}
+                    style={{
+                        height: '100%'
+                    }}
+                    
+                />
                 <View style={styles.buttonContainer}>
                     <Button bgcolor='#ff5b5b' fontcolor='white' onPress={goBackHandler}>취소</Button>
                     <Button bgcolor='#60c960' fontcolor='white' onPress={saveCouponBookHandler}>저장</Button>

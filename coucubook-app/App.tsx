@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import GreetingLoginScreen from './screens/GreetingLoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -23,8 +23,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { tokenRenewal, viewTokenInfo } from './util/kakaoRESTAPI';
 import CreateBook from './screens/create_couponbook/CreateBook';
 
-import { useNavigation } from '@react-navigation/native';
 import { CouponBook } from './src/types/coupon';
+import { createCouponBookTable, createCouponTable } from './util/database';
 
 // console.log("helllllllo", process.env.NODE_ENV);
 
@@ -216,20 +216,38 @@ function Root():JSX.Element {
 SplashScreen.preventAutoHideAsync();
 
 export default function App():JSX.Element | null{
+  const [dbInitialized, setDbInitialized] = useState(false);
   const [fontsLoaded] = useFonts({
     'godoMaum': require('./assets/fonts/godoMaum.ttf'),
   });
 
   useEffect(() => {
-    if(fontsLoaded){
+    createCouponBookTable()
+      .then(() => {
+        createCouponTable()
+          .then(() => {
+            setDbInitialized(true);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      }
+    );
+  }, []);
+  
+  useEffect(() => {
+    if(fontsLoaded && dbInitialized){
       const appIsReady = async () => {
         await SplashScreen.hideAsync();
       }
       appIsReady();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, dbInitialized]);
 
-  if(!fontsLoaded){
+  if(!fontsLoaded || !dbInitialized){
     return null;
   }
 

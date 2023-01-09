@@ -46,7 +46,9 @@ export default function Carousel({pages, pageWidth, gap, offset,setSelectedImage
       e.nativeEvent.contentOffset.x / (pageWidth + gap),
     );
     setPage(newPage);
-    setSelectedImage(newPage);
+    if(setSelectedImage){
+      setSelectedImage(newPage);
+    }
   };
 
   return (

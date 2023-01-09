@@ -1,18 +1,17 @@
 import { ScrollView, StyleSheet, Text } from "react-native";
 import CouponBookComponent from "./CouponBookComponent";
-import { useDispatch, useSelector } from "react-redux";
-import { couponState } from "../../store/redux/couponReducer";
-import { RootState } from "../../store/redux/rootReducer";
+import { CouponBook } from "../../src/types/coupon";
 
+interface Props {
+    books: CouponBook[]
+}
 
-const CouponBooksList = () : JSX.Element => {
-    const coupon:couponState = useSelector((state: RootState) => state.coupon);
-    const dispatch = useDispatch();
+const CouponBooksList = ({books}: Props) : JSX.Element => {
 
     return (
         <ScrollView style={styles.screen}>
 
-            {coupon.myCouponBooks.map((book) => {
+            {books.map((book) => {
                 return(
                     <CouponBookComponent key={book.id} couponBook={book}/>
                 )

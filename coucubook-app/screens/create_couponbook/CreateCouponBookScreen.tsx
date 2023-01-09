@@ -4,6 +4,10 @@ import CouponBooksList from "../../components/CoupleItem/CouponBooksList";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CreateCouponBookStackParamList } from "../../App";
+import { useIsFocused } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { fetchBooks } from "../../util/database";
+import { CouponBook } from "../../src/types/coupon";
 
 export const CreateCouponBookButton = (): JSX.Element => {
     const navigation = useNavigation<CreateBookListScreenProps["navigation"]>();
@@ -22,11 +26,28 @@ export const CreateCouponBookButton = (): JSX.Element => {
 export type CreateBookListScreenProps = NativeStackScreenProps<CreateCouponBookStackParamList, 'BooksList'>;
 
 const CreateCouponBookScreen = () => {
+
+    const [loadedBooks, setLoadedBooks] = useState<CouponBook[]>([]);
+
+    const isFocused = useIsFocused();
+    
+    useEffect(()=> {
+        const loadBooks = async() => {
+            const books: CouponBook[] = await fetchBooks();
+            setLoadedBooks((prevState) => ([
+                ...books
+            ]));
+        };
+        if(isFocused ){
+            loadBooks();
+            // setLoadedPlaces(curPlaces => [...curPlaces, route.params.place]);
+        }
+    }, [isFocused]);
     
     return(
         <View style={styles.screen}>
             <View style={styles.createdBooksContainer}>
-                <CouponBooksList />
+                <CouponBooksList books={loadedBooks}/>
             </View>
         </View>
     )
