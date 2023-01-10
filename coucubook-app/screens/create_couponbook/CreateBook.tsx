@@ -15,7 +15,7 @@ import { CouponBook } from "../../src/types/coupon";
 import { generateRandomString } from "../../util/usefulFunc";
 import CouponComponent from "../../components/CoupleItem/CouponComponent";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import { deleteCouponDB, insertCouponBooks, insertCoupons } from "../../util/database";
+import { deleteCouponBookDB, deleteCouponDB, fetchCoupons, insertCouponBooks, insertCoupons, insertGift } from "../../util/database";
 
 interface inputProps {
     [anyKeyword: string]: string;
@@ -128,14 +128,15 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
         const couponsArray = [...coupon.createdCoupons];
         dispatch(resetCoupon());
         const bookId = response.insertId; //bookId 있으면 쿠폰북새로저장, 없으면 업데이트
+        if(bookId){
+            await insertGift(bookId);
+        }
         couponsArray.map(async (coupon) => {
             if(bookId){
                 const res = await insertCoupons({...coupon, book_id: bookId});
-                console.log(res);
             }else{
                 if(typeof coupon.id === 'string'){//수정으로 새로만든 쿠폰
-                    const res = await insertCoupons({...coupon, book_id: couponbook!.id})
-                    console.log(res);
+                    const res = await insertCoupons({...coupon, book_id: couponbook!.id});
                 }
             }
             
@@ -143,6 +144,12 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
         
         navigation.replace('BooksList');
     }
+    const deleteCouponBookHandler = async (couponBookId: number) => {
+        await deleteCouponBookDB(couponBookId);
+        dispatch(resetCoupon());
+        navigation.replace('BooksList');
+    }
+
     useEffect(() => {
         dispatch(resetCoupon());
         if(couponbook){
@@ -258,6 +265,11 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
                     <Button bgcolor='#ff5b5b' fontcolor='white' onPress={goBackHandler}>취소</Button>
                     <Button bgcolor='#60c960' fontcolor='white' onPress={saveCouponBookHandler}>저장</Button>
                 </View>
+                {couponbook && 
+                    <View style={styles.buttonContainer}>
+                        <Button bgcolor='red' fontcolor='black' onPress={deleteCouponBookHandler.bind(this, couponbook.id!)}>⚠쿠폰북 삭제</Button>
+                    </View>
+                }
             </ScrollView>
         </KeyboardAwareScrollView>
     )

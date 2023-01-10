@@ -1,17 +1,38 @@
 import { Coupon, CouponBook } from "../../src/types/coupon";
+import { userInfo } from "../../src/types/vari";
 
 const SAVECOUPON = 'COUPON/SAVECOUPON' as const;
 const RESETCOUPON = 'COUPON/RESETCOUPON' as const;
 const DELETECOUPON = 'COUPON/DELETECOUPON' as const;
 const SAVECOUPONBOOK = 'COUPON/SAVECOUPONBOOK' as const;
+const SAVEUSERINFO = 'COUPON/SAVEUSERINFO' as const;
+const SAVELOVERINFO = 'COUPON/SAVELOVERINFO' as const;
+const CHANGELOVERCODE = 'COUPON/CHANGELOVERCODE' as const;
+
 
 export interface couponState  {
     myCouponBooks: CouponBook[];
     createdCoupons: Coupon[];
+    userInfo: userInfo;
+    loverInfo: userInfo;
+};
+const userInfoInitState = {
+    "birth": '',
+    "id": 0, 
+    "nickname": '',  
+    "social_id": '',  
+    "social_platform": '',  
+    "user_code": '',
+    "lover_code" : null,
+    "anniversary": '',
+    "couple_image": null,
+    "msg": '',
 };
 const initState:couponState = {
     myCouponBooks: [],
-    createdCoupons: []
+    createdCoupons: [],
+    userInfo: userInfoInitState,
+    loverInfo: userInfoInitState
 };
 
 export const saveCoupon = (coupon: Coupon) => ({
@@ -37,12 +58,33 @@ export const saveCouponBook = (couponBook: CouponBook) => ({
         couponBook: couponBook,
     }
 });
+export const saveUserInfo = (userInfo: userInfo) => ({
+    type: SAVEUSERINFO,
+    payload: {
+        userInfo: userInfo,
+    }
+});
+export const saveLoverInfo = (loverInfo: userInfo) => ({
+    type: SAVELOVERINFO,
+    payload: {
+        loverInfo: loverInfo,
+    }
+});
+export const changeLoverCode = (loverCode: string) => ({
+    type: CHANGELOVERCODE,
+    payload: {
+        loverCode: loverCode
+    }
+})
 
 type couponAction = 
     ReturnType<typeof saveCoupon> | 
     ReturnType<typeof resetCoupon> |
     ReturnType<typeof deleteCoupon> |
-    ReturnType<typeof saveCouponBook>;
+    ReturnType<typeof saveCouponBook> |
+    ReturnType<typeof saveUserInfo> |
+    ReturnType<typeof saveLoverInfo>|
+    ReturnType<typeof changeLoverCode>;
 
 const couponReducer = (state:couponState = initState, action: couponAction) => {
     switch (action.type) {
@@ -86,6 +128,24 @@ const couponReducer = (state:couponState = initState, action: couponAction) => {
                 myCouponBooks: bookArray,
                 createdCoupons: []
             };
+        case SAVEUSERINFO:
+            return {
+                ...state,
+                userInfo: action.payload.userInfo
+            }
+        case SAVELOVERINFO:
+            return {
+                ...state,
+                loverInfo: action.payload.loverInfo
+            }
+        case CHANGELOVERCODE:
+            return {
+                ...state,
+                userInfo: {
+                    ...state.userInfo,
+                    lover_code: action.payload.loverCode
+                }
+            }
             
         default:
             return state;

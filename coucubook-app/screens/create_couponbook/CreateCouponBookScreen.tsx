@@ -8,6 +8,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { fetchBooks } from "../../util/database";
 import { CouponBook } from "../../src/types/coupon";
+import { userInfo } from "../../src/types/vari";
 
 export const CreateCouponBookButton = (): JSX.Element => {
     const navigation = useNavigation<CreateBookListScreenProps["navigation"]>();
@@ -24,6 +25,7 @@ export const CreateCouponBookButton = (): JSX.Element => {
     );
 };
 export type CreateBookListScreenProps = NativeStackScreenProps<CreateCouponBookStackParamList, 'BooksList'>;
+
 
 const CreateCouponBookScreen = () => {
 
@@ -47,6 +49,7 @@ const CreateCouponBookScreen = () => {
     return(
         <View style={styles.screen}>
             <View style={styles.createdBooksContainer}>
+                <Text style={styles.title}>쿠폰북 제작 보관함</Text>
                 <CouponBooksList books={loadedBooks}/>
             </View>
         </View>
@@ -58,6 +61,7 @@ export default CreateCouponBookScreen;
 const styles = StyleSheet.create({
     screen : {
         flex: 1,
+        backgroundColor: '#fde2e4'
     },
     createButtonContainer: {
         // flex:1,
@@ -82,9 +86,16 @@ const styles = StyleSheet.create({
     createdBooksContainer: {
         flex: 1,
         marginVertical: 16,
-        borderTopColor: 'gold',
-        borderTopWidth: 5,
-        
     },
+    title: {
+        fontFamily: 'godoMaum',
+        fontSize: 30,
+        backgroundColor: 'white',
+        textAlign: 'center',
+        paddingVertical: 4,
+        borderBottomColor: 'gold',
+        borderBottomWidth: 4,
+
+    }
     
 });

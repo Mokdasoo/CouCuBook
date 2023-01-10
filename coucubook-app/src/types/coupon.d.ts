@@ -15,3 +15,9 @@ export interface CouponBook{
     expiredDate: string;
     coupons: Coupon[];
 }
+
+export interface Gift{
+    id: number;
+    book_id: number;
+    isgifted: number;
+}

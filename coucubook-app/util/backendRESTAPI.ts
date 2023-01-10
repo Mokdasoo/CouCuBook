@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BACKEND_ADDRESS } from "@env";
 import FormData from "form-data";
+import { CouponBook } from "../src/types/coupon";
 
 export const getOneInfo = async (valueType:string, value: string | number| null) => {
     let Info;
@@ -68,5 +69,27 @@ export const imageUpload = async (imgUri: string, user_code: string, lover_code:
         });
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const giftCouponBookToLover = async (couponBook: CouponBook, user_code: string, lover_code:string | null) => {
+    if(lover_code === null){
+        return false;
+    }
+    try {
+        const response = await axios({
+            url: `${BACKEND_ADDRESS}/coupon/saveAll`, 
+            method: 'POST',
+            data : {
+                couponBook : couponBook,
+                user_code: user_code,
+                lover_code : lover_code
+            }
+        });
+        console.log("쿠폰북&쿠폰 생성 ",response.data.msg);
+        return true;
+    } catch (error) {
+        console.log("쿠폰북선물하기 백엔드 통신에러 ",error);
+        return false;
     }
 }

@@ -1,6 +1,6 @@
 import * as SQLite from "expo-sqlite";
 import { Platform } from "react-native";
-import { Coupon, CouponBook } from "../src/types/coupon";
+import { Coupon, CouponBook, Gift } from "../src/types/coupon";
 
 
 function openDatabase() {
@@ -56,8 +56,30 @@ export const createCouponBookTable = () : Promise<void>  => {
                   image INTEGER NOT NULL,
                   paper_color TEXT NOT NULL,
                   book_id INTEGER NOT NULL,
-                  FOREIGN KEY (book_id)
-                  REFERENCES couponbooks (id)
+                  FOREIGN KEY (book_id) REFERENCES couponbooks (id) ON DELETE CASCADE
+            )`,
+          [],
+          () => {
+            resolve();
+          },
+          (_, error): boolean| any => {
+            reject(error);
+          }
+        );
+      });
+    });
+    return promise;
+  };
+
+  export const createGiftTable = () : Promise<void>  => {
+    const promise = new Promise<void>((resolve, reject) => {
+      database.transaction((db) => {
+        db.executeSql(
+          `CREATE TABLE IF NOT EXISTS gifts (
+                  id INTEGER PRIMARY KEY NOT NULL,
+                  book_id INTEGER NOT NULL,
+                  isgifted INTEGER NOT NULL,
+                  FOREIGN KEY (book_id) REFERENCES couponbooks (id) ON DELETE CASCADE
             )`,
           [],
           () => {
@@ -96,6 +118,52 @@ export const createCouponBookTable = () : Promise<void>  => {
                 book.id
             ]
             ,
+          (_, result) => {
+            console.log(result);
+            resolve(result);
+          },
+          (_, err): boolean| any  => {
+            reject(err);
+          }
+        );
+      });
+    });
+  
+    return promise;
+  };
+
+  export const insertGift = (book_id : number) => {
+    const promise = new Promise<any>((resolve, reject) => {
+      database.transaction((tx) => {
+        tx.executeSql(
+          `INSERT INTO gifts (book_id, isgifted) VALUES (?, ?)`,
+          [
+            book_id,
+            0
+          ],
+          (_, result) => {
+            console.log(result);
+            resolve(result);
+          },
+          (_, err): boolean| any  => {
+            reject(err);
+          }
+        );
+      });
+    });
+  
+    return promise;
+  };
+
+  export const updateGift = (book_id : number) => {
+    const promise = new Promise<any>((resolve, reject) => {
+      database.transaction((tx) => {
+        tx.executeSql(
+          `UPDATE gifts SET isgifted=? WHERE book_id=?`,
+          [
+            1,
+            book_id,
+          ],
           (_, result) => {
             console.log(result);
             resolve(result);
@@ -164,7 +232,7 @@ export const createCouponBookTable = () : Promise<void>  => {
     return promise;
   };
 
-  const fetchCoupons = (book_id: number) => {
+  export const fetchCoupons = (book_id: number) => {
     const promise = new Promise<Coupon[]>((resolve, reject) => {
         database.transaction((tx) => {
             tx.executeSql(
@@ -181,6 +249,44 @@ export const createCouponBookTable = () : Promise<void>  => {
     });
     return promise;
   }
+
+  export const fetchGift = (book_id: number) => {
+    const promise = new Promise<Gift>((resolve, reject) => {
+        database.transaction((tx) => {
+            tx.executeSql(
+                `SELECT * FROM gifts WHERE book_id = ?`, 
+                [book_id],
+                (_, result) => {
+                    resolve(result.rows._array[0]);
+                },    
+                (_, error): boolean| any => {
+                    reject(error);
+                },    
+            );
+        });
+    });
+    return promise;
+  }
+  export const deleteCouponBookDB = (id: number) => {
+    const promise = new Promise<any>((resolve, reject) => {
+      database.transaction((tx) => {
+        tx.executeSql(
+          `DELETE FROM couponbooks WHERE id=?`,
+          [
+            id
+          ],
+          (_, result) => {
+            console.log(result);
+            resolve(result);
+          },
+          (_, err): boolean| any  => {
+            reject(err);
+          }
+        );
+      });
+    });
+    return promise;
+  };
 
   export const deleteCouponDB = (id: number) => {
     const promise = new Promise<any>((resolve, reject) => {

@@ -5,14 +5,18 @@ import React, {useState} from "react";
 import { userInfo } from "../../src/types/vari";
 import { Alert, KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, View, Platform, StatusBar} from "react-native";
 import { getOneInfo, saveLoverCode } from "../../util/backendRESTAPI";
+import { changeLoverCode, couponState } from "../../store/redux/couponReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/redux/rootReducer";
 
 interface LoverCodeScreenProps {
     nickname?: string;
     userCode?: string;
-    setUserInfo ?: React.Dispatch<React.SetStateAction<userInfo>>
 }
 
-const LoverCodeScreen = ({nickname, userCode, setUserInfo} : LoverCodeScreenProps) : JSX.Element => {
+const LoverCodeScreen = ({nickname, userCode} : LoverCodeScreenProps) : JSX.Element => {
+    const coupon:couponState = useSelector((state: RootState) => state.coupon);
+    const dispatch = useDispatch();
     const [inputCode, setInputCode] = useState<string>('');
     const inputChangeHandler = (enteredValue: string) => {
         setInputCode(enteredValue);
@@ -53,9 +57,7 @@ const LoverCodeScreen = ({nickname, userCode, setUserInfo} : LoverCodeScreenProp
                 return;
             }
         }
-        setUserInfo!((prevState) => {
-            return { ...prevState, lover_code: inputCode}
-        });
+        dispatch(changeLoverCode(inputCode));
         return;
     }
 

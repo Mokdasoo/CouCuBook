@@ -24,7 +24,10 @@ import { tokenRenewal, viewTokenInfo } from './util/kakaoRESTAPI';
 import CreateBook from './screens/create_couponbook/CreateBook';
 
 import { CouponBook } from './src/types/coupon';
-import { createCouponBookTable, createCouponTable } from './util/database';
+import { createCouponBookTable, createCouponTable, createGiftTable } from './util/database';
+import { userInfo } from './src/types/vari';
+import { getOneInfo } from './util/backendRESTAPI';
+import { couponState, saveLoverInfo, saveUserInfo } from './store/redux/couponReducer';
 
 // console.log("helllllllo", process.env.NODE_ENV);
 
@@ -95,6 +98,46 @@ const CouponBookStack = (): JSX.Element => {
 
 //로그인상태 AuthenticatedTab 메인스크린
 function AuthenticatedTab():JSX.Element {
+
+  const auth:authState = useSelector((state: RootState) => state.auth);
+  const coupon:couponState = useSelector((state: RootState) => state.coupon);
+    const dispatch = useDispatch();
+    const userInfoInitState = {
+        "birth": '',
+        "id": 0, 
+        "nickname": '',  
+        "social_id": '',  
+        "social_platform": '',  
+        "user_code": '',
+        "lover_code" : null,
+        "anniversary": '',
+        "couple_image": null,
+        "msg": '',
+    };
+
+    
+    let responseUser: userInfo = userInfoInitState;
+    let responseLover: userInfo = userInfoInitState;
+    
+
+    useEffect(()=>{
+        const updateUserInfo = async () => {
+            responseUser = await getOneInfo('social_id', auth.token.social_id);// 조인하는 함수로 변경
+            dispatch(saveUserInfo(responseUser));
+        }
+        updateUserInfo();
+    }, []);
+    
+    useEffect(() => {
+        const updateLoverInfo = async () => {
+            responseLover = await getOneInfo('user_code', coupon.userInfo.lover_code);// 조인하는 함수로 변경
+            dispatch(saveLoverInfo(responseLover));
+        }
+        if(!!coupon.userInfo.lover_code){
+            updateLoverInfo();
+        }
+    }, [coupon.userInfo]);
+
   
   return (
     <Tab.Navigator screenOptions={{
@@ -104,7 +147,10 @@ function AuthenticatedTab():JSX.Element {
       title: 'CouCuBook'
 
     }}>
-      <Tab.Screen name='Main' component={MainCoupleScreen} options={{
+      <Tab.Screen
+         name='Main' 
+         component={MainCoupleScreen}
+         options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name='easel-outline' color={color} size={size} />
           ),
@@ -122,7 +168,9 @@ function AuthenticatedTab():JSX.Element {
           tabBarActiveTintColor: '#718355',
         }}
       />
-      <Tab.Screen name='Create' component={CouponBookStack} options={{
+      <Tab.Screen name='Create' 
+        component={CouponBookStack}
+        options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name='duplicate-outline' color={color} size={size} />
           ),
@@ -226,7 +274,13 @@ export default function App():JSX.Element | null{
       .then(() => {
         createCouponTable()
           .then(() => {
-            setDbInitialized(true);
+            createGiftTable()
+            .then(() => {
+              setDbInitialized(true);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
           })
           .catch((err) => {
             console.log(err);

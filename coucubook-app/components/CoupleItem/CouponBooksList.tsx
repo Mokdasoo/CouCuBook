@@ -26,10 +26,6 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         marginTop: 5,
-        marginLeft: 10
+        marginHorizontal: 8
     },
-    title:{
-        fontFamily: 'godoMaum',
-        fontSize: 20
-    }
 });
