@@ -33,8 +33,25 @@ const saveCouponBookAndCouponAll = async (req, res) => {
 
     res.send({msg: 'success'});
 }
+const getGitedMyCouponBooks = async (req, res) => {
+    const {user_code} = req.query;
+    try {
+        const result = await models.CouponBook.findAll({
+            where: { giver_code: user_code}, //taker_code 로 바꾸기 test로 해놓음
+            include: [models.Coupon]
+        });
+        const fetchingData = result.map((data) => {
+            return data.dataValues;
+        })
+        res.send(fetchingData);
+    } catch (error) {
+        console.log(error);
+        res.send({msg: '쿠폰북과 쿠폰 불러오기 fail'});
+    }
+}
 
 const couponController = {
     saveCouponBookAndCouponAll: saveCouponBookAndCouponAll,
+    getGitedMyCouponBooks: getGitedMyCouponBooks,
 }
 export default couponController;

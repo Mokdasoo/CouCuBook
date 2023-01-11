@@ -5,7 +5,7 @@ export interface Coupon{
     image: number;
     paper_color: string;
     book_id?: number;
-
+    is_used?: boolean;
 }
 export interface CouponBook{
     id?:number;

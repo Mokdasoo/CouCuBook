@@ -13,7 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import MainCoupleScreen from './screens/main/MainCoupleScreen';
 import CreateCouponBookScreen,{CreateBookListScreenProps, CreateCouponBookButton} from './screens/create_couponbook/CreateCouponBookScreen';
 import MyAppSettingScreen from './screens/main/MyAppSettingScreen';
-import MyCouponBooksScreen from './screens/main/MyCouponBooksScreen';
+import MyCouponBooksScreen from './screens/gifted_couponbook/MyCouponBooksScreen';
 import InputInfoScreen from './screens/social_login/InputInfoScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView, StyleSheet } from 'react-native';
@@ -101,19 +101,19 @@ function AuthenticatedTab():JSX.Element {
 
   const auth:authState = useSelector((state: RootState) => state.auth);
   const coupon:couponState = useSelector((state: RootState) => state.coupon);
-    const dispatch = useDispatch();
-    const userInfoInitState = {
-        "birth": '',
-        "id": 0, 
-        "nickname": '',  
-        "social_id": '',  
-        "social_platform": '',  
-        "user_code": '',
-        "lover_code" : null,
-        "anniversary": '',
-        "couple_image": null,
-        "msg": '',
-    };
+  const dispatch = useDispatch();
+  const userInfoInitState = {
+      "birth": '',
+      "id": 0, 
+      "nickname": '',  
+      "social_id": '',  
+      "social_platform": '',  
+      "user_code": '',
+      "lover_code" : null,
+      "anniversary": '',
+      "couple_image": null,
+      "msg": '',
+  };
 
     
     let responseUser: userInfo = userInfoInitState;

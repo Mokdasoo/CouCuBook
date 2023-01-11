@@ -123,7 +123,6 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
         };
         
         const response = await insertCouponBooks(newBook);
-        console.log(response);
         
         const couponsArray = [...coupon.createdCoupons];
         dispatch(resetCoupon());

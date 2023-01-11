@@ -93,3 +93,17 @@ export const giftCouponBookToLover = async (couponBook: CouponBook, user_code: s
         return false;
     }
 }
+export const fetchGiftedCouponBooks = async (user_code: string) => {
+    try {
+        const response = await axios({
+            method: 'GET',
+            url: `${BACKEND_ADDRESS}/coupon/mybooks`,
+            params: {
+                user_code: user_code
+            }
+        });
+        return (response.data);
+    } catch (error) {
+        console.log("선물받은 쿠폰북 갱신로직 에러",error);
+    }
+}

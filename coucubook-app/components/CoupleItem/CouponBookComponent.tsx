@@ -9,31 +9,16 @@ import { couponState } from "../../store/redux/couponReducer";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/redux/rootReducer";
 import { giftCouponBookToLover } from "../../util/backendRESTAPI";
+import CouponBookButtons from "./CouponBookButtons";
 
-interface CouponBookButtonProps {
-    icon: any;
-    size: number;
-    color: string;
-    text: string;
-    backColor:string;
-    onPress: () => void;
-};
-const CouponBookButton = ({icon, size, color, text,backColor, onPress}: CouponBookButtonProps) : JSX.Element => {
-    
-    return (
-        <Pressable onPress={onPress} style={({pressed}) => [styles.buttonContainerWrap, pressed && styles.pressed, {backgroundColor: backColor}]}>
-                <MaterialCommunityIcons name={icon} color={color} size={size} />
-                <Text style={styles.buttonText}>{text}</Text>
-        </Pressable>
-    )
-}
+
 
 interface CouponBookProps {
     couponBook: CouponBook;
 }
 
 const CouponBookComponent = ({couponBook}:CouponBookProps) : JSX.Element => {
-    const [isGifted, setIsGifted] = useState<Boolean>(false);
+    const [isGifted, setIsGifted] = useState<boolean>(false);
     const navigation = useNavigation<CreateBookListScreenProps["navigation"]>();
     const coupon:couponState = useSelector((state: RootState) => state.coupon);
     const onGiftHandler = async () => {
@@ -72,24 +57,7 @@ const CouponBookComponent = ({couponBook}:CouponBookProps) : JSX.Element => {
                     <Text style={styles.bookInfo}>쿠폰 {couponBook.coupons.length}개</Text>
                     <Text style={styles.bookInfo}>{couponBook.publicationDate}~{couponBook.expiredDate}</Text>
                 </View>
-                <View style={styles.buttons}>
-                    {
-                        isGifted && 
-                        <CouponBookButton 
-                            icon='gift-open' 
-                            size={15} 
-                            color='#000000' 
-                            text='선물완료' 
-                            backColor='#06a700' 
-                            onPress={()=>{Alert.alert('전달실패','이미 선물된 쿠폰북입니다.')}} 
-                        />
-                    }
-                    {
-                        !isGifted && 
-                        <CouponBookButton icon='gift' size={15} color='gold' text='선물하기' backColor='#ff000078' onPress={onGiftHandler} />
-                    }
-                    <CouponBookButton icon='lead-pencil' size={15} color='white' text='수정하기' backColor='#0000ff88' onPress={onModifyHandler} />
-                </View>
+                <CouponBookButtons isGifted={isGifted} onGift={onGiftHandler} onModify={onModifyHandler} />
             </View>
         </View>
     );
@@ -125,22 +93,6 @@ const styles = StyleSheet.create({
         fontFamily: 'godoMaum',
         fontSize: 18
     },
-    buttons:{
-        flexDirection: 'row'
-    },
-    buttonContainerWrap:{
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 8,
-        borderRadius: 8,
-        padding: 4
-    },
-    pressed: {
-        opacity: 0.5,
-    },
-    buttonText: {
-        fontFamily: 'godoMaum',
-        fontSize: 20,
-        color: 'white'
-    },
+    
+    
 });

@@ -20,6 +20,10 @@ const Coupon = (Sequelize, DataTypes) => {
                 type: DataTypes.STRING(7),
                 allowNull: false,
             },
+            is_used:{
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            }
         },
         {
             timestamps: false,
