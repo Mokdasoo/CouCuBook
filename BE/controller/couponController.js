@@ -19,8 +19,12 @@ const saveCouponBookAndCouponAll = async (req, res) => {
         await coupons.reduce( async (prevPromise, coupon) => {
             await prevPromise;
             const obj = {
-                ...coupon,
-                book_id: book_id
+                title: coupon.title,
+                content: coupon.content,
+                image: coupon.image,
+                paper_color: coupon.paper_color,
+                is_used: coupon.is_used,
+                book_id: book_id,
             }
             await models.Coupon.create(obj);
         }, Promise.resolve());
@@ -28,10 +32,11 @@ const saveCouponBookAndCouponAll = async (req, res) => {
 
     } catch (error) {
         console.log(error);
+        res.send({msg: 'fail'});
     }
 
-
     res.send({msg: 'success'});
+    
 }
 const getGitedMyCouponBooks = async (req, res) => {
     const {user_code} = req.query;

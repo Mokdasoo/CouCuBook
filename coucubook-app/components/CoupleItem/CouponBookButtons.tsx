@@ -40,7 +40,7 @@ const CouponBookButtons = ({isGifted, onGift, onModify}: CouponBookButtonsProps)
                 />
             }
             {
-                !isGifted && 
+                !isGifted &&
                 <CouponBookButton icon='gift' size={15} color='gold' text='선물하기' backColor='#ff000078' onPress={onGift} />
             }
             <CouponBookButton icon='lead-pencil' size={15} color='white' text='수정하기' backColor='#0000ff88' onPress={onModify} />

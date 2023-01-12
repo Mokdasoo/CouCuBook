@@ -72,7 +72,6 @@ const CouponBookStack = (): JSX.Element => {
   
   return (
     <CreateCouponBookStack.Navigator screenOptions={{
-      headerStyle: {backgroundColor: 'transparent'},
       headerTitleStyle: {fontFamily: 'godoMaum', fontSize: 25},
       headerTitleAlign: 'center',
       headerTitle: 'CouCuBook',
@@ -141,11 +140,7 @@ function AuthenticatedTab():JSX.Element {
   
   return (
     <Tab.Navigator screenOptions={{
-      headerStyle: {backgroundColor: 'transparent'},
-      headerTitleStyle: {fontFamily: 'godoMaum', fontSize: 25},
-      headerTitleAlign: 'center',
-      title: 'CouCuBook'
-
+      headerShown: false
     }}>
       <Tab.Screen
          name='Main' 
@@ -157,6 +152,10 @@ function AuthenticatedTab():JSX.Element {
           tabBarLabel:'메인',
           tabBarLabelStyle: {fontFamily: 'godoMaum'},
           tabBarActiveTintColor: '#718355',
+          headerShown: true,
+          headerTitleStyle: {fontFamily: 'godoMaum', fontSize: 25},
+          headerTitleAlign: 'center',
+          title: 'CouCuBook'
         }}
       />
       <Tab.Screen name='Mybook' component={MyCouponBooksScreen} options={{

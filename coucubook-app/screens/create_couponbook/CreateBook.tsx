@@ -251,6 +251,7 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
                                 title={item.title} 
                                 content={item.content} 
                                 selectedImage={item.image}
+                                width={250}
                             />
                         </View>
                     )}

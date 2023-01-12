@@ -86,8 +86,13 @@ export const giftCouponBookToLover = async (couponBook: CouponBook, user_code: s
                 lover_code : lover_code
             }
         });
-        console.log("쿠폰북&쿠폰 생성 ",response.data.msg);
-        return true;
+        if(response.data.msg === 'success'){
+            console.log("쿠폰북&쿠폰 생성 ",response.data.msg);
+            return true;
+        }else{
+            console.log("쿠폰북선물하기 백엔드 통신에러 ");
+            return false;
+        }
     } catch (error) {
         console.log("쿠폰북선물하기 백엔드 통신에러 ",error);
         return false;

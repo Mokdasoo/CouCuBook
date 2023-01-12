@@ -5,9 +5,10 @@ interface CouponComponentProps {
     title: string;
     content: string;
     selectedImage: number;
+    width: number;
 }
-const CouponComponent = ({bgcolor, title, content, selectedImage}: CouponComponentProps) :JSX.Element => {
-    const containerStyle = [styles.couponContainer, {backgroundColor: bgcolor}];
+const CouponComponent = ({bgcolor, title, content, selectedImage, width}: CouponComponentProps) :JSX.Element => {
+    const containerStyle = [styles.couponContainer, {backgroundColor: bgcolor , width: width, height: width*1.6}];
     const coupon_image01 = require('../../assets/Images/default/coupon_image01.png');
     const coupon_image02 = require('../../assets/Images/default/coupon_image02.png');
     const coupon_image03 = require('../../assets/Images/default/coupon_image03.png');
@@ -43,8 +44,12 @@ const CouponComponent = ({bgcolor, title, content, selectedImage}: CouponCompone
                 </View>
             </View>
             <View style={styles.info}>
-                <Text style={styles.title}>{title}</Text>
-                <Text style={styles.content}>{content}</Text>
+                <View style={styles.titleContainer}>
+                    <Text adjustsFontSizeToFit={true} style={styles.title} numberOfLines={1}>{title}</Text>
+                </View>
+                <View style={styles.contentContainer}>
+                    <Text adjustsFontSizeToFit={true} style={styles.content} numberOfLines={2} ellipsizeMode="tail">{content}</Text>
+                </View>
             </View>
             <View style={styles.barcode}>
                 <Image style={styles.barcodeImg} source={require('../../assets/Images/barcode.png')} />
@@ -59,8 +64,6 @@ const styles = StyleSheet.create({
     couponContainer:{
         marginTop: 16,
         marginHorizontal: 16,
-        width: 250,
-        height: 400,
         borderRadius: 8,
         borderWidth: 2,
         borderColor: 'black'
@@ -88,9 +91,15 @@ const styles = StyleSheet.create({
         flex:2,
         alignItems: 'center'
     },
+    titleContainer:{
+        flex: 1
+    },
     title:{
         fontFamily: 'godoMaum',
         fontSize: 32,
+    },
+    contentContainer:{
+        flex: 2
     },
     content:{
         fontFamily: 'godoMaum',

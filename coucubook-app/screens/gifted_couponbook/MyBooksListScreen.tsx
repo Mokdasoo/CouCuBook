@@ -1,4 +1,4 @@
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native"
 import { useSelector } from "react-redux";
 import { couponState } from "../../store/redux/couponReducer";
@@ -7,9 +7,13 @@ import { fetchGiftedCouponBooks } from "../../util/backendRESTAPI";
 import { useCallback, useState } from 'react';
 import { CouponBook } from "../../src/types/coupon";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { MyBooksStackParamList } from "./MyCouponBooksScreen";
 
+export type MyBooksListScreenProps = NativeStackScreenProps<MyBooksStackParamList, 'MyBooksList'>;
 
 const MyBooksListScreen = () :JSX.Element => {
+    const navigation = useNavigation<MyBooksListScreenProps["navigation"]>();
     const coupon:couponState = useSelector((state: RootState) => state.coupon);
     const [couponBooks, setCouponBooks] = useState<CouponBook[]>([]);
 
@@ -22,21 +26,27 @@ const MyBooksListScreen = () :JSX.Element => {
         fetchDataHandler();
         },[]),
     );
+    const clickCouponBookDetail = (couponbook: CouponBook) => {
+        navigation.navigate('BookDetail', { couponbook: couponbook});
+    }
 
     return (
         <View style={styles.screen}>
             <View style={styles.myBooksContainer}>
-                <Text style={styles.title}>선물받은 쿠폰북 보관함</Text>
+                <Text style={styles.title}>{coupon.loverInfo.nickname}에게 선물받은 쿠폰북 보관함</Text>
                 <FlatList 
                     data={couponBooks}
                     keyExtractor={(item) => 'couponbook_'+item.id}
                     renderItem={({item}) => (
-                        <Pressable style={({pressed}) => [styles.container, pressed && styles.pressed]}>
+                        <Pressable 
+                            style={({pressed}) => [styles.container, pressed && styles.pressed]} 
+                            onPress={clickCouponBookDetail.bind(this, item)}
+                        >
                             <MaterialCommunityIcons name='book' color={item.cover_color} size={80} />
                             <View style={styles.bookInfoContainer}>
                                 <Text style={[styles.bookInfo, styles.bookTitle]}>{item.title}</Text>
                                 <Text style={styles.bookInfo}>쿠폰 {item.coupons.length}개</Text>
-                                <Text style={styles.bookInfo}>{item.publicationDate}~{item.expiredDate}</Text>
+                                <Text style={styles.bookInfo}>사용기한 : {item.publicationDate}~{item.expiredDate}</Text>
                             </View>
                         </Pressable>
                     )}
@@ -50,7 +60,7 @@ export default MyBooksListScreen;
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        backgroundColor: '#e2e2e2'
+        backgroundColor: '#ffe3f4'
     },
     myBooksContainer: {
         flex: 1,
@@ -62,7 +72,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         textAlign: 'center',
         paddingVertical: 4,
-        borderBottomColor: '#ff0000',
+        borderBottomColor: '#ff6161',
         borderBottomWidth: 4,
 
     },
@@ -74,8 +84,15 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         marginVertical: 10,
-        backgroundColor: 'white',
-        borderRadius: 10
+        marginHorizontal: 10,
+        backgroundColor: '#ffffff',
+        borderRadius: 10,
+        elevation: 4,
+        shadowColor: 'black',
+        shadowOffset: {width: 1, height: 1},
+        shadowOpacity: 0.5,
+        shadowRadius: 2
+        
     },
     bookInfoContainer: {
         flex: 1,

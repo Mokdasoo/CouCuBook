@@ -60,7 +60,7 @@ const CreateCoupon = ({onSave, onCancel}: CreateCouponProps) : JSX.Element => {
                 showsHorizontalScrollIndicator={false}
         >
             <ScrollView contentContainerStyle={styles.screen}>
-                <CouponComponent bgcolor={checked} title={inputs.title} content={inputs.content} selectedImage={selectedImage}/>
+                <CouponComponent bgcolor={checked} title={inputs.title} content={inputs.content} selectedImage={selectedImage} width={200}/>
                 <View style={styles.inputForm}>
                     <View style={styles.colorSelect}>
                         <Text style={styles.inputText}>쿠폰 색상 선택</Text>
