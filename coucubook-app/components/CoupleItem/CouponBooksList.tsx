@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, FlatList } from "react-native";
 import CouponBookComponent from "./CouponBookComponent";
 import { CouponBook } from "../../src/types/coupon";
 
@@ -9,14 +9,21 @@ interface Props {
 const CouponBooksList = ({books}: Props) : JSX.Element => {
 
     return (
-        <ScrollView style={styles.screen}>
+        <View style={styles.screen}>
+            <FlatList 
+                data={books}
+                keyExtractor={(item) => 'couponbook_'+item.id}
+                renderItem={({item}) => (
+                    <CouponBookComponent couponBook={item}/>
+                )}
+                ListEmptyComponent={
+                    <View style={styles.emptyContainer}>
+                        <Text style={styles.emptyText}>아직 제작한 쿠폰북이 없습니다.</Text>
+                    </View>
+                }
+            /> 
 
-            {books.map((book) => {
-                return(
-                    <CouponBookComponent key={book.id} couponBook={book}/>
-                )
-            })}
-        </ScrollView>
+        </View>
     );
 };
 
@@ -28,4 +35,14 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginHorizontal: 8
     },
+    emptyContainer:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    emptyText: {
+        fontFamily: 'godoMaum',
+        fontSize: 32,
+        color: '#424242'
+    }
 });

@@ -129,6 +129,6 @@ export const useCoupon = async (coupon: Coupon) => {
             return null;
         }
     } catch (error) {
-        return false;
+        return null;
     }
 }

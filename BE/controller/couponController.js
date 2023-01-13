@@ -42,7 +42,7 @@ const getGitedMyCouponBooks = async (req, res) => {
     const {user_code} = req.query;
     try {
         const result = await models.CouponBook.findAll({
-            where: { giver_code: user_code}, //taker_code 로 바꾸기 test로 해놓음
+            where: { taker_code: user_code}, 
             include: [models.Coupon]
         });
         const fetchingData = result.map((data) => {
@@ -58,7 +58,7 @@ const getGitedMyCouponBooks = async (req, res) => {
 const updateCouponUsed = async (req, res) => {
     const {coupon} = req.body;
     try {
-        const result = await models.Coupon.update({ is_used: true }, //본인  러버코드 업데이트  response1에는 성공하면 1 들어감
+        const result = await models.Coupon.update({ is_used: true }, 
             { where: {id: coupon.id} }
         );
         const couponArray = await models.Coupon.findAll({

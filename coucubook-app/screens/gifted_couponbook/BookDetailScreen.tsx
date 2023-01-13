@@ -7,24 +7,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/redux/rootReducer";
 import CouponComponent from "../../components/CoupleItem/CouponComponent";
 import { Coupon } from "../../src/types/coupon";
-import { useFocusEffect } from "@react-navigation/native";
-import {useCallback, useEffect} from 'react';
+import {useEffect} from 'react';
 
 export type BookDetailScreenProps = NativeStackScreenProps<MyBooksStackParamList, 'BookDetail'>;
 const BookDetailScreen = ({navigation, route}: BookDetailScreenProps) :JSX.Element => {
     const couponbook = route.params.couponbook;
     const coupon:couponState = useSelector((state: RootState) => state.coupon);
     const dispatch = useDispatch();
-    useFocusEffect(
-        useCallback(()=> {
-            if(coupon.createdCoupons.length === 0){
-                dispatch(saveCoupons(couponbook.coupons));
-            }
-        },[]),
-    );
-    useEffect(() => {
-
-    }, [])
+    useEffect(()=> {
+        if(coupon.createdCoupons.length === 0){
+            dispatch(saveCoupons(couponbook.coupons));
+        }
+    },[]);
 
     const screenWidth = Dimensions.get('window').width;
     const clickCouponHandler = (coupon: Coupon) => {

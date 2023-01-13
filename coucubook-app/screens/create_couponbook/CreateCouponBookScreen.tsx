@@ -49,7 +49,7 @@ const CreateCouponBookScreen = () => {
     return(
         <View style={styles.screen}>
             <View style={styles.createdBooksContainer}>
-                <Text style={styles.title}>쿠폰북 제작 보관함</Text>
+                <Text style={styles.title}>🛠쿠폰북 제작 보관함</Text>
                 <CouponBooksList books={loadedBooks}/>
             </View>
         </View>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     },
     createdBooksContainer: {
         flex: 1,
-        marginVertical: 16,
+        marginBottom: 16,
     },
     title: {
         fontFamily: 'godoMaum',

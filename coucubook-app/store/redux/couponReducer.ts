@@ -110,9 +110,12 @@ const couponReducer = (state:couponState = initState, action: couponAction) => {
                 createdCoupons: newArray
             };
         case SAVECOUPONS:
-            return {
+            const newState = {
                 ...state,
                 createdCoupons: action.payload.coupons
+            }
+            return {
+                ...newState
             }
         case RESETCOUPON:
             return {

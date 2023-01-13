@@ -36,7 +36,7 @@ const MyBooksListScreen = () :JSX.Element => {
     return (
         <View style={styles.screen}>
             <View style={styles.myBooksContainer}>
-                <Text style={styles.title}>{coupon.loverInfo.nickname}에게 선물받은 쿠폰북 보관함</Text>
+                <Text style={styles.title}>🎁{coupon.loverInfo.nickname}에게 선물받은 쿠폰북 보관함</Text>
                 <FlatList 
                     data={couponBooks}
                     keyExtractor={(item) => 'couponbook_'+item.id}
@@ -47,12 +47,17 @@ const MyBooksListScreen = () :JSX.Element => {
                         >
                             <MaterialCommunityIcons name='book' color={item.cover_color} size={80} />
                             <View style={styles.bookInfoContainer}>
-                                <Text style={[styles.bookInfo, styles.bookTitle]}>{item.title}</Text>
+                                <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[styles.bookInfo, styles.bookTitle]}>{item.title}</Text>
                                 <Text style={styles.bookInfo}>쿠폰 {item.coupons.length}개</Text>
                                 <Text style={styles.bookInfo}>사용기한 : {item.publicationDate}~{item.expiredDate}</Text>
                             </View>
                         </Pressable>
                     )}
+                    ListEmptyComponent={
+                        <View style={styles.emptyContainer}>
+                            <Text style={styles.emptyText}>아직 선물받으신 쿠폰북이 없습니다.</Text>
+                        </View>
+                    }
                 /> 
             </View>
         </View>
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
     },
     myBooksContainer: {
         flex: 1,
-        marginVertical: 16,
+        marginBottom: 16,
     },
     title: {
         fontFamily: 'godoMaum',
@@ -109,6 +114,15 @@ const styles = StyleSheet.create({
     bookTitle: {
         fontSize: 30,
         color: 'black'
-
+    },
+    emptyContainer:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    emptyText: {
+        fontFamily: 'godoMaum',
+        fontSize: 32,
+        color: '#424242'
     }
 })

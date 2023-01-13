@@ -24,9 +24,10 @@ const CouponDetailScreen = ({navigation, route}: CouponDetailScreenProps) :JSX.E
                 text: '사용',
                 onPress: async() => {
                     const result = await useCoupon(coupondata);
+                    console.log("새로운 쿠폰 어레이 반환값", result);
                     if(result){
-                        Alert.alert('쿠폰사용완료!', `사용완료`);
                         dispatch(saveCoupons(result));
+                        Alert.alert('쿠폰사용완료!', `사용완료`);
                         navigation.goBack();
                     }else{
                         Alert.alert('쿠폰사용실패!', `잠시후에 다시 시도해 주세요!`);

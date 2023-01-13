@@ -18,14 +18,14 @@ const LoginContent = () => {
           imageSrc={require("../../assets/Images/kakao_login_medium_narrow.png")}
           onPress={loginHandler}
         />
-        <ImageButton
+        {/* <ImageButton
           imageSrc={require("../../assets/Images/google_loginButton.png")}
           onPress={loginHandler}
         />
         <ImageButton
           imageSrc={require("../../assets/Images/naver_loginButton.png")}
           onPress={loginHandler}
-        />
+        /> */}
       </View>
     );
   };
