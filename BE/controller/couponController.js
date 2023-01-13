@@ -55,8 +55,25 @@ const getGitedMyCouponBooks = async (req, res) => {
     }
 }
 
+const updateCouponUsed = async (req, res) => {
+    const {coupon} = req.body;
+    try {
+        const result = await models.Coupon.update({ is_used: true }, //본인  러버코드 업데이트  response1에는 성공하면 1 들어감
+            { where: {id: coupon.id} }
+        );
+        const couponArray = await models.Coupon.findAll({
+            where: {book_id: coupon.book_id}
+        })
+        res.send({msg: 'success', couponArray: couponArray});
+    } catch (error) {
+        console.log('쿠폰 업데이트 에러!', error);
+        res.send({msg: 'error'});
+    }
+}
+
 const couponController = {
     saveCouponBookAndCouponAll: saveCouponBookAndCouponAll,
     getGitedMyCouponBooks: getGitedMyCouponBooks,
+    updateCouponUsed: updateCouponUsed,
 }
 export default couponController;

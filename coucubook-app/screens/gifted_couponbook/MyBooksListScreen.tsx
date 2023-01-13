@@ -1,7 +1,7 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native"
-import { useSelector } from "react-redux";
-import { couponState } from "../../store/redux/couponReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { couponState, resetCoupon } from "../../store/redux/couponReducer";
 import { RootState } from "../../store/redux/rootReducer";
 import { fetchGiftedCouponBooks } from "../../util/backendRESTAPI";
 import { useCallback, useState } from 'react';
@@ -15,6 +15,7 @@ export type MyBooksListScreenProps = NativeStackScreenProps<MyBooksStackParamLis
 const MyBooksListScreen = () :JSX.Element => {
     const navigation = useNavigation<MyBooksListScreenProps["navigation"]>();
     const coupon:couponState = useSelector((state: RootState) => state.coupon);
+    const dispatch = useDispatch();
     const [couponBooks, setCouponBooks] = useState<CouponBook[]>([]);
 
     useFocusEffect(
@@ -24,6 +25,8 @@ const MyBooksListScreen = () :JSX.Element => {
             setCouponBooks(data);
         }
         fetchDataHandler();
+        dispatch(resetCoupon());
+
         },[]),
     );
     const clickCouponBookDetail = (couponbook: CouponBook) => {

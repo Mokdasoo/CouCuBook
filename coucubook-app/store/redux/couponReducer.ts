@@ -2,6 +2,7 @@ import { Coupon, CouponBook } from "../../src/types/coupon";
 import { userInfo } from "../../src/types/vari";
 
 const SAVECOUPON = 'COUPON/SAVECOUPON' as const;
+const SAVECOUPONS = 'COUPON/SAVECOUPONS' as const;
 const RESETCOUPON = 'COUPON/RESETCOUPON' as const;
 const DELETECOUPON = 'COUPON/DELETECOUPON' as const;
 const SAVECOUPONBOOK = 'COUPON/SAVECOUPONBOOK' as const;
@@ -42,6 +43,13 @@ export const saveCoupon = (coupon: Coupon) => ({
     }
 });
 
+export const saveCoupons = (coupons: Coupon[]) => ({
+    type: SAVECOUPONS,
+    payload: {
+        coupons: coupons,
+    }
+})
+
 export const resetCoupon = () => ({
     type: RESETCOUPON,
 });
@@ -79,6 +87,7 @@ export const changeLoverCode = (loverCode: string) => ({
 
 type couponAction = 
     ReturnType<typeof saveCoupon> | 
+    ReturnType<typeof saveCoupons> | 
     ReturnType<typeof resetCoupon> |
     ReturnType<typeof deleteCoupon> |
     ReturnType<typeof saveCouponBook> |
@@ -100,6 +109,11 @@ const couponReducer = (state:couponState = initState, action: couponAction) => {
                 ...state,
                 createdCoupons: newArray
             };
+        case SAVECOUPONS:
+            return {
+                ...state,
+                createdCoupons: action.payload.coupons
+            }
         case RESETCOUPON:
             return {
                 ...state,

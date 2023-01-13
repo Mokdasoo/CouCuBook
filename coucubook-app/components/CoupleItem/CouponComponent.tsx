@@ -6,8 +6,9 @@ interface CouponComponentProps {
     content: string;
     selectedImage: number;
     width: number;
+    is_used?: boolean;
 }
-const CouponComponent = ({bgcolor, title, content, selectedImage, width}: CouponComponentProps) :JSX.Element => {
+const CouponComponent = ({bgcolor, title, content, selectedImage, width, is_used}: CouponComponentProps) :JSX.Element => {
     const containerStyle = [styles.couponContainer, {backgroundColor: bgcolor , width: width, height: width*1.6}];
     const coupon_image01 = require('../../assets/Images/default/coupon_image01.png');
     const coupon_image02 = require('../../assets/Images/default/coupon_image02.png');
@@ -37,24 +38,29 @@ const CouponComponent = ({bgcolor, title, content, selectedImage, width}: Coupon
     }
 
     return (
-        <View style={containerStyle}>
-            <View style={styles.imageContainer}>
-                <View style={styles.imageBack}>
-                    <Image style={styles.image} resizeMode='contain' source={selectImg}/>
+        <>
+            <View style={containerStyle}>
+                <View style={styles.imageContainer}>
+                    <View style={styles.imageBack}>
+                        <Image style={styles.image} resizeMode='contain' source={selectImg}/>
+                    </View>
+                </View>
+                <View style={styles.info}>
+                    <View style={styles.titleContainer}>
+                        <Text adjustsFontSizeToFit={true} style={styles.title} numberOfLines={1}>{title}</Text>
+                    </View>
+                    <View style={styles.contentContainer}>
+                        <Text adjustsFontSizeToFit={true} style={styles.content} numberOfLines={2} ellipsizeMode="tail">{content}</Text>
+                    </View>
+                </View>
+                <View style={styles.barcode}>
+                    <Image style={styles.barcodeImg} source={require('../../assets/Images/barcode.png')} />
+                </View>
+                <View style={[is_used ? styles.isUsed : styles.noUsed]}>
+                    <Text style={[is_used && styles.isUsedText]}>사용완료</Text>
                 </View>
             </View>
-            <View style={styles.info}>
-                <View style={styles.titleContainer}>
-                    <Text adjustsFontSizeToFit={true} style={styles.title} numberOfLines={1}>{title}</Text>
-                </View>
-                <View style={styles.contentContainer}>
-                    <Text adjustsFontSizeToFit={true} style={styles.content} numberOfLines={2} ellipsizeMode="tail">{content}</Text>
-                </View>
-            </View>
-            <View style={styles.barcode}>
-                <Image style={styles.barcodeImg} source={require('../../assets/Images/barcode.png')} />
-            </View>
-        </View>
+        </>
     );
 };
 
@@ -113,5 +119,24 @@ const styles = StyleSheet.create({
     barcodeImg: {
         width: '100%',
         height: '100%'
+    },
+    noUsed: {
+        display: 'none'
+    },
+    isUsed: {
+        backgroundColor: '#00000094',
+        zIndex: 5,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    isUsedText: {
+        fontFamily: 'godoMaum',
+        fontSize: 24,
+        color: 'white'
     }
 });

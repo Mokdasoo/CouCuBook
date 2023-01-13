@@ -2,21 +2,34 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FlatList, StyleSheet, Text, View, Dimensions, Pressable } from "react-native"
 import { MyBooksStackParamList } from "./MyCouponBooksScreen";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import { couponState } from "../../store/redux/couponReducer";
-import { useSelector } from "react-redux";
+import { couponState, resetCoupon, saveCoupons } from "../../store/redux/couponReducer";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/redux/rootReducer";
 import CouponComponent from "../../components/CoupleItem/CouponComponent";
 import { Coupon } from "../../src/types/coupon";
+import { useFocusEffect } from "@react-navigation/native";
+import {useCallback, useEffect} from 'react';
 
 export type BookDetailScreenProps = NativeStackScreenProps<MyBooksStackParamList, 'BookDetail'>;
 const BookDetailScreen = ({navigation, route}: BookDetailScreenProps) :JSX.Element => {
     const couponbook = route.params.couponbook;
     const coupon:couponState = useSelector((state: RootState) => state.coupon);
+    const dispatch = useDispatch();
+    useFocusEffect(
+        useCallback(()=> {
+            if(coupon.createdCoupons.length === 0){
+                dispatch(saveCoupons(couponbook.coupons));
+            }
+        },[]),
+    );
+    useEffect(() => {
+
+    }, [])
+
     const screenWidth = Dimensions.get('window').width;
     const clickCouponHandler = (coupon: Coupon) => {
         navigation.navigate('CouponDetail', {coupon: coupon});
     }
-
     return (
         <View style={styles.screen}>
             <View style={styles.bookInfoContainer}>
@@ -38,15 +51,21 @@ const BookDetailScreen = ({navigation, route}: BookDetailScreenProps) :JSX.Eleme
                             <Text style={styles.text}>쿠폰 목록</Text>
                         </View>
                     }
-                    data={couponbook.coupons}
+                    data={coupon.createdCoupons}
+                    extraData={coupon.createdCoupons}
                     renderItem={({item}) => (
-                        <Pressable onPress={clickCouponHandler.bind(this, item)} style={({pressed}) => [pressed && styles.pressedCoupon]}>
+                        <Pressable 
+                            onPress={clickCouponHandler.bind(this, item)} 
+                            style={({pressed}) => [pressed && styles.pressedCoupon]}
+                            disabled={item.is_used ? true: false}    
+                        >
                             <CouponComponent
                                     bgcolor={item.paper_color} 
                                     title={item.title} 
                                     content={item.content} 
                                     selectedImage={item.image}
                                     width={screenWidth/2 - 32}
+                                    is_used={item.is_used}
                             />
                         </Pressable>
                     )}
@@ -108,6 +127,7 @@ const styles = StyleSheet.create({
     },
     pressedCoupon: {
         opacity: 0.75
-    }
+    },
+    
 
 });

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BACKEND_ADDRESS } from "@env";
 import FormData from "form-data";
-import { CouponBook } from "../src/types/coupon";
+import { Coupon, CouponBook } from "../src/types/coupon";
 
 export const getOneInfo = async (valueType:string, value: string | number| null) => {
     let Info;
@@ -110,5 +110,25 @@ export const fetchGiftedCouponBooks = async (user_code: string) => {
         return (response.data);
     } catch (error) {
         console.log("선물받은 쿠폰북 갱신로직 에러",error);
+    }
+}
+
+export const useCoupon = async (coupon: Coupon) => {
+    try {
+        const response = await axios({
+            method: 'PUT',
+            url: `${BACKEND_ADDRESS}/coupon/use`,
+            data: {
+                coupon: coupon
+            }
+        });
+
+        if( response.data.msg === 'success'){
+            return response.data.couponArray;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        return false;
     }
 }
