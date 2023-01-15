@@ -26,7 +26,7 @@ const MyCouponBooksScreen = () : JSX.Element => {
             <Stack.Screen name='MyBooksList' component={MyBooksListScreen} />
             <Stack.Screen name='BookDetail' component={BookDetailScreen} />
             <Stack.Screen name='CouponDetail' component={CouponDetailScreen} />
-          </Stack.Navigator>
+        </Stack.Navigator>
     )
 }
 

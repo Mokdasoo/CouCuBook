@@ -12,7 +12,7 @@ import { RootState } from './store/redux/rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import MainCoupleScreen from './screens/main/MainCoupleScreen';
 import CreateCouponBookScreen,{CreateBookListScreenProps, CreateCouponBookButton} from './screens/create_couponbook/CreateCouponBookScreen';
-import MyAppSettingScreen from './screens/main/MyAppSettingScreen';
+import MyAppSettingScreen from './screens/setting/MyAppSettingScreen';
 import MyCouponBooksScreen from './screens/gifted_couponbook/MyCouponBooksScreen';
 import InputInfoScreen from './screens/social_login/InputInfoScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
