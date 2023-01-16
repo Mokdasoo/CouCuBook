@@ -28,9 +28,9 @@ import { createCouponBookTable, createCouponTable, createGiftTable } from './uti
 import { userInfo } from './src/types/vari';
 import { getOneInfo } from './util/backendRESTAPI';
 import { couponState, saveLoverInfo, saveUserInfo } from './store/redux/couponReducer';
+import 'expo-dev-client';
 
 // console.log("helllllllo", process.env.NODE_ENV);
-
 
 export type AuthStackParamList = {
   Login: undefined;
@@ -136,7 +136,7 @@ function AuthenticatedTab():JSX.Element {
             updateLoverInfo();
         }
     }, [coupon.userInfo]);
-
+    
   
   return (
     <Tab.Navigator screenOptions={{
@@ -242,6 +242,7 @@ function Navigation():JSX.Element {
       }
     }
     fetchToken();
+    
   }, []);
 
   return (
@@ -259,6 +260,10 @@ function Root():JSX.Element {
   
   return <Navigation />
 };
+
+
+
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -295,8 +300,10 @@ export default function App():JSX.Element | null{
     if(fontsLoaded && dbInitialized){
       const appIsReady = async () => {
         await SplashScreen.hideAsync();
+        
       }
       appIsReady();
+      
     }
   }, [fontsLoaded, dbInitialized]);
 

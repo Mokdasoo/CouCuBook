@@ -23,7 +23,7 @@ const MainSettingsScreen = ({navigation, route}: MainSettingsScreenProps) : JSX.
     }
     return(
         <View style={styles.screen}>
-            <Button bgcolor="#7c197c" fontcolor="white" onPress={logoutHandler}>커쿠북 로그아웃</Button>
+            <Button bgcolor="#e4c1f9" fontcolor="#3f3f3f" onPress={logoutHandler}>커쿠북 로그아웃</Button>
             <Modal 
                 presentationStyle="formSheet"
                 animationType="slide"
@@ -31,8 +31,8 @@ const MainSettingsScreen = ({navigation, route}: MainSettingsScreenProps) : JSX.
             >
                 <KakaoLogoutScreen />
             </Modal>
-            <Button bgcolor="#3336ff" fontcolor="white" onPress={toUserScreenHandler}>회원 정보 관리</Button>
-            <Button bgcolor="#ff3c66" fontcolor="white" onPress={toCoupleScreenHandler}>커플 정보 관리</Button>
+            <Button bgcolor="#a9def9" fontcolor="#3f3f3f" onPress={toUserScreenHandler}>회원 정보 관리</Button>
+            <Button bgcolor="#ff99c8" fontcolor="#3f3f3f" onPress={toCoupleScreenHandler}>커플 정보 관리</Button>
 
         </View>
     )
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#d0f4de'
     }
 })

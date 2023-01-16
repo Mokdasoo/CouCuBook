@@ -101,7 +101,7 @@ const LoverCodeScreen = ({nickname, userCode} : LoverCodeScreenProps) : JSX.Elem
                             }}
                             invalid={true}
                             />
-                        <Button bgcolor="#77bfa3" fontcolor="white" onPress={submitHandler} >등록하기</Button>
+                        <Button bgcolor="#d4a373" fontcolor="white" onPress={submitHandler} >등록하기</Button>
                     </View>
                 </View>
             </ScrollView>
