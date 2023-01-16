@@ -20,4 +20,7 @@ const upload = multer({
 
 coupleRouter.post('/img', upload.single('image'), coupleController.saveCoupleImg);
 
+coupleRouter.put('/anniversary/update', coupleController.updateAnniversary);
+coupleRouter.put('/break', coupleController.breakCouple);
+
 export default coupleRouter;

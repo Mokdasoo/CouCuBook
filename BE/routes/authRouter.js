@@ -13,6 +13,8 @@ authRouter.put('/user/lover', authController.updateLoverCode);
 
 authRouter.post('/register', authController.postRegister);
 
+authRouter.put('/user/update', authController.updateUserInfo);
+authRouter.delete('/user/delete', authController.deleteUser);
 
 authRouter.get('/kakao/login', kakaoController.getLoginView);
 authRouter.post('/kakao/login', kakaoController.getLogin);

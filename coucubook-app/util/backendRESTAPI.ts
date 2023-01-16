@@ -132,3 +132,76 @@ export const useCoupon = async (coupon: Coupon) => {
         return null;
     }
 }
+
+export const userInfoUpdate = async (id: number, nickname: string, birth: string) => {
+    try {
+        const response = await axios({
+            method: 'PUT',
+            url: `${BACKEND_ADDRESS}/auth/user/update`,
+            data: {
+                id: id,
+                nickname: nickname,
+                birth: birth
+            }
+        });
+        return response.data.msg;
+
+    } catch (error) {
+        return 'fail';
+    }
+}
+
+export const userWithdrawal = async (id: number, user_code: string) => {
+    let response;
+    try {
+        response = await axios({
+            method: 'DELETE',
+            url: `${BACKEND_ADDRESS}/auth/user/delete`,
+            data: {
+                id: id,
+                user_code: user_code
+            }
+        });
+        if(response.data.msg === 'success'){
+            return true;
+        }
+    } catch (error) {
+        if(response?.data.msg === 'fail'){
+            return false;
+        }
+    }
+}
+
+export const updateAnniversaryBE = async (user_code: string, anniversary: string) => {
+    try {
+        const response = await axios({
+            method: 'PUT',
+            url: `${BACKEND_ADDRESS}/couple/anniversary/update`,
+            data: {
+                user_code: user_code,
+                anniversary: anniversary,
+            }
+        });
+        return response.data.msg;
+
+    } catch (error) {
+        return 'fail';
+    }
+}
+export const breakCouple = async (user_code: string, lover_code: string) => {
+    try {
+        const response = await axios({
+            method: 'PUT',
+            url: `${BACKEND_ADDRESS}/couple/break`,
+            data: {
+                user_code: user_code,
+                lover_code: lover_code,
+            }
+        });
+        return response.data.msg;
+
+    } catch (error) {
+        return 'fail';
+    }
+}
+

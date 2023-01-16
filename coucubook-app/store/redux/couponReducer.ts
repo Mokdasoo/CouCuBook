@@ -9,7 +9,9 @@ const SAVECOUPONBOOK = 'COUPON/SAVECOUPONBOOK' as const;
 const SAVEUSERINFO = 'COUPON/SAVEUSERINFO' as const;
 const SAVELOVERINFO = 'COUPON/SAVELOVERINFO' as const;
 const CHANGELOVERCODE = 'COUPON/CHANGELOVERCODE' as const;
-
+const UPDATEUSERINFO = 'COUPON/UPDATEUSERINFO' as const;
+const UPDATEANNIVERSARY = 'COUPON/PDATEANNIVERSARY' as const;
+const BREAKCOUPLE = 'COUPON/BREAKCOUPLE' as const;
 
 export interface couponState  {
     myCouponBooks: CouponBook[];
@@ -83,7 +85,24 @@ export const changeLoverCode = (loverCode: string) => ({
     payload: {
         loverCode: loverCode
     }
+});
+export const updateUserInfo = (nickname: string, birth: string) => ({
+    type: UPDATEUSERINFO,
+    payload: {
+        nickname: nickname,
+        birth: birth
+    }
+});
+export const updateAnniversary = (anniversary: string) => ({
+    type: UPDATEANNIVERSARY,
+    payload: {
+        anniversary: anniversary
+    }
+});
+export const breakCoupleState = () => ({
+    type: BREAKCOUPLE,
 })
+
 
 type couponAction = 
     ReturnType<typeof saveCoupon> | 
@@ -93,6 +112,9 @@ type couponAction =
     ReturnType<typeof saveCouponBook> |
     ReturnType<typeof saveUserInfo> |
     ReturnType<typeof saveLoverInfo>|
+    ReturnType<typeof updateUserInfo>|
+    ReturnType<typeof updateAnniversary>|
+    ReturnType<typeof breakCoupleState>|
     ReturnType<typeof changeLoverCode>;
 
 const couponReducer = (state:couponState = initState, action: couponAction) => {
@@ -162,6 +184,33 @@ const couponReducer = (state:couponState = initState, action: couponAction) => {
                     ...state.userInfo,
                     lover_code: action.payload.loverCode
                 }
+            }
+        case UPDATEUSERINFO:
+            return {
+                ...state,
+                userInfo: {
+                    ...state.userInfo,
+                    nickname: action.payload.nickname,
+                    birth: action.payload.birth
+                }
+            }
+        case UPDATEANNIVERSARY:
+            return {
+                ...state,
+                userInfo: {
+                    ...state.userInfo,
+                    anniversary: action.payload.anniversary
+                }
+            }
+        case BREAKCOUPLE:
+            return {
+                ...state,
+                userInfo: {
+                    ...state.userInfo,
+                    lover_code: null,
+                    couple_image: null
+                },
+                loverInfo: userInfoInitState
             }
             
         default:

@@ -116,6 +116,29 @@ const updateLoverCode = (req, res) => {
     }
     
 }
+const updateUserInfo = async (req, res) => {
+    const {id, nickname, birth} = req.body;
+    try {
+        const response = await models.User.update({ nickname: nickname, birth: birth},{where: {id: id}});
+        console.log(response);
+        res.send({msg: 'success'});
+    } catch (error) {
+        console.log('회원정보업데이트오류에러', error);
+        res.send({msg: 'fail'});
+    }
+
+}
+
+const deleteUser = async (req, res) => {
+    const {id, user_code} = req.body;
+    try {
+        await models.User.destroy({where: {id: id}});
+        await models.Couple.update({lover_code: null}, {where: {lover_code: user_code}});
+        res.send({msg: 'success'});
+    } catch (error) {
+        res.send({msg: 'fail'});
+    }
+}
 
 
 
@@ -125,5 +148,7 @@ const authController = {
     postRegister: postRegister,
     getUserTokenInfo: getUserTokenInfo,
     updateLoverCode: updateLoverCode,
+    updateUserInfo: updateUserInfo,
+    deleteUser: deleteUser
 }
 export default authController;
