@@ -157,7 +157,7 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
     }
 
     
-    
+    /// google admob
     const [loaded, setLoaded] = useState(false);
     const [couponCount, setCouponCount] = useState(0);
 
@@ -178,7 +178,7 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
                 rewardedInterstitial.load();
             }
         );
-
+            
         rewardedInterstitial.load();
         
         return () => {
@@ -190,6 +190,9 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
 
 
     useEffect(() => {
+        if(rewardedInterstitial.loaded){
+            setLoaded(true);
+        }
         const unsubscribeRewardedInit = loadRewardAdInit();
         
         return unsubscribeRewardedInit;

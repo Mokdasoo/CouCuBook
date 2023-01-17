@@ -9,7 +9,7 @@ const Coupon = (Sequelize, DataTypes) => {
                 allowNull: false,
             },
             content:{
-                type: DataTypes.STRING(25),
+                type: DataTypes.STRING(35),
                 allowNull: false,
             },
             image:{

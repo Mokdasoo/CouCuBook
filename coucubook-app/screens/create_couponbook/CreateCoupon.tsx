@@ -95,8 +95,8 @@ const CreateCoupon = ({onSave, onCancel}: CreateCouponProps) : JSX.Element => {
                         onBlur={()=>{setContentFocus(false);}}
                         onChangeText= {inputChangeHandler.bind(this, 'content')}
                         value= {inputs.content}
-                        maxLength={40}
-                        placeholder= '쿠폰에 대한 상세 설명, 최대40자'
+                        maxLength={35}
+                        placeholder= '쿠폰에 대한 상세 설명, 최대35자'
                     />
                     <View style={styles.buttonContainer}>
                         <Button bgcolor='#ff5b5b' fontcolor='white' onPress={onCancel}>취소</Button>
