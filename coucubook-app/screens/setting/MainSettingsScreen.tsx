@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Modal, StyleSheet, View } from "react-native";
+import { Modal, StyleSheet, View, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../../components/UI/Button";
 import { authState, modalControl } from "../../store/redux/authReducer";
@@ -23,6 +23,7 @@ const MainSettingsScreen = ({navigation, route}: MainSettingsScreenProps) : JSX.
     }
     return(
         <View style={styles.screen}>
+            <Image style={styles.img} source={require('../../assets/icon.png')} />
             <Button bgcolor="#e4c1f9" fontcolor="#3f3f3f" onPress={logoutHandler}>커쿠북 로그아웃</Button>
             <Modal 
                 presentationStyle="formSheet"
@@ -46,5 +47,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#d0f4de'
+    },
+    img: {
+        width: 100,
+        height: 100
     }
 })

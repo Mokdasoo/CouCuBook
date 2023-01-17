@@ -11,7 +11,6 @@ import { RootState } from '../store/redux/rootReducer';
 import { useSelector} from 'react-redux';
 
 export type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
-
 function GreetingLoginScreen():JSX.Element {
     const screenWidth = Math.round(Dimensions.get('window').width);
     const PAGES = [

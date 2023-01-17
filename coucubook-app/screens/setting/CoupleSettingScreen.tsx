@@ -91,9 +91,11 @@ const CoupleSettingScreen = (): JSX.Element => {
                         </View>
                     </View>
                 </View>
-                <View style={styles.buttonContainer}>
-                    <Button bgcolor="red" fontcolor="#252525" onPress={breakCoupleHandler}>커플 끊기</Button>
-                </View>
+                { coupon.loverInfo.user_code && 
+                    <View style={styles.buttonContainer}>
+                        <Button bgcolor="red" fontcolor="#252525" onPress={breakCoupleHandler}>커플 끊기</Button>
+                    </View>
+                }
             </View>
         </KeyboardAwareScrollView>
     );

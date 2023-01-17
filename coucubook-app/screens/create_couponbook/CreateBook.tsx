@@ -1,4 +1,4 @@
-import { Alert, FlatList, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
+import { Alert, FlatList, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View, Platform } from "react-native"
 import {useEffect, useState} from 'react';
 import CreateCoupon from "./CreateCoupon";
 import { Ionicons } from '@expo/vector-icons'; 
@@ -12,10 +12,17 @@ import { couponState, deleteCoupon, resetCoupon, saveCoupon, saveCouponBook } fr
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/redux/rootReducer";
 import { CouponBook } from "../../src/types/coupon";
-import { generateRandomString } from "../../util/usefulFunc";
 import CouponComponent from "../../components/CoupleItem/CouponComponent";
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { deleteCouponBookDB, deleteCouponDB, fetchCoupons, insertCouponBooks, insertCoupons, insertGift } from "../../util/database";
+
+import { AdEventType, RewardedAd, RewardedAdEventType, TestIds  } from 'react-native-google-mobile-ads';
+
+const rewardKey = Platform.OS === 'android' ? 'ca-app-pub-9593615099347808/2126666979' : 'ca-app-pub-9593615099347808/8017072305';
+const adUnitId = __DEV__ ? TestIds.REWARDED : rewardKey ;
+let rewardedInterstitial = RewardedAd.createForAdRequest(adUnitId, {
+    requestNonPersonalizedAdsOnly: true
+});
 
 interface inputProps {
     [anyKeyword: string]: string;
@@ -149,6 +156,45 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
         navigation.replace('BooksList');
     }
 
+    
+    
+    const [loaded, setLoaded] = useState(false);
+    const [couponCount, setCouponCount] = useState(0);
+
+    const loadRewardAdInit = () => {
+        const unsubscribeLoaded = rewardedInterstitial.addAdEventListener(
+            RewardedAdEventType.LOADED, () => {
+            setLoaded(true);
+            }
+        );
+        const unsubscribeEarned = rewardedInterstitial.addAdEventListener(
+            RewardedAdEventType.EARNED_REWARD, reward => {
+                setCouponCount(prevState => prevState + 5);
+            },
+        );
+        const unsubscribeClosed = rewardedInterstitial.addAdEventListener(
+            AdEventType.CLOSED, () => {
+                setLoaded(false);
+                rewardedInterstitial.load();
+            }
+        );
+
+        rewardedInterstitial.load();
+        
+        return () => {
+            unsubscribeLoaded();
+            unsubscribeEarned();
+            unsubscribeClosed();
+        } 
+    };
+
+
+    useEffect(() => {
+        const unsubscribeRewardedInit = loadRewardAdInit();
+        
+        return unsubscribeRewardedInit;
+    }, []);
+
     useEffect(() => {
         dispatch(resetCoupon());
         if(couponbook){
@@ -171,6 +217,7 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
         dispatch(deleteCoupon(id));
         
     }
+    let availableCouponCount = 5 + couponCount - coupon.createdCoupons.length;
     return (
         <KeyboardAwareScrollView
                 keyboardShouldPersistTaps='always'
@@ -222,10 +269,12 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
                     value= {inputs.expiredDate}
                     keyboardType= 'numeric'
                 />
-                <Pressable onPress={openCouponScreenHandler} style={({pressed}) => [styles.addCouponButtonContainer, pressed && styles.pressed]} >
-                    <Text style={styles.addCouponText}>쿠폰 추가</Text>
-                    <Ionicons name="add-circle" size={80} color="#00000055" />
-                </Pressable>
+                {availableCouponCount > 0 &&
+                    <Pressable onPress={openCouponScreenHandler} style={({pressed}) => [styles.addCouponButtonContainer, pressed && styles.pressed]} >
+                        <Text style={styles.addCouponText}>쿠폰 추가 {availableCouponCount}/5</Text>
+                        <Ionicons name="add-circle" size={80} color="#00000055" />
+                    </Pressable>
+                }
                 <Modal
                     presentationStyle="formSheet"
                     animationType="slide"
@@ -261,6 +310,9 @@ const CreateBook = ({route}: CreateBookScreenProps) : JSX.Element => {
                     }}
                     
                 />
+                { loaded &&
+                    <Button bgcolor="gray" fontcolor="white" onPress={() => {rewardedInterstitial.show();}}>쿠폰 만들기 갯수 추가(광고시청)</Button>
+                }
                 <View style={styles.buttonContainer}>
                     <Button bgcolor='#ff5b5b' fontcolor='white' onPress={goBackHandler}>취소</Button>
                     <Button bgcolor='#60c960' fontcolor='white' onPress={saveCouponBookHandler}>저장</Button>
