@@ -1,4 +1,4 @@
-# CouCuBook
+# CouCuBook 커쿠북
 <img width="100" src="./coucubook-app/assets/icon.png" alt="로고">  
 
 ---
