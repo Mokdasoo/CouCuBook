@@ -1,4 +1,5 @@
 import express from "express";
+import appleController from "../controller/appleController.js";
 import authController from '../controller/authController.js';
 import kakaoController from '../controller/kakaoController.js';
 
@@ -18,7 +19,10 @@ authRouter.delete('/user/delete', authController.deleteUser);
 
 authRouter.get('/kakao/login', kakaoController.getLoginView);
 authRouter.post('/kakao/login', kakaoController.getLogin);
-
 authRouter.get('/kakao/logout', kakaoController.logout);
+
+authRouter.get('/apple/login', appleController.getLoginView);
+authRouter.post('/apple/login', appleController.getLogin);
+authRouter.get('/apple/logout', appleController.logout);
 
 export default authRouter;

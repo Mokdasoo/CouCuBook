@@ -1,4 +1,4 @@
-import { HOST_ADDRESS } from "../env/db.js";
+
 
 const Couple = (Sequelize, DataTypes) => {
     const model = Sequelize.define(

@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
 import rootReducer from './store/redux/rootReducer';
 import {createStore} from 'redux';
-import { authState, authenticate } from './store/redux/authReducer';
+import { authState, authenticate, logout } from './store/redux/authReducer';
 import { RootState } from './store/redux/rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import MainCoupleScreen from './screens/main/MainCoupleScreen';
@@ -203,6 +203,7 @@ function Navigation():JSX.Element {
 
     const newToken = await tokenRenewal(refreshToken);
     if(newToken === 'refresh token expired'){
+      dispatch(logout());
       return;
     }
     let tokenInfo : tokenInfo = await viewTokenInfo(newToken);

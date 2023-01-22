@@ -8,7 +8,7 @@ const LoginContent = () => {
     const auth:authState = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
   
-    const loginHandler = () => {
+    const loginHandler = (platform: string) => {
       dispatch(modalControl());
     };
   
@@ -16,16 +16,16 @@ const LoginContent = () => {
       <View>
         <ImageButton
           imageSrc={require("../../assets/Images/kakao_login_medium_narrow.png")}
-          onPress={loginHandler}
+          onPress={loginHandler.bind(this, 'kakao')}
         />
-        {/* <ImageButton
+        <ImageButton
           imageSrc={require("../../assets/Images/google_loginButton.png")}
-          onPress={loginHandler}
+          onPress={loginHandler.bind(this, 'google')}
         />
         <ImageButton
           imageSrc={require("../../assets/Images/naver_loginButton.png")}
-          onPress={loginHandler}
-        /> */}
+          onPress={loginHandler.bind(this, 'apple')}
+        />
       </View>
     );
   };
