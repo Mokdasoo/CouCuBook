@@ -9,6 +9,7 @@ import { AuthStackParamList } from "../App";
 import { authState} from '../store/redux/authReducer';
 import { RootState } from '../store/redux/rootReducer';
 import { useSelector} from 'react-redux';
+import AppleLoginScreen from "./social_login/AppleLoginScreen";
 
 export type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 function GreetingLoginScreen():JSX.Element {
@@ -50,9 +51,12 @@ function GreetingLoginScreen():JSX.Element {
             <Modal 
                 presentationStyle="formSheet"
                 animationType="slide"
-                visible={auth.modalIsOpen}
+                visible={auth.modalState.isOpen}
             >
-                <KakaoLoginScreen />
+                {auth.modalState.platform === 'kakao' ? 
+                    <KakaoLoginScreen /> :
+                    <AppleLoginScreen />
+                }
             </Modal>
         </View>
     )

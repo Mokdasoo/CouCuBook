@@ -9,23 +9,23 @@ const LoginContent = () => {
     const dispatch = useDispatch();
   
     const loginHandler = (platform: string) => {
-      dispatch(modalControl());
+      dispatch(modalControl(platform));
     };
-  
+    
     return (
       <View>
         <ImageButton
           imageSrc={require("../../assets/Images/kakao_login_medium_narrow.png")}
           onPress={loginHandler.bind(this, 'kakao')}
         />
-        <ImageButton
+        {/* <ImageButton
           imageSrc={require("../../assets/Images/google_loginButton.png")}
           onPress={loginHandler.bind(this, 'google')}
-        />
-        <ImageButton
-          imageSrc={require("../../assets/Images/naver_loginButton.png")}
+        /> */}
+        {/* <ImageButton
+          imageSrc={require("../../assets/Images/appleid_button.png")}
           onPress={loginHandler.bind(this, 'apple')}
-        />
+        /> */}
       </View>
     );
   };

@@ -11,7 +11,10 @@ export interface authState  {
         social_id: number;
     };
     isAuthenticated: boolean;
-    modalIsOpen: boolean;
+    modalState: {
+        isOpen: boolean;
+        platform: string;
+    };
 };
 const initState:authState = {
     token: {
@@ -20,7 +23,10 @@ const initState:authState = {
         social_id: 0
     }, 
     isAuthenticated: false, 
-    modalIsOpen: false,
+    modalState: {
+        isOpen: false,
+        platform: ''
+    },
 };
 
 export const authenticate = (token:string, refreshToken: string, social_id: number) => ({
@@ -37,9 +43,11 @@ export const logout = () => ({
     payload: null
 });
 
-export const modalControl = () => ({
+export const modalControl = (platform: string) => ({
     type: MODAL,
-    payload: null
+    payload: {
+        platform: platform
+    }
 });
 
 type authAction = 
@@ -72,12 +80,18 @@ const authReducer = (state:authState = initState, action: authAction) => {
                 ...state,
                 token: '',
                 isAuthenticated: false,
-                modalIsOpen: false
+                modalState: {
+                    isOpen : false,
+                    platform: ''
+                }
             };
         case MODAL:
             return  {
                 ...state,
-                modalIsOpen: !state.modalIsOpen
+                modalState: {
+                    isOpen : !state.modalState.isOpen,
+                    platform: action.payload.platform
+                }
             };
         default:
             return state;

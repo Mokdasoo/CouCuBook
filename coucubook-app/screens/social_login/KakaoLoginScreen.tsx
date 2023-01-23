@@ -53,11 +53,11 @@ const KakaoLoginScreen = (): JSX.Element => {
       const value = response.data;
       switch (value.result) {
         case "success":
-          dispatch(modalControl());
+          dispatch(modalControl('kakao'));
           dispatch(authenticate(ACCESS_TOKEN, REFRESH_TOKEN, value.data.social_id));
           break;
         case "needInfo":
-          dispatch(modalControl());
+          dispatch(modalControl('kakao'));
           value.data.token = ACCESS_TOKEN;
           value.data.refreshToken = REFRESH_TOKEN;
           console.log(value);
@@ -65,7 +65,7 @@ const KakaoLoginScreen = (): JSX.Element => {
           break;
       
         default:
-          dispatch(modalControl());
+          dispatch(modalControl('kakao'));
           Alert.alert('login error', '로그인에 실패하셨습니다. 잠시 뒤에 다시 시도해 주세요')
           break;
       }

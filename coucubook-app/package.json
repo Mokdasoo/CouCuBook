@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "dev": "NODE_ENV=development expo start",
+    "dev": "expo start --dev-client",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -42,7 +42,8 @@
     "react-native-webview": "11.23.1",
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "expo-updates": "~0.15.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
