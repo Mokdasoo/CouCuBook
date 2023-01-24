@@ -8,7 +8,7 @@ import { useState } from "react";
 import Button from "../../components/UI/Button";
 import { userInfoUpdate, userWithdrawal } from "../../util/backendRESTAPI";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { logout } from "../../store/redux/authReducer";
+import { authState, logout } from "../../store/redux/authReducer";
 type InputObj = {
     [anyKeyword: string]: {
         value:string;
@@ -25,6 +25,7 @@ type InputObj = {
 }
 
 const UserSettingScreen = (): JSX.Element => {
+    const auth:authState =useSelector((state: RootState) => state.auth);
     const coupon:couponState = useSelector((state: RootState) => state.coupon);
     const dispatch = useDispatch();
     const initialInputState = {
@@ -62,7 +63,8 @@ const UserSettingScreen = (): JSX.Element => {
               {
                 text: '탈퇴하기',
                 onPress: async() => {
-                    const resultFlag = await userWithdrawal(coupon.userInfo.id, coupon.userInfo.user_code);
+                    const resultFlag = await userWithdrawal(coupon.userInfo.id, coupon.userInfo.user_code, coupon.userInfo.social_platform, 
+                        auth.token.platform === 'kakao'? auth.token.token : auth.token.refreshToken);
                     if(resultFlag){
                         Alert.alert('탈퇴 완료!', '서비스를 이용해 주셔서 감사합니다');
                         dispatch(logout());

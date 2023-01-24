@@ -3,13 +3,12 @@ import Carousel from '../components/UI/Carousal';
 import LoginContent from "../components/IntroAndLogin/LoginContent";
 import IntroContent from "../components/IntroAndLogin/IntroContent";
 
-import KakaoLoginScreen from "./social_login/KakaoLoginScreen";
+import SocialLoginScreen from "./social_login/SocialLoginScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParamList } from "../App";
 import { authState} from '../store/redux/authReducer';
 import { RootState } from '../store/redux/rootReducer';
 import { useSelector} from 'react-redux';
-import AppleLoginScreen from "./social_login/AppleLoginScreen";
 
 export type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 function GreetingLoginScreen():JSX.Element {
@@ -53,10 +52,7 @@ function GreetingLoginScreen():JSX.Element {
                 animationType="slide"
                 visible={auth.modalState.isOpen}
             >
-                {auth.modalState.platform === 'kakao' ? 
-                    <KakaoLoginScreen /> :
-                    <AppleLoginScreen />
-                }
+                <SocialLoginScreen platform={auth.modalState.platform}/>
             </Modal>
         </View>
     )

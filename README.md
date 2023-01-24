@@ -11,7 +11,8 @@ React-Native, Typescript를 활용한 커플쿠폰북 앱 만들기 개인 프�
 ---
 
 ## 배포
-구글 플레이 스토어 : 검토중  
+구글 플레이 스토어 : <a href='https://play.google.com/store/apps/details?id=com.mokdasoo.coucubookapp'>링크</a>  
+
 앱스토어 : 심사중
 
 ---

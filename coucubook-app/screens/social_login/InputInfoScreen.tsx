@@ -91,7 +91,8 @@ const InputInfoScreen = ({navigation, route}: RegisterScreenProps):JSX.Element =
     }
 
     const submitHandler = async () => {
-        const loginData = route.params.data;
+        const loginData = route.params;
+        console.log(" 로그인 데이터 ",loginData);
         const response = await axios({
             method: 'POST',
             url: BACKEND_ADDRESS + '/auth/register',
@@ -105,7 +106,7 @@ const InputInfoScreen = ({navigation, route}: RegisterScreenProps):JSX.Element =
         });
         if(response.status === 200){
             Alert.alert('회원가입 완료!', '이제 커플 등록을 해주세요!');
-            dispatch(authenticate(loginData.token, loginData.refreshToken,loginData.id));
+            dispatch(authenticate(loginData.access_token, loginData.refresh_token, loginData.id, loginData.name));
         }
     }
 

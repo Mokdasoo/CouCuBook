@@ -151,7 +151,7 @@ export const userInfoUpdate = async (id: number, nickname: string, birth: string
     }
 }
 
-export const userWithdrawal = async (id: number, user_code: string) => {
+export const userWithdrawal = async (id: number, user_code: string, social_platform: string, token: string) => {
     let response;
     try {
         response = await axios({
@@ -163,7 +163,30 @@ export const userWithdrawal = async (id: number, user_code: string) => {
             }
         });
         if(response.data.msg === 'success'){
-            return true;
+            try {
+                if(social_platform === 'kakao'){
+                    await axios({
+                        method: 'POST',
+                        url: 'https://kapi.kakao.com/v1/user/unlink',
+                        headers: {
+                            "Content-Type" : 'application/x-www-form-urlencoded',
+                            "Authorization" : `Bearer ${token}`
+                        }
+                    });
+                }else{ // apple
+                    await axios({
+                        method: 'POST',
+                        url: `${BACKEND_ADDRESS}/auth/apple/revoke`,
+                        data: {
+                            refresh_token: token
+                        }
+                    });
+                }
+                return true;
+                
+            } catch (error) {
+                return false;
+            }
         }
     } catch (error) {
         if(response?.data.msg === 'fail'){

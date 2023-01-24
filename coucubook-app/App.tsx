@@ -29,18 +29,17 @@ import { userInfo } from './src/types/vari';
 import { getOneInfo } from './util/backendRESTAPI';
 import { couponState, saveLoverInfo, saveUserInfo } from './store/redux/couponReducer';
 import 'expo-dev-client';
+import { getAppleAuthToRefreshToken } from './util/appleRESTAPI';
 
 // console.log("helllllllo", process.env.NODE_ENV);
 
 export type AuthStackParamList = {
   Login: undefined;
   Register: {
-    data: {
-      id: number,
-      name: string,
-      token: string,
-      refreshToken: string
-    },
+    id: string,
+    name: string,
+    access_token: string,
+    refresh_token: string,
     result: string
   };
 };
@@ -199,34 +198,43 @@ function Navigation():JSX.Element {
   const dispatch = useDispatch();
 
   /**토큰 만료 다가오거나 만료 됐을 때 리프레시토큰으로 토큰 재발급 후 저장 */
-  const getAccessTokenWithRefreshToken = useCallback( async (refreshToken:string) => {
-
-    const newToken = await tokenRenewal(refreshToken);
+  const getAccessTokenWithRefreshToken = useCallback( async (refreshToken:string, platform: string) => {
+    let newToken: string | {access_token: string, social_id: string};
+    if(platform === 'kakao'){
+      newToken = await tokenRenewal(refreshToken);
+    }else{
+      newToken = await getAppleAuthToRefreshToken(refreshToken);
+    }
     if(newToken === 'refresh token expired'){
       dispatch(logout());
       return;
     }
-    let tokenInfo : tokenInfo = await viewTokenInfo(newToken);
-    dispatch(authenticate(newToken, refreshToken, tokenInfo.id));
+    if( typeof newToken === 'string'){
+      let tokenInfo : tokenInfo = await viewTokenInfo(newToken);
+      dispatch(authenticate(newToken, refreshToken, tokenInfo.id, platform));
+    }else{
+      dispatch(authenticate(newToken.access_token, refreshToken, newToken.social_id, platform));
+    }
+
     
   },[]);
 
 
   /** 토큰 만료 판단후 이상없으면 저장 */
   type tokenInfo = {
-    id: number;
+    id: string;
     expires_in: number;
   }
-  const getTokenInfo = useCallback(async(token: string, refreshToken: string) => {
+  const getTokenInfo = useCallback(async(token: string, refreshToken: string, platform: string) => {
     //refreshToken 만료전
     // let tokenInfo : tokenInfo = await viewTokenInfo(token);
     let tokenInfo : tokenInfo = await viewTokenInfo(token);
     
-    if(tokenInfo.expires_in > 3600 && tokenInfo.id !== 0){ // 엑세스 토큰 정상
-        dispatch(authenticate(token, refreshToken, tokenInfo.id));
+    if(tokenInfo.expires_in > 3600 && tokenInfo.id !== ''){ // 엑세스 토큰 정상
+        dispatch(authenticate(token, refreshToken, tokenInfo.id, platform));
         
     }else {// 엑세스 토큰 만료
-        await getAccessTokenWithRefreshToken(refreshToken);
+        await getAccessTokenWithRefreshToken(refreshToken, platform);
     }
   }, []);
 
@@ -234,12 +242,16 @@ function Navigation():JSX.Element {
     const fetchToken = async () => {
       const storedToken = await AsyncStorage.getItem('token');
       const refreshToken = await AsyncStorage.getItem('refreshToken');
-      console.log("token: ",storedToken, "refresh: ", refreshToken);
+      const platform = await AsyncStorage.getItem('platform');
+      console.log("token: ",storedToken, "refresh: ", refreshToken, "platform: ", platform );
 
 
       //토큰 정보 가져와서 만료시간체크하고 만료됐으면 리프레시토큰으로 재발급 리프레시토큰도 만료됐으면 토큰없음
-      if(storedToken && refreshToken){
-        await getTokenInfo(storedToken, refreshToken);
+
+      if(platform==='kakao' && storedToken && refreshToken){
+        await getTokenInfo(storedToken, refreshToken, platform);
+      }else if(platform==='apple' && storedToken && refreshToken){
+        await getAccessTokenWithRefreshToken(refreshToken, platform);
       }
     }
     fetchToken();

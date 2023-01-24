@@ -25,7 +25,7 @@ export const tokenRenewal = async (refreshToken: string) => {
 }
 
 export const viewTokenInfo = async (token: string) => {
-    const tokenInfo:{id: number, expires_in: number} = {id: 0, expires_in: 0};
+    const tokenInfo:{id: string, expires_in: number} = {id: '', expires_in: 0};
     try {
         const response = await axios.get(
             `${BACKEND_ADDRESS}/auth/user/token`, 

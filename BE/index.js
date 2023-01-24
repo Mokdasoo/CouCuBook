@@ -15,8 +15,9 @@ const sequelize = db.sequelize;
 const app = express();
 
 const privateKey = fs.readFileSync("/etc/letsencrypt/live/coucubook.online/privkey.pem", "utf8");
-const certificate = fs.readFileSync("/etc/letsencrypt/live/coucubook.online/cert.pem", "utf8")
-const ca = fs.readFileSync("/etc/letsencrypt/live/coucubook.online/chain.pem", "utf8")
+const certificate = fs.readFileSync("/etc/letsencrypt/live/coucubook.online/cert.pem", "utf8");
+const ca = fs.readFileSync("/etc/letsencrypt/live/coucubook.online/chain.pem", "utf8");
+
 
 const credentials = {
     key: privateKey,

@@ -23,6 +23,8 @@ authRouter.get('/kakao/logout', kakaoController.logout);
 
 authRouter.get('/apple/login', appleController.getLoginView);
 authRouter.post('/apple/login', appleController.getLogin);
-authRouter.get('/apple/logout', appleController.logout);
+authRouter.post('/apple/login/refresh', appleController.getLoginToRefresh);
+authRouter.post('/apple/revoke', appleController.onRevoke);
+
 
 export default authRouter;

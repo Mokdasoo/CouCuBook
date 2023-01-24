@@ -21,11 +21,11 @@ const LoginContent = () => {
         {/* <ImageButton
           imageSrc={require("../../assets/Images/google_loginButton.png")}
           onPress={loginHandler.bind(this, 'google')}
-        /> */}
-        {/* <ImageButton
+        />  */}
+        <ImageButton
           imageSrc={require("../../assets/Images/appleid_button.png")}
           onPress={loginHandler.bind(this, 'apple')}
-        /> */}
+        />
       </View>
     );
   };

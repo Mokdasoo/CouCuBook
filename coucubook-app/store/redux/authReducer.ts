@@ -8,7 +8,8 @@ export interface authState  {
     token: {
         token: string;
         refreshToken: string;
-        social_id: number;
+        social_id: string;
+        platform: string;
     };
     isAuthenticated: boolean;
     modalState: {
@@ -20,7 +21,8 @@ const initState:authState = {
     token: {
         token: '',
         refreshToken: '',
-        social_id: 0
+        social_id: '',
+        platform: ''
     }, 
     isAuthenticated: false, 
     modalState: {
@@ -29,12 +31,13 @@ const initState:authState = {
     },
 };
 
-export const authenticate = (token:string, refreshToken: string, social_id: number) => ({
+export const authenticate = (token:string, refreshToken: string, social_id: string, platform: string) => ({
     type: AUTHENTICATE,
     payload: {
         token: token,
         refreshToken: refreshToken,
         social_id: social_id,
+        platform: platform
     }
 });
 
@@ -59,31 +62,34 @@ const authReducer = (state:authState = initState, action: authAction) => {
     switch (action.type) {
         case AUTHENTICATE:
             const authenticateHandler = async () => {
-                await AsyncStorage.setItem('token', action.payload.token);
-                await AsyncStorage.setItem('refreshToken', action.payload.refreshToken);
+                try {
+                    await AsyncStorage.setItem('token', action.payload.token);
+                    await AsyncStorage.setItem('refreshToken', action.payload.refreshToken);
+                    await AsyncStorage.setItem('platform', action.payload.platform);
+                    
+                } catch (error) {
+                    console.log('캐치 asyncstorage');
+                }
             }
             authenticateHandler();
             
+            
             return {
                 ...state,
-                token: action.payload,
-                isAuthenticated: !!action.payload
+                token: {...action.payload},
+                isAuthenticated: !!action.payload.token
             };
         case LOGOUT:
             const logoutHandler = async () => {
                 await AsyncStorage.removeItem('token');
                 await AsyncStorage.removeItem('refreshToken');
+                await AsyncStorage.removeItem('platform');
             }
             logoutHandler();
             console.log('로그아웃');
             return {
                 ...state,
-                token: '',
-                isAuthenticated: false,
-                modalState: {
-                    isOpen : false,
-                    platform: ''
-                }
+                ...initState
             };
         case MODAL:
             return  {
