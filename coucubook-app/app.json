@@ -2,7 +2,7 @@
   "expo": {
     "name": "CouCuBook",
     "slug": "coucubook-app",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "backgroundColor": "#ffffff",
@@ -20,12 +20,15 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "4",
+      "buildNumber": "0.0.5",
       "supportsTablet": true,
-      "bundleIdentifier": "com.mokdasoo.coucubookapp"
+      "bundleIdentifier": "com.mokdasoo.coucubookapp",
+      "entitlements": {
+        "com.apple.developer.applesignin": ["Default"]
+      }
     },
     "android": {
-      "versionCode": 4,
+      "versionCode": 5,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
