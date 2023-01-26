@@ -19,7 +19,7 @@
 .env.production
 /.idea
 /secret
-
+app-ads.txt
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

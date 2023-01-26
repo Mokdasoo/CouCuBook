@@ -27,6 +27,12 @@ React-Native, Typescript를 활용한 커플쿠폰북 앱 만들기 개인 프�
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"><img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"><img src="https://img.shields.io/badge/notion-FFFFFF?style=for-the-badge&logo=notion&logoColor=black"> <img src="https://img.shields.io/badge/VS Code-007ACC?style=for-the-badge&logo=Visual Studio Code&logoColor=white"/><img src="https://img.shields.io/badge/WebStorm-29ABE2?style=for-the-badge&logo=WebStorm&logoColor=white"/><img src="https://img.shields.io/badge/DataGrip-2AB1AC?style=for-the-badge&logo=DataGrip&logoColor=white"/>
 
 ---
+## 프로젝트 화면 구성
+<img width='100%' src="./readme_img/커쿠북앱구성도2.png" alt="사진">
+</br>
+
+
+
 
 ## 프로젝트 스크린샷, 설명
 
