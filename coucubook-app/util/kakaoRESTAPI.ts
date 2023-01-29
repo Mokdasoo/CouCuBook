@@ -33,7 +33,6 @@ export const viewTokenInfo = async (token: string) => {
                 params: {token: token}
             },
         );//{ id, expires_in}  but token expired -> {msg, code}
-        console.log("response is ",response.data);
         if(response.data.id){
             tokenInfo.id = response.data.id;
             tokenInfo.expires_in = response.data.expires_in;

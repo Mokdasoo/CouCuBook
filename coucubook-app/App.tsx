@@ -1,291 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState, useEffect, useCallback } from 'react';
-import GreetingLoginScreen from './screens/GreetingLoginScreen';
+import React, { useState, useEffect, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
-import rootReducer from './store/redux/rootReducer';
-import {createStore} from 'redux';
-import { authState, authenticate, logout } from './store/redux/authReducer';
-import { RootState } from './store/redux/rootReducer';
-import { useSelector, useDispatch } from 'react-redux';
-import MainCoupleScreen from './screens/main/MainCoupleScreen';
-import CreateCouponBookScreen,{CreateBookListScreenProps, CreateCouponBookButton} from './screens/create_couponbook/CreateCouponBookScreen';
-import MyAppSettingScreen from './screens/setting/MyAppSettingScreen';
-import MyCouponBooksScreen from './screens/gifted_couponbook/MyCouponBooksScreen';
-import InputInfoScreen from './screens/social_login/InputInfoScreen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import store from './store/redux/rootReducer';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { tokenRenewal, viewTokenInfo } from './util/kakaoRESTAPI';
-import CreateBook from './screens/create_couponbook/CreateBook';
-
-import { CouponBook } from './src/types/coupon';
 import { createCouponBookTable, createCouponTable, createGiftTable } from './util/database';
-import { userInfo } from './src/types/vari';
-import { getOneInfo } from './util/backendRESTAPI';
-import { couponState, saveLoverInfo, saveUserInfo } from './store/redux/couponReducer';
 import 'expo-dev-client';
-import { getAppleAuthToRefreshToken } from './util/appleRESTAPI';
+import Root from './Root';
 
 // console.log("helllllllo", process.env.NODE_ENV);
-
-export type AuthStackParamList = {
-  Login: undefined;
-  Register: {
-    id: string,
-    name: string,
-    access_token: string,
-    refresh_token: string,
-    result: string
-  };
-};
-const Stack = createNativeStackNavigator<AuthStackParamList>();
-const Tab = createBottomTabNavigator();
-
-
-//로그인안한상태 AuthStack 간편로그인+ if 회원가입
-function AuthStack():JSX.Element {
-  return (
-    <Stack.Navigator screenOptions={{
-      headerShown: false
-    }}>
-      <Stack.Screen name='Login' component={GreetingLoginScreen} />
-      <Stack.Screen name='Register' component={InputInfoScreen} />
-    </Stack.Navigator>
-  );
-};
-
-export type CreateCouponBookStackParamList = {
-  BooksList: undefined;
-  CreateBook: {
-    couponBook: CouponBook;
-  } | undefined;
-};
-const CreateCouponBookStack = createNativeStackNavigator<CreateCouponBookStackParamList>();
-
-const CouponBookStack = (): JSX.Element => {
-  
-  return (
-    <CreateCouponBookStack.Navigator screenOptions={{
-      headerTitleStyle: {fontFamily: 'godoMaum', fontSize: 25},
-      headerTitleAlign: 'center',
-      headerTitle: 'CouCuBook',
-    }}>
-      <CreateCouponBookStack.Screen 
-        name='BooksList'
-        component={CreateCouponBookScreen}
-        options={{
-          headerRight: () => (
-            <CreateCouponBookButton />
-          ),
-        }}
-      />
-      <CreateCouponBookStack.Screen 
-        name='CreateBook'
-        component={CreateBook}
-        
-      />
-    </CreateCouponBookStack.Navigator>
-  );
-};
-
-
-//로그인상태 AuthenticatedTab 메인스크린
-function AuthenticatedTab():JSX.Element {
-
-  const auth:authState = useSelector((state: RootState) => state.auth);
-  const coupon:couponState = useSelector((state: RootState) => state.coupon);
-  const dispatch = useDispatch();
-  const userInfoInitState = {
-      "birth": '',
-      "id": 0, 
-      "nickname": '',  
-      "social_id": '',  
-      "social_platform": '',  
-      "user_code": '',
-      "lover_code" : null,
-      "anniversary": '',
-      "couple_image": null,
-      "msg": '',
-  };
-
-    
-    let responseUser: userInfo = userInfoInitState;
-    let responseLover: userInfo = userInfoInitState;
-    
-
-    useEffect(()=>{
-        const updateUserInfo = async () => {
-            responseUser = await getOneInfo('social_id', auth.token.social_id);// 조인하는 함수로 변경
-            dispatch(saveUserInfo(responseUser));
-        }
-        updateUserInfo();
-    }, []);
-    
-    useEffect(() => {
-        const updateLoverInfo = async () => {
-            responseLover = await getOneInfo('user_code', coupon.userInfo.lover_code);// 조인하는 함수로 변경
-            dispatch(saveLoverInfo(responseLover));
-        }
-        if(!!coupon.userInfo.lover_code){
-            updateLoverInfo();
-        }
-    }, [coupon.userInfo]);
-    
-  
-  return (
-    <Tab.Navigator screenOptions={{
-      headerShown: false
-    }}>
-      <Tab.Screen
-         name='Main' 
-         component={MainCoupleScreen}
-         options={{
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name='easel-outline' color={color} size={size} />
-          ),
-          tabBarLabel:'메인',
-          tabBarLabelStyle: {fontFamily: 'godoMaum'},
-          tabBarActiveTintColor: '#718355',
-          headerShown: true,
-          headerTitleStyle: {fontFamily: 'godoMaum', fontSize: 25},
-          headerTitleAlign: 'center',
-          title: 'CouCuBook'
-        }}
-      />
-      <Tab.Screen name='Mybook' component={MyCouponBooksScreen} options={{
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name='gift-outline' color={color} size={size} />
-          ),
-          tabBarLabel:'선물받은 쿠폰북함',
-          tabBarLabelStyle: {fontFamily: 'godoMaum'},
-          tabBarActiveTintColor: '#718355',
-        }}
-      />
-      <Tab.Screen name='Create' 
-        component={CouponBookStack}
-        options={{
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name='duplicate-outline' color={color} size={size} />
-          ),
-          headerShown: false,
-          tabBarLabel:'쿠폰북 만들기/선물하기',
-          tabBarLabelStyle: {fontFamily: 'godoMaum'},
-          tabBarActiveTintColor: '#718355',
-        }}
-      />
-      <Tab.Screen name='Setting' component={MyAppSettingScreen} options={{
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name='flower-outline' color={color} size={size} />
-          ),
-          tabBarLabel:'옵션들',
-          tabBarLabelStyle: {fontFamily: 'godoMaum'},
-          tabBarActiveTintColor: '#718355',
-        }}
-      />
-    </Tab.Navigator>
-  );
-};
-
-// 로그인(토큰인증)상태에 따라 보여주는 Navigation
-function Navigation():JSX.Element {
-
-  const auth:authState = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch();
-
-  /**토큰 만료 다가오거나 만료 됐을 때 리프레시토큰으로 토큰 재발급 후 저장 */
-  const getAccessTokenWithRefreshToken = useCallback( async (refreshToken:string, platform: string) => {
-    let newToken: string | {access_token: string, social_id: string};
-    if(platform === 'kakao'){
-      newToken = await tokenRenewal(refreshToken);
-    }else{
-      newToken = await getAppleAuthToRefreshToken(refreshToken);
-    }
-    if(newToken === 'refresh token expired'){
-      dispatch(logout());
-      return;
-    }
-    if( typeof newToken === 'string'){
-      let tokenInfo : tokenInfo = await viewTokenInfo(newToken);
-      dispatch(authenticate(newToken, refreshToken, tokenInfo.id, platform));
-    }else{
-      dispatch(authenticate(newToken.access_token, refreshToken, newToken.social_id, platform));
-    }
-
-    
-  },[]);
-
-
-  /** 토큰 만료 판단후 이상없으면 저장 */
-  type tokenInfo = {
-    id: string;
-    expires_in: number;
-  }
-  const getTokenInfo = useCallback(async(token: string, refreshToken: string, platform: string) => {
-    //refreshToken 만료전
-    // let tokenInfo : tokenInfo = await viewTokenInfo(token);
-    let tokenInfo : tokenInfo = await viewTokenInfo(token);
-    
-    if(tokenInfo.expires_in > 3600 && tokenInfo.id !== ''){ // 엑세스 토큰 정상
-        dispatch(authenticate(token, refreshToken, tokenInfo.id, platform));
-        
-    }else {// 엑세스 토큰 만료
-        await getAccessTokenWithRefreshToken(refreshToken, platform);
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchToken = async () => {
-      const storedToken = await AsyncStorage.getItem('token');
-      const refreshToken = await AsyncStorage.getItem('refreshToken');
-      const platform = await AsyncStorage.getItem('platform');
-      console.log("token: ",storedToken, "refresh: ", refreshToken, "platform: ", platform );
-
-
-      //토큰 정보 가져와서 만료시간체크하고 만료됐으면 리프레시토큰으로 재발급 리프레시토큰도 만료됐으면 토큰없음
-
-      if(platform==='kakao' && storedToken && refreshToken){
-        await getTokenInfo(storedToken, refreshToken, platform);
-      }else if(platform==='apple' && storedToken && refreshToken){
-        await getAccessTokenWithRefreshToken(refreshToken, platform);
-      }
-    }
-    fetchToken();
-    
-  }, []);
-
-  return (
-    <NavigationContainer>
-      {!auth.isAuthenticated && <AuthStack />}
-      {auth.isAuthenticated && <AuthenticatedTab />}
-    </NavigationContainer>
-  )
-}
-
-
-
-//로딩중인지 아닌지  따라 보여주는 Root
-function Root():JSX.Element {
-  
-  return <Navigation />
-};
-
-
-
-
-
 SplashScreen.preventAutoHideAsync();
 
-export default function App():JSX.Element | null{
-  const [dbInitialized, setDbInitialized] = useState(false);
+export default function App():JSX.Element{
   const [fontsLoaded] = useFonts({
     'godoMaum': require('./assets/fonts/godoMaum.ttf'),
   });
+  const [dbInitialized, setDbInitialized] = useState(false);
+  const [authLoaded, setAuthLoaded] = useState(false);
+  const [appReady, setAppReady] = useState(false);
+  const authLoadHandler = () => {
+    setAuthLoaded(true);
+  }
+  
 
+  //sqlite 세팅
   useEffect(() => {
     createCouponBookTable()
       .then(() => {
@@ -308,32 +48,32 @@ export default function App():JSX.Element | null{
       }
     );
   }, []);
+
+  const appIsReady = useCallback( async () => {
+    await SplashScreen.hideAsync();
+  },[]);
   
   useEffect(() => {
-    if(fontsLoaded && dbInitialized){
-      const appIsReady = async () => {
-        await SplashScreen.hideAsync();
-        
-      }
-      appIsReady();
-      
+    if(fontsLoaded && dbInitialized && authLoaded ){
+      console.log('app ready 됐어요~');
+      appIsReady().then(res => {
+        setAppReady(true);
+      });
     }
-  }, [fontsLoaded, dbInitialized]);
+  }, [fontsLoaded, dbInitialized, authLoaded]);
 
-  if(!fontsLoaded || !dbInitialized){
-    return null;
-  }
-
-  const store = createStore(rootReducer);
+  
 
   return (
     <>
       <StatusBar style="auto" />
-      <Provider store={store}>
-        <SafeAreaView style={styles.rootScreen}>
-          <Root />
-        </SafeAreaView>
-      </Provider>
+        <Provider store={store}>
+          <SafeAreaView style={styles.rootScreen}>
+            <NavigationContainer>
+              <Root appReady={appReady} onAuthLoad={authLoadHandler}/>
+            </NavigationContainer>
+          </SafeAreaView>
+        </Provider>
     </>
   );
 }
@@ -341,5 +81,5 @@ export default function App():JSX.Element | null{
 const styles = StyleSheet.create({
   rootScreen: {
     flex: 1,
-  }
+  },
 })

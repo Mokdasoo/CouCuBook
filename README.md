@@ -4,9 +4,10 @@
 ---
 ## Description
 
-React-Native, Typescript를 활용한 커플쿠폰북 앱 만들기 개인 프로젝트 
+React-Native, Typescript를 활용한 커플쿠폰북 앱 만들기 개인 프로젝트  
 상대방을 위해 직접 만들어 선물하는 커플 쿠폰북  
-개발기간: 2022.12.21 ~ 2023.01.17
+개발기간: 2022.12.21 ~ 2023.01.17  
+개발환경: Expo managed workflow
 
 ---
 

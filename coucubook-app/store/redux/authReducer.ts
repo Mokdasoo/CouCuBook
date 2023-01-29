@@ -19,7 +19,7 @@ export interface authState  {
 };
 const initState:authState = {
     token: {
-        token: '',
+        token: 'dasf',
         refreshToken: '',
         social_id: '',
         platform: ''
@@ -56,28 +56,25 @@ export const modalControl = (platform: string) => ({
 type authAction = 
     ReturnType<typeof authenticate> | 
     ReturnType<typeof logout> | 
-    ReturnType<typeof modalControl> ;
+    ReturnType<typeof modalControl>;
 
 const authReducer = (state:authState = initState, action: authAction) => {
     switch (action.type) {
         case AUTHENTICATE:
             const authenticateHandler = async () => {
-                try {
-                    await AsyncStorage.setItem('token', action.payload.token);
-                    await AsyncStorage.setItem('refreshToken', action.payload.refreshToken);
-                    await AsyncStorage.setItem('platform', action.payload.platform);
-                    
-                } catch (error) {
-                    console.log('캐치 asyncstorage');
-                }
+                await AsyncStorage.setItem('token', action.payload.token);
+                await AsyncStorage.setItem('refreshToken', action.payload.refreshToken);
+                await AsyncStorage.setItem('platform', action.payload.platform);
             }
             authenticateHandler();
-            
+            console.log('디스패치 합니다~');
             
             return {
                 ...state,
-                token: {...action.payload},
-                isAuthenticated: !!action.payload.token
+                token: {
+                    ...action.payload
+                },
+                isAuthenticated: true,
             };
         case LOGOUT:
             const logoutHandler = async () => {
@@ -86,7 +83,6 @@ const authReducer = (state:authState = initState, action: authAction) => {
                 await AsyncStorage.removeItem('platform');
             }
             logoutHandler();
-            console.log('로그아웃');
             return {
                 ...state,
                 ...initState
