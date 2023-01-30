@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import GreetingLoginScreen from "./screens/GreetingLoginScreen";
+import GreetingLoginScreen from "./screens/social_login/GreetingLoginScreen";
 import InputInfoScreen from "./screens/social_login/InputInfoScreen";
 
 

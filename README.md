@@ -4,14 +4,15 @@
 ---
 ## Description
 
-React-Native, Typescript를 활용한 커플쿠폰북 앱 만들기 개인 프로젝트  
-상대방을 위해 직접 만들어 선물하는 커플 쿠폰북  
-개발기간: 2022.12.21 ~ 2023.01.17  
-개발환경: Expo managed workflow
+- React-Native, Typescript를 활용한 커플쿠폰북 앱 만들어 배포하기 개인 프로젝트  
+- 상대방을 위해 직접 만들어 선물하는 커플 쿠폰북  
+- 개발기간: 2022.12.21 ~ 2023.01.17  
+- 개발환경: Expo managed workflow
+- 맡은 역할: 1인 개발로 모든 과정(기획, 개발, 배포 등)
 
 ---
 
-## 배포
+## 다운로드
 구글 플레이 스토어 : <a href='https://play.google.com/store/apps/details?id=com.mokdasoo.coucubookapp'>링크</a>  
 
 앱스토어 : <a href='https://apps.apple.com/us/app/coucubook-%EC%BB%A4%EC%BF%A0%EB%B6%81/id1666187593'>링크</a>  
@@ -32,66 +33,71 @@ React-Native, Typescript를 활용한 커플쿠폰북 앱 만들기 개인 프�
 <img width='100%' src="./readme_img/커쿠북앱구성도2.png" alt="사진">
 </br>
 
+## 프로젝트 소개
 
-
-
-## 프로젝트 스크린샷, 설명
-
-<img width='100%' src="./readme_img/screenshot1.png" alt="사진">
+<img width='100%' src="./readme_img/shot1.png" alt="사진">
 </br>
 
-### FlatList의 horizontal 속성을 활용한 carousal 기능을 사용해 로그인 Screen 구현 
+- 앱의 첫 화면
+- 로그인 화면
 </br>
 
 ---
 
-<img width='100%' src="./readme_img/screenshot2.png" alt="사진">
+<img width='50%' src="./readme_img/shot2.png" alt="사진">
+
+- 카카오, 애플 간편 로그인 기능
 </br>
 
-- WebView + kakao REST API를 활용한 카카오 간편로그인 구현
-- AsyncStorage 로 토큰 관리 access_token 만료시 refresh_token으로 재발급 로직 구현
-- 추가 정보 입력창까지 입력해야 회원가입 완료
-- 회원정보 수정, 탈퇴 기능 구현
-- 회원가입이 완료된 유저는 메인스크린으로 이동, 단 커플코드가 등록안된 유저는 커플코드등록 스크린이 뜸
+---
 
-</br>
-<img width='100%' src="./readme_img/screenshot3.png" alt="사진">
+<img width='70%' src="./readme_img/shot3.png" alt="사진">
+
+- 필수 정보 입력 화면
 </br>
 
-- 커플 등록시 메인커플이미지 화면이 뜨게 되고 이미지는 디폴트 이미지가 보여짐.
-- 메인화면은 react navigation API reference 중 bottom-tabs Navigator로 4영역으로 나눔
-    - 메인 커플 이미지 탭
-    - 선물 받은 쿠폰북 보관함 탭
-    - 쿠폰북을 제작하고 선물할 수 있는 쿠폰북 제작 탭
-    - 설정 탭
+---
 
-</br>
-<img width='100%' src="./readme_img/screenshot4.png" alt="사진">
+<img width='70%' src="./readme_img/shot4.png" alt="사진">
+
+- 첫 번째 탭, 메인이미지 화면
+- 사진 변경 시 사진은 서버에 저장되어 본인과 연인에게 동시 적용
+- 기념일 날짜 계산하여 디데이 표시 
 </br>
 
-- 쿠폰북 제작 탭입니다. 중첩 Navigator로 native-stack을 활용하여 화면간 이동을 구현했습니다.
-    -  제작한 쿠폰북 보관함 -> 쿠폰북 만들기 스크린 -> 쿠폰북의 쿠폰 만들기 스크린
-- 저장한 쿠폰북은 expo-sqlite라이브러리를 활용하여 기기 로컬에 저장하게 하였습니다.
+---
 
-</br>
-<img width='100%' src="./readme_img/screenshot5.png" alt="사진">
-</br>
+<img width='100%' src="./readme_img/shot5.png" alt="사진">
 
-- 쿠폰북 제작함에서 상대방한테 선물할때에야 서버DB에 저장이 됩니다. -> 유저가 선물안하는 많은 쿠폰북을 만들었을 때 불필요한 서버 DB자원 소비를 막기 위함.
-- 선물받은 쿠폰북 보관함 -> 쿠폰북 상세 스크린 -> 쿠폰 상세 스크린 으로 구성되어 있습니다.
-- 본인이 받은 쿠폰북들만 서버에서 받아오고 redux로 받아온 쿠폰북들을 상태관리 합니다.
-- 쿠폰을 사용하게 되면 서버로 쿠폰을 사용했다고 보내고 redux로 관리하는 상태만 업데이트 해 사용완료로 바꿉니다.
-
-</br>
-<img width='100%' src="./readme_img/screenshot6.png" alt="사진">
+- 두 번째 탭, 선물받은 쿠폰북 보관함 화면
+- 선물받은 쿠폰북들 리스트로 확인 가능
+- 쿠폰북 누르면 쿠폰북 상세화면 으로 이동(쿠폰 목록들 볼 수 있음)
+- 쿠폰 누르면 쿠폰 상세화면 으로 이동(쿠폰 사용 기능) 
 </br>
 
-- expo-image-picker를 활용하여 권한을 관리하고 이미지를 가져오고 그 이미지를 커플이미지로 업데이트합니다. 한명이 사진을 바꾸면 상대방 사진도 동일한 사진으로 변경됩니다.
-- 쿠폰북을 만들 때 쿠폰을 여러개 만들 수 있는데 기본 5개에서 Google Admob 광고를 시청하면 5개씩 추가가 되게 만들어 수익성을 낼 수 있게 구현하였습니다.
+---
 
+<img width='100%' src="./readme_img/shot6.png" alt="사진">
+
+- 세 번째 탭,  쿠폰북 제작 보관함 화면
+- 제작한 쿠폰북들 리스트로 확인 가능, 쿠폰북 제작, 수정 삭제 기능
+- 우측 상단 쿠폰북 만들기 누르면 쿠폰북 제작 화면 으로 이동
+- 쿠폰북 정보 입력, 쿠폰들 추가 할 수 있음, 쿠폰 개수 더 늘리고 싶으면 광고 시청하면 리워드 5개씩 제공
+- 선물하기 전인 쿠폰북은 저장하면 폰 로컬 내부에 저장됨, 선물 해야 서버 DB에 저장
 </br>
 
+---
 
+<img width='70%' src="./readme_img/shot7.png" alt="사진">
+
+- 네 번째 탭,  설정 화면
+- 로그아웃 기능
+- 회원 정보 수정, 회원 탈퇴 기능
+- 커플 정보 수정, 인연 끊기 기능
+</br>
 
 
 ---
+
+##  <a href='https://pineapple-spatula-1be.notion.site/e530cfbe51ac45f38c2022e014409e43'>✍️ 기능 명세 </a>
+##  <a href='https://pineapple-spatula-1be.notion.site/API-d39f0ee373a74c05a98bbd2ba74a32dc'>💻 API </a>

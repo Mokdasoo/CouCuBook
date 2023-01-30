@@ -6,7 +6,7 @@ import { authState, authenticate, modalControl} from '../../store/redux/authRedu
 import { RootState } from '../../store/redux/rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from "@react-navigation/native";
-import { LoginScreenProps } from "../GreetingLoginScreen";
+import { LoginScreenProps } from "./GreetingLoginScreen";
 import { KAKAO_REDIRECT_URI, KAKAO_REST_API_KEY, APPLE_LOGIN_REDIRECT_URI, APPLE_CLIENT_ID } from "@env";
 
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;

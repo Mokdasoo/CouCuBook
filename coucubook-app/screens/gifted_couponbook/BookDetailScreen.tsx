@@ -38,13 +38,12 @@ const BookDetailScreen = ({navigation, route}: BookDetailScreenProps) :JSX.Eleme
                     <Text style={styles.text}>만료 날짜 : {couponbook.expiredDate}</Text>
                 </View>
             </View>
+
             <View style={styles.couponsContainer}>
+                <View style={styles.couponsListHeader}>
+                    <Text style={styles.text}>쿠폰 목록</Text>
+                </View>
                 <FlatList 
-                    ListHeaderComponent={
-                        <View style={styles.couponsListHeader}>
-                            <Text style={styles.text}>쿠폰 목록</Text>
-                        </View>
-                    }
                     data={coupon.createdCoupons}
                     extraData={coupon.createdCoupons}
                     renderItem={({item}) => (
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
     },
     bookInfoContainer:{
         flexDirection: 'row',
-        flex: 3,
+        flex: 1,
     },
     bookCoverContainer:{
         flex: 1,
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
         fontSize: 24
     },
     couponsContainer: {
-        flex: 5,
+        flex: 2,
     },
     couponsListHeader: {
         justifyContent: 'center',
