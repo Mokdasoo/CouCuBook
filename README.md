@@ -99,5 +99,5 @@
 
 ---
 
-##  <a href='https://pineapple-spatula-1be.notion.site/e530cfbe51ac45f38c2022e014409e43'>✍️ 기능 명세 </a>
+##  <a href='https://mokdasoo.notion.site/e530cfbe51ac45f38c2022e014409e43'>✍️ 기능 명세 </a>
 ##  <a href='https://dg-studio.gitbook.io/coucubook-api/'>💻 API </a>
