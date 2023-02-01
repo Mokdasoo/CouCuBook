@@ -14,6 +14,7 @@ const BookDetailScreen = ({navigation, route}: BookDetailScreenProps) :JSX.Eleme
     const couponbook = route.params.couponbook;
     const coupon:couponState = useSelector((state: RootState) => state.coupon);
     const dispatch = useDispatch();
+    
     useEffect(()=> {
         if(coupon.createdCoupons.length === 0){
             dispatch(saveCoupons(couponbook.coupons));

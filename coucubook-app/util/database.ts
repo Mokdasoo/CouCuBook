@@ -13,7 +13,6 @@ function openDatabase() {
         },
       };
     }
-  
     const db = SQLite.openDatabase("coucubook.db");
     db.exec([{ sql: 'PRAGMA foreign_keys = ON;', args: [] }], false, () => { });
     return db;

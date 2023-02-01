@@ -8,9 +8,10 @@ import Button from "../../components/UI/Button";
 import axios from "axios";
 import { BACKEND_ADDRESS, BACKEND_LOCALHOST } from "@env";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AuthStackParamList } from "../../App";
+
 import { useDispatch } from "react-redux";
 import { authenticate} from "../../store/redux/authReducer";
+import { AuthStackParamList } from "../../AuthStack";
 type InputObj = {
     [anyKeyword: string]: {
         value:string;

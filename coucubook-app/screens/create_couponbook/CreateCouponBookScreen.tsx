@@ -3,12 +3,11 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import CouponBooksList from "../../components/CoupleItem/CouponBooksList";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { CreateCouponBookStackParamList } from "../../App";
 import { useIsFocused } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { fetchBooks } from "../../util/database";
 import { CouponBook } from "../../src/types/coupon";
-import { userInfo } from "../../src/types/vari";
+import { CreateCouponBookStackParamList } from "./CouponBookStack";
 
 export const CreateCouponBookButton = (): JSX.Element => {
     const navigation = useNavigation<CreateBookListScreenProps["navigation"]>();

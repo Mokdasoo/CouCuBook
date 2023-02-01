@@ -7,7 +7,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Button from '../../components/UI/Button';
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { CreateCouponBookStackParamList } from "../../App";
 import { couponState, deleteCoupon, resetCoupon, saveCoupon, saveCouponBook } from "../../store/redux/couponReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/redux/rootReducer";
@@ -17,6 +16,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { deleteCouponBookDB, deleteCouponDB, fetchCoupons, insertCouponBooks, insertCoupons, insertGift } from "../../util/database";
 
 import { AdEventType, RewardedAd, RewardedAdEventType, TestIds  } from 'react-native-google-mobile-ads';
+import { CreateCouponBookStackParamList } from "./CouponBookStack";
 
 const rewardKey = Platform.OS === 'android' ? 'ca-app-pub-9593615099347808/2126666979' : 'ca-app-pub-9593615099347808/8017072305';
 const adUnitId = __DEV__ ? TestIds.REWARDED : rewardKey ;

@@ -46,7 +46,7 @@ const ImagePicker = ({imagePickHandler} : ImagePickerProps) : JSX.Element => {
       mediaTypes: expoImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [9, 16], //android만 적용 아이폰은 무조건 1:1
-      quality: 0.1,
+      quality: 0.3,
     });
     if(image.canceled){
       return;

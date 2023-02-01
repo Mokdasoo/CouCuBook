@@ -30,10 +30,10 @@ interface RootProps {
         dispatch(logout());
         return;
       }
-      if( typeof newToken === 'string'){
+      if( typeof newToken === 'string'){ //애플
         let tokenInfo : tokenInfo = await viewTokenInfo(newToken);
         dispatch(authenticate(newToken, refreshToken, tokenInfo.id, platform));
-      }else{
+      }else{ // 카카오
         dispatch(authenticate(newToken.access_token, refreshToken, newToken.social_id, platform));
       }
     };
@@ -67,9 +67,7 @@ interface RootProps {
           const platform = await AsyncStorage.getItem('platform');
           console.log("token: ",storedToken, "refresh: ", refreshToken, "platform: ", platform );
       
-      
           //토큰 정보 가져와서 만료시간체크하고 만료됐으면 리프레시토큰으로 재발급 리프레시토큰도 만료됐으면 토큰없음
-      
           if(platform==='kakao' && storedToken && refreshToken){
             await getTokenInfo(storedToken, refreshToken, platform);
           }else if(platform==='apple' && storedToken && refreshToken){
@@ -81,7 +79,6 @@ interface RootProps {
           await new Promise(resolve => setTimeout(resolve, 1000));
           onAuthLoad();
         }
-        
       };
       console.log('root 렌더');
       if(!appReady){

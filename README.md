@@ -58,7 +58,7 @@
 
 ---
 
-<img width='70%' src="./readme_img/shot4.png" alt="사진">
+<img width='50%' src="./readme_img/imageChange.gif" alt="사진">
 
 - 첫 번째 탭, 메인이미지 화면
 - 사진 변경 시 사진은 서버에 저장되어 본인과 연인에게 동시 적용
@@ -67,7 +67,7 @@
 
 ---
 
-<img width='100%' src="./readme_img/shot5.png" alt="사진">
+<img width='50%' src="./readme_img/gifteCoupon.gif" alt="사진">
 
 - 두 번째 탭, 선물받은 쿠폰북 보관함 화면
 - 선물받은 쿠폰북들 리스트로 확인 가능
